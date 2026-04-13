@@ -46,7 +46,7 @@ const footerColumns = [
     heading: "Resources",
     links: [
       { label: "Travel Info", href: "#travel-info" },
-      { label: "Newsletter", href: "#newsletter" },
+      { label: "Newsletter", href: "/join-our-community" },
       { label: "Reviews", href: "#reviews" },
     ],
   },
