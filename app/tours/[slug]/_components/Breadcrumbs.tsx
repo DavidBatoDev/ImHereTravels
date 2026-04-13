@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import type { TourCrumb } from "@/types/tour";
 
-export default function Breadcrumbs({ items }: { items: TourCrumb[] }) {
+// All tour pages share the same trail — keep the leaf in sync with `tour.name`.
+export default function Breadcrumbs({ tourName }: { tourName: string }) {
+  const items = [
+    { label: "Home", href: "/" },
+    { label: "Tours", href: "/tours" },
+    { label: tourName },
+  ];
   return (
     <nav
       aria-label="Breadcrumb"

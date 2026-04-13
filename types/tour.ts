@@ -15,11 +15,6 @@ export type TourIcon =
   | "download"
   | "instagram";
 
-export interface TourCrumb {
-  label: string;
-  href?: string;
-}
-
 export interface TourTag {
   label: string;
   icon: TourIcon;
@@ -119,8 +114,11 @@ export interface TourBookingCard {
 
 export interface Tour {
   slug: string;
+  // Short, human-facing tour name (e.g., "Philippine Sunrise"). Drives
+  // both the page H1 and the breadcrumb leaf — breadcrumbs are always
+  // Home › Tours › <name>, so we don't store the trail per tour.
+  name: string;
   meta: { title: string; description: string };
-  breadcrumbs: TourCrumb[];
   gallery: {
     hero: string;
     heroAlt: string;

@@ -48,15 +48,14 @@ export default async function TourDetailPage({ params }: { params: Params }) {
     <>
       <Header />
       <main className="flex-1">
-        <Breadcrumbs items={tour.breadcrumbs} />
+        <Breadcrumbs tourName={tour.name} />
 
         <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px] lg:gap-8">
             <div className="min-w-0">
               <div className="mt-2 flex items-start justify-between gap-4 md:mt-4">
                 <h1 className="font-display text-h2-mobile md:text-h2-desktop text-midnight">
-                  {tour.breadcrumbs[tour.breadcrumbs.length - 1]?.label ??
-                    tour.header.title}
+                  {tour.name}
                 </h1>
                 <div className="shrink-0 pt-3 md:pt-4">
                   <ShareButton title={tour.header.title} />

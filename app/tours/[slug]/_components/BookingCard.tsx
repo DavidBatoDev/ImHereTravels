@@ -54,12 +54,25 @@ export default function BookingCard({
       </div>
 
       <div className="border-t border-light-grey px-6 py-5 md:px-7 md:py-6">
-        <Link
-          href={booking.ctaHref}
-          className="inline-flex w-full items-center justify-center rounded-full bg-crimson-red px-6 py-3.5 font-body font-bold text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium"
-        >
-          {booking.ctaLabel}
-        </Link>
+        {(() => {
+          const isExternal = /^https?:\/\//.test(booking.ctaHref);
+          const className =
+            "inline-flex w-full items-center justify-center rounded-full bg-crimson-red px-6 py-3.5 font-body font-bold text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium";
+          return isExternal ? (
+            <a
+              href={booking.ctaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={className}
+            >
+              {booking.ctaLabel}
+            </a>
+          ) : (
+            <Link href={booking.ctaHref} className={className}>
+              {booking.ctaLabel}
+            </Link>
+          );
+        })()}
       </div>
     </aside>
   );

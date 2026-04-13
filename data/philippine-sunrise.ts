@@ -17,20 +17,15 @@ export const philippineSunrise: Tour = {
   // URL slug — must match the key used in `data/tours.ts`.
   slug: "philippine-sunrise",
 
+  // Short name — used as the page H1 and the breadcrumb leaf.
+  name: "Philippines Sunrise",
+
   // <title> and meta description set via `generateMetadata` in the page.
   meta: {
     title: "Philippines Sunrise Getaway — 11 Day Cebu to Siargao Tour",
     description:
       "Join the 11-day Philippines Sunrise Getaway: canyoneering in Moalboal, sardine runs, and surfing in Siargao. Small group, local guides, GBP £950.",
   },
-
-  // Breadcrumb trail rendered above the hero. The leaf (no href) is also
-  // used as the page H1 — keep the leaf label in sync with the tour name.
-  breadcrumbs: [
-    { label: "Home", href: "/" },
-    { label: "Tours", href: "/tours" },
-    { label: "Philippines Sunrise" },
-  ],
 
   // Hero gallery: 1 main image + N thumbnails. Wired into a Swiper carousel.
   gallery: {
@@ -355,7 +350,7 @@ export const philippineSunrise: Tour = {
     priceCurrency: "GBP",
     priceAmount: "£950",
     ctaLabel: "Inquire Now",
-    ctaHref: "/contact",
+    ctaHref: "https://book.stripe.com/9B63cv2Bt2uB8dR8c7co032",
     footnote: "Additional fees may apply",
   },
   // Tour-specific reviews. `rating` is 1–5; component renders that many
