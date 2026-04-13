@@ -1,16 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
-/* -------------------------------------------------------------------------- */
-/* Data                                                                        */
-/* -------------------------------------------------------------------------- */
-
-const navLinks = [
-  { label: "Destinations", href: "#destinations" },
-  { label: "Tours", href: "#tours" },
-  { label: "Why us?", href: "#why-us" },
-  { label: "Travel Info", href: "#travel-info" },
-];
+import Header from "@/app/components/global/Header";
 
 const tours = [
   {
@@ -138,63 +128,51 @@ function PillButton({
 /* Sections                                                                    */
 /* -------------------------------------------------------------------------- */
 
-function NavBar() {
-  return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Link href="/" aria-label="I'm Here Travels home">
-          <Image
-            src="/Logos/Horizontal/Digital/SVG/Red/Digital_Horizontal_Red.svg"
-            alt="I'm Here Travels"
-            width={120}
-            height={36}
-            priority
-            className="h-8 w-auto md:h-9"
-          />
-        </Link>
-        <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="font-body text-b4-desktop text-midnight hover:text-crimson-red"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <PillButton href="#inquire" className="text-b4-mobile md:text-b4-desktop">
-          Inquire Now
-        </PillButton>
-      </div>
-    </header>
-  );
-}
-
 function Hero() {
   return (
-    <section className="relative mx-auto w-full max-w-7xl px-4 md:px-8">
-      <div className="relative overflow-hidden rounded-lg">
-        <div className="relative aspect-[4/5] w-full md:aspect-[16/9] lg:aspect-[21/9]">
+    <section className="relative w-full">
+      <div className="relative overflow-hidden">
+        <div className="relative h-[55vh] w-full md:h-[60vh]">
           <Image
             src="/figma/hero-siargao.png"
             alt="Siargao Island"
             fill
             priority
-            sizes="(max-width: 1280px) 100vw, 1280px"
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-black/20" />
         </div>
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center text-white md:gap-6">
-          <Image
-            src="/figma/featured-trip-badge.png"
-            alt="Featured Trip"
-            width={140}
-            height={40}
-            className="h-10 w-auto"
-          />
-          <span className="sr-only">Featured Trip</span>
+          <svg
+            width="136"
+            height="36"
+            viewBox="0 0 136 36"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Featured Trip"
+            role="img"
+          >
+            {/* Rounded: top-left, top-right, bottom-left — Sharp: bottom-right */}
+            <path
+              d="M17,1 H119 A16,16 0 0,1 135,17 V35 H17 A16,16 0 0,1 1,19 V17 A16,16 0 0,1 17,1 Z"
+              fill="#26D07C"
+              stroke="#1C1F2A"
+              strokeWidth="2"
+            />
+            <text
+              x="68"
+              y="23"
+              textAnchor="middle"
+              fill="#1C1F2A"
+              fontFamily="DM Sans, sans-serif"
+              fontSize="11"
+              fontWeight="700"
+              letterSpacing="1.8"
+            >
+              FEATURED TRIP
+            </text>
+          </svg>
           <h1 className="font-display text-h1-mobile md:text-h1-desktop">
             Siargao Island
             <br />
@@ -469,7 +447,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="mt-16 bg-white">
+    <footer className="mt-16 bg-light-grey">
       <div className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2 md:col-span-1">
@@ -560,11 +538,9 @@ function Footer() {
 export default function Home() {
   return (
     <>
-      <NavBar />
+      <Header />
       <main className="flex-1">
-        <div className="pt-4 md:pt-6">
-          <Hero />
-        </div>
+        <Hero />
         <NewTours />
         <Destinations />
         <Testimonials />

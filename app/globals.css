@@ -106,7 +106,7 @@
   --color-light-yellow: #fbe687;
 
   /* Surfaces */
-  --background: var(--color-white);
+  --background: var(--color-light-grey);
   --foreground: var(--color-midnight);
 
   /* Font stacks */
