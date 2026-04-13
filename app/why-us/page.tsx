@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import { features, destinations } from "@/data/root";
+import DestinationsCarousel from "./_components/DestinationsCarousel";
 import {
   whyUsHero,
   whyUsIntro,
@@ -180,48 +181,10 @@ function FeaturesSection() {
 
 function DestinationsSection() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="font-sans text-h4-mobile text-midnight md:text-h4-desktop">
-          {whyUsDestinationsSection.heading}
-        </h2>
-        <div className="hidden items-center gap-4 md:flex">
-          <button
-            className="flex size-10 items-center justify-center rounded-full border-[2.5px] border-grey text-grey"
-            aria-label="Previous destination"
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            className="flex size-10 items-center justify-center rounded-full border-[2.5px] border-midnight text-midnight"
-            aria-label="Next destination"
-          >
-            <ChevronRight />
-          </button>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-        {destinations.map((dest) => (
-          <Link
-            key={dest.name}
-            href={dest.href}
-            className="group relative h-80 overflow-hidden rounded-lg"
-          >
-            <Image
-              src={dest.image}
-              alt={dest.name}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <p className="absolute bottom-4 left-4 font-sans font-bold text-h5-mobile text-white drop-shadow-sm md:text-h5-desktop">
-              {dest.name}
-            </p>
-          </Link>
-        ))}
-      </div>
-    </section>
+    <DestinationsCarousel
+      heading={whyUsDestinationsSection.heading}
+      items={destinations}
+    />
   );
 }
 
