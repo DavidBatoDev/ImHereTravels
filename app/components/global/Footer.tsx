@@ -137,7 +137,7 @@ export default function Footer() {
             />
             <div className="flex gap-4 items-center">
               <Link
-                href="#terms"
+                href="/terms-and-conditions"
                 className="font-body text-b2-mobile text-white/80 hover:text-white transition-colors whitespace-nowrap"
               >
                 Terms and Conditions

@@ -457,7 +457,7 @@ function Footer() {
           </p>
           <div className="flex gap-6">
             <Link
-              href="#"
+              href="/terms-and-conditions"
               className="font-body text-b4-desktop text-grey hover:text-crimson-red"
             >
               Terms and Conditions
