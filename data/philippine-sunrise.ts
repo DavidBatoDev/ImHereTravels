@@ -22,9 +22,9 @@ export const philippineSunrise: Tour = {
 
   // <title> and meta description set via `generateMetadata` in the page.
   meta: {
-    title: "Philippines Sunrise Getaway — 11 Day Cebu to Siargao Tour",
+    title: "11 Days | Philippines Sunrise Getaway",
     description:
-      "Join the 11-day Philippines Sunrise Getaway: canyoneering in Moalboal, sardine runs, and surfing in Siargao. Small group, local guides, GBP £950.",
+      "Experience the Philippines Sunrise Tour! Begin in Cebu with historical tours and vibrant nightlife, explore Moalboal's thrilling canyoneering and mesmerizing sardine run, then unwind in Siargao with surfing, island hopping, and stunning sunsets. This adventure promises unforgettable moments from start to finish!",
   },
 
   // Hero gallery: 1 main image + N thumbnails. Wired into a Swiper carousel.
@@ -45,22 +45,33 @@ export const philippineSunrise: Tour = {
   header: {
     title: "11 Days | Philippines Sunrise Getaway",
     tags: [
-      { label: "Philippines", icon: "location" },
       { label: "Cebu", icon: "location" },
+      { label: "Moalboal", icon: "location" },
       { label: "Siargao", icon: "location" },
     ],
     description:
-      "From Cebu's historic streets to Siargao's legendary waves, the Philippines Sunrise Getaway strings together eleven days of canyoneering, snorkeling with sardines, island hopping and sunset chills. Travel with a crew of up to 22 like-minded adventurers, a trip manager and local guides who know exactly where to take you next.",
+      "Experience the Philippines Sunrise Tour! Begin in Cebu with historical tours and vibrant nightlife, explore Moalboal's thrilling canyoneering and mesmerizing sardine run, then unwind in Siargao with surfing, island hopping, and stunning sunsets. This adventure promises unforgettable moments from start to finish!",
   },
   // 4-up icon row summarising the trip (dates, length, route, group size).
   keyFacts: [
     {
       icon: "days",
       label: "Tour Dates",
-      values: ["October 2–13, 2024", "October 17–28, 2024"],
+      values: [
+        "March 17, 2026",
+        "April 25, 2026",
+        "May 5, 2026",
+        "May 17, 2026",
+        "June 13, 2026 - Pride Tour",
+        "July 3, 2026",
+        "August 4, 2026",
+        "August 21, 2026",
+        "September 16, 2026",
+        "October 11, 2026",
+      ],
     },
-    { icon: "days", label: "Days", values: ["11 Days"] },
-    { icon: "route", label: "Route", values: ["Cebu to Siargao"] },
+    { icon: "days", label: "Duration", values: ["11 Days / 10 Nights"] },
+    { icon: "route", label: "Route", values: ["Cebu -> Moalboal -> Siargao"] },
     { icon: "people", label: "Group Size", values: ["Maximum 22 people"] },
   ],
   // "What's Included" two-column icon list. `value` can be a string or an
@@ -71,16 +82,21 @@ export const philippineSunrise: Tour = {
       { icon: "transport", label: "Transport", value: "Boat, Van, Plane" },
       {
         icon: "airport",
-        label: "Airport",
-        value: "Van pick up and drop off, Flight Cebu to Siargao",
+        label: "Flight",
+        value: "Cebu to Siargao (included)",
       },
-      { icon: "accommodation", label: "Accommodation", value: "10 nights in Hotel" },
+      {
+        icon: "accommodation",
+        label: "Accommodation",
+        value: "10 nights in Hotel",
+      },
       {
         icon: "activities",
         label: "Activities",
-        value: "Canyoneering, Snorkeling, Surfing, Island Hopping, Roadtrip",
+        value:
+          "City Tour, Canyoneering, Snorkeling, Sardine Run, Surf, Island Hopping, Roadtrip",
       },
-      { icon: "meals", label: "Meals", value: "9 Breakfasts, 2 Lunches" },
+      { icon: "meals", label: "Meals", value: "8 Breakfasts, 2 Lunches" },
       { icon: "team", label: "Team", value: "Trip Manager + Local Guides" },
       {
         icon: "plus",
@@ -98,16 +114,32 @@ export const philippineSunrise: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image: `${IMG}/highlight-canyoneering.jpg`,
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-1.webp",
         imageAlt: "Canyoneering in Moalboal",
         title: "Canyoneering in Moalboal",
         subtitle: "Enjoy waterfalls and fresh water rivers",
       },
       {
-        image: `${IMG}/highlight-roadtrip.jpg`,
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-2.webp",
         imageAlt: "Roadtrip up north of Siargao",
         title: "Roadtrip up north of Siargao",
         subtitle: "See hidden gems and surf in paradise",
+      },
+      {
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-4.webp",
+        imageAlt: "Sardine Run",
+        title: "Sardine Run",
+        subtitle: "See the spectacle marine life",
+      },
+      {
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-3.webp",
+        imageAlt: "Surf in paradise",
+        title: "Surf in paradise",
+        subtitle: "Catch some waves in crystal waters",
       },
     ],
   },
@@ -115,7 +147,8 @@ export const philippineSunrise: Tour = {
   map: {
     heading: "Where you'll go",
     image: `${IMG}/map.jpg`,
-    imageAlt: "Map of the Philippine Sunrise route from Cebu to Siargao",
+    imageAlt:
+      "Map of the Philippine Sunrise route from Cebu to Moalboal to Siargao",
   },
   // Day-by-day itinerary. Each day is a collapsible accordion in the UI;
   // `dayNumber` drives the badge label and ordering.
@@ -129,25 +162,38 @@ export const philippineSunrise: Tour = {
         dayNumber: 1,
         title: "Cebu Arrival",
         description:
-          "Hey there, sunshine! Welcome to Cebu! Get ready to kick off your adventure in style. We'll scoop you up and whisk you off to your hotel, where you can unwind or hit up Ayala mall for some retail therapy. Later, join us for a welcome dinner and get ready to meet your new squad over drinks!",
-        image: `${IMG}/day-1.jpg`,
-        imageAlt: "Cebu city arrival",
+          "Hey there, sunshine! Welcome to Cebu! Get ready to kick off your adventure in style. We'll scoop you up and whisk you off to your hotel, where you can unwind or hit up Ayala mall for some retail therapy. Later, join us for dinner and get ready to meet your new squad over drinks!",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-1.webp",
+        imageAlt: "Cebu Arrival",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Red Planet (or similar)" },
-          { icon: "activities", label: "Activity", value: "Welcome dinner" },
-          { icon: "meals", label: "Meals", value: "Welcome shots" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Red Planet (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Meet and Greet (Dinner meals are not included)",
+          },
         ],
       },
       {
         dayNumber: 2,
         title: "Cebu Historical Tour",
         description:
-          "After a lazy morning to recharge, we're off on a historical tour of churches and temples in Cebu City. Get ready to explore cool churches and temples, like the awesome Temple of Leah. Afterward, recharge for the night ahead — Cebu's nightlife is waiting for us!",
-        image: `${IMG}/day-2.jpg`,
-        imageAlt: "Temple of Leah in Cebu",
+          "After a lazy morning to recharge, we're off on a historical tour of Churches and Temples Cebu City! Get ready to explore cool churches and temples. Afterward, recharge for the night ahead, Cebu's nightlife is waiting for us!",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-2.webp",
+        imageAlt: "Cebu Historical Tour",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Red Planet (or similar)" },
-          { icon: "activities", label: "Activity", value: "City Tour" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Red Planet (or similar)",
+          },
+          { icon: "activities", label: "Activities", value: "City Tour" },
         ],
       },
       {
@@ -155,25 +201,42 @@ export const philippineSunrise: Tour = {
         title: "Travel to Moalboal and Chill",
         description:
           "Rise and shine, adventurers! We're off to Moalboal! But first, we'll make a pitstop at the epic Simala Church for some Insta-worthy shots. Then, it's all about chilling beachside or poolside before we hit up Moalboal's hotspots!",
-        image: `${IMG}/day-3.jpg`,
-        imageAlt: "Moalboal beach",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-3.webp",
+        imageAlt: "Travel to Moalboal and Chill",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Love's Dive Resort (or similar)" },
-          { icon: "activities", label: "Activity", value: "Beachside & poolside chill" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Love's Dive Resort (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Beachside & poolside chill",
+          },
         ],
       },
       {
         dayNumber: 4,
         title: "Sardine Run and Snorkeling",
         description:
-          "After a well-deserved lie-in, it's time for the main event — Moalboal's famous sardine run and snorkeling with turtles! Dive in and explore the vibrant underwater world before considering an optional discovery dive. Then, it's time to recharge for another epic night!",
-        image: `${IMG}/day-4.jpg`,
-        imageAlt: "Sardine run in Moalboal",
+          "After a well-deserved lie-in, it's time for the main event: Moalboal's famous sardine run and snorkeling with turtles! Dive in and explore the vibrant underwater world before considering an optional discovery dive. Then, it's time to recharge for another epic night!",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-4.webp",
+        imageAlt: "Sardine Run and Snorkeling",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Love's Dive Resort (or similar)" },
-          { icon: "activities", label: "Activity", value: "Sardine run, Snorkeling" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Love's Dive Resort (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Sardine run, Snorkeling",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
       {
@@ -181,12 +244,17 @@ export const philippineSunrise: Tour = {
         title: "Canyoneering",
         description:
           "Get ready to unleash your inner daredevil! Today, we're hitting the canyons for some adrenaline-pumping fun! Zip line through the canyon, take the plunge from insane heights, and get ready for an epic rush! Then, it's time to prep for another wild night in Moalboal!",
-        image: `${IMG}/day-5.jpg`,
-        imageAlt: "Canyoneering jump",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-5-1.webp",
+        imageAlt: "Canyoneering",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Love's Dive Resort (or similar)" },
-          { icon: "activities", label: "Activity", value: "Canyoneering" },
-          { icon: "meals", label: "Meals", value: "Breakfast, Lunch" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Love's Dive Resort (or similar)",
+          },
+          { icon: "activities", label: "Activities", value: "Canyoneering" },
+          { icon: "meals", label: "Meals", value: "1 Breakfast, 1 Lunch" },
         ],
       },
       {
@@ -194,12 +262,21 @@ export const philippineSunrise: Tour = {
         title: "Flight to Siargao and Sunset Chill",
         description:
           "Early birds, it's time to catch that flight to Siargao! Once we touch down, it's straight to the hotel to drop our bags and head out for Siargao's famous sunset. Get ready to soak in those island vibes and start the night off right!",
-        image: `${IMG}/day-6.jpg`,
-        imageAlt: "Sunset in Siargao",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-6.webp",
+        imageAlt: "Flight to Siargao and Sunset Chill",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "transport", label: "Transport", value: "Flight Cebu to Siargao" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Flight Cebu to Siargao",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
       {
@@ -207,12 +284,21 @@ export const philippineSunrise: Tour = {
         title: "Surf and Chill Afternoon",
         description:
           "Surf's up, dudes and dudettes! Get ready to ride the waves like a pro with local instructors by your side. Afterward, kick back and chill with some optional activities before we hit Siargao's nightlife scene for round two!",
-        image: `${IMG}/day-7.jpg`,
-        imageAlt: "Surfing in Siargao",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-7.webp",
+        imageAlt: "Surf and Chill Afternoon",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "activities", label: "Activity", value: "Surfing with instructor" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Surfing with instructor",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
       {
@@ -220,51 +306,82 @@ export const philippineSunrise: Tour = {
         title: "Island Hopping",
         description:
           "Hop on board for a day of island hopping around Siargao's hidden gems! We'll snorkel, swim, and soak up the sun while exploring the best of what this paradise has to offer.",
-        image: `${IMG}/day-8.jpg`,
-        imageAlt: "Island hopping in Siargao",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-8.webp",
+        imageAlt: "Island Hopping",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "activities", label: "Activity", value: "Island Hopping with Trekking" },
-          { icon: "meals", label: "Meals", value: "Breakfast, Lunch" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Island Hopping with Trekking",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast, 1 Lunch" },
         ],
       },
       {
         dayNumber: 9,
-        title: "North Trip with Surf",
+        title: "North Trip",
         description:
-          "Get ready to chase those waves as we head north for some epic surf spots! Along the way, we'll hit up beach clubs for refreshments and make memories to last a lifetime.",
-        image: `${IMG}/day-9.jpg`,
-        imageAlt: "North Siargao surf spot",
+          "Get ready for a full day road trip around Siargao! We'll explore stunning spots along the way, including the iconic Maasin River. Expect scenic drives, a delicious beachfront lunch stop, and plenty of time to soak in the island vibes while making memories to last a lifetime.",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-9.webp",
+        imageAlt: "North Trip",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "activities", label: "Activity", value: "Roadtrip, Surf" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Roadtrip, Maasin River",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
       {
         dayNumber: 10,
-        title: "Wakeboarding and Yoga",
+        title: "Free Day in Siargao",
         description:
-          "Wake up and seize the day! Get your adrenaline fix with some wakeboarding action before unwinding with a soothing yoga session. It's the perfect balance of thrill and chill!",
-        image: `${IMG}/day-10.jpg`,
-        imageAlt: "Wakeboarding in Siargao",
+          "It's your day, your way! Whether you want to catch some extra waves, discover hidden cafes, explore the island at your own pace, or simply soak up the sun, this free day is all about doing what feels good. Embrace the Siargao vibes and make the most of your island escape.",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/siargao-day-6.webp",
+        imageAlt: "Free Day in Siargao",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "activities", label: "Activity", value: "Wakeboarding, Yoga" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar)",
+          },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Free Day / Optional Activities",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
       {
         dayNumber: 11,
-        title: "Checkout Day",
+        title: "Checkout",
         description:
-          "It's time to say goodbye (for now) and swap those Instagram handles with your newfound crew before hopping on your transfer van to the airport.",
-        image: `${IMG}/day-11.jpg`,
-        imageAlt: "Siargao airport transfer",
+          "It's time to say goodbye (for now) and swap those Instagram handles with your newfound crew before going on your onward travels.",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-11.webp",
+        imageAlt: "Checkout",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Siargao Seasky (or similar)" },
-          { icon: "transport", label: "Transport", value: "Van drop off" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "Siargao Seasky (or similar) - checkout",
+          },
+          { icon: "meals", label: "Meals", value: "1 Breakfast" },
         ],
       },
     ],
@@ -272,19 +389,28 @@ export const philippineSunrise: Tour = {
   // Accommodation cards — image + name + nights. "(or similar)" is used
   // because we book the listed property OR an equivalent if unavailable.
   whereWeStay: {
-    heading: "Where we stay",
+    heading: "Where We Stay",
     items: [
       {
-        image: `${IMG}/stay-loves-dive.jpg`,
-        imageAlt: "Love's Dive Resort in Moalboal",
-        name: "Love's Dive Resort (or similar)",
-        nights: "3 nights in Hotel",
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/redplanet-accommodation.webp",
+        imageAlt: "Red Planet (or similar)",
+        name: "Red Planet (or similar)",
+        nights: "2 nights (Days 1-2)",
       },
       {
-        image: `${IMG}/stay-siargao-seasky.jpg`,
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/lovesdiveresort-accommodation.webp",
+        imageAlt: "Love's Dive Resort in Moalboal",
+        name: "Love's Dive Resort (or similar)",
+        nights: "3 nights (Days 3-5)",
+      },
+      {
+        image:
+          "https://imheretravels.com/wp-content/uploads/2024/05/seasky-accommodation.webp",
         imageAlt: "Siargao Seasky hotel",
         name: "Siargao Seasky (or similar)",
-        nights: "6 nights in Hotel",
+        nights: "5 nights (Days 6-10, checkout Day 11)",
       },
     ],
   },
@@ -294,27 +420,24 @@ export const philippineSunrise: Tour = {
     heading: "FAQs",
     items: [
       {
-        question: "Where does the tour start & finish?",
+        question: "Where does the trip start & finish?",
         answer: "The trip starts in Cebu and finishes in Siargao Island.",
       },
       {
-        question: "Which airport do I need to fly in to?",
+        question: "Which airport do I need to fly into?",
         answer:
-          "You can either fly into Mactan–Cebu International Airport directly or fly into Manila NAIA and then fly from Manila to Cebu. You can arrive at any time on day 1, though we do have a Welcome Dinner at around 6pm.",
+          "Mactan-Cebu International Airport, or fly into Manila NAIA and then connect to Cebu. You can arrive at any time on Day 1, though the meet and greet dinner is at around 6pm.",
+      },
+      { question: "What is the local currency?", answer: "Philippine Peso." },
+      {
+        question: "Do you have an age limit for tours?",
+        answer:
+          "Tours cater to adventurous travelers aged 18-45, with most guests between 21-35 years old. Perfect for people of all different backgrounds to share travel experiences.",
       },
       {
         question: "Which airport do I fly out from?",
         answer:
-          "The tour finishes in Siargao Island. You'll need to book your flight out of Siargao to either Manila or Cebu to catch your flight back home.",
-      },
-      {
-        question: "Do you have an age limit for tours?",
-        answer:
-          "Our tours cater to adventurous travelers aged 18–45, with most guests between 21–35 years old. Perfect for people of all different backgrounds to share travel experiences.",
-      },
-      {
-        question: "What is the local currency?",
-        answer: "The local currency in the Philippines is the Philippine Peso.",
+          "The tour finishes in Siargao Island. You'll need to book a flight out of Siargao to either Manila or Cebu to catch your flight home.",
       },
     ],
   },
@@ -328,7 +451,7 @@ export const philippineSunrise: Tour = {
         description:
           "Get ready for your trip! Find helpful links to everything you need from travel and health requirements to travel guides, visa information, and more here.",
         ctaLabel: "Show more",
-        ctaHref: "/travel-info",
+        ctaHref: "/travel-information",
       },
       {
         icon: "faq",
@@ -375,8 +498,8 @@ export const philippineSunrise: Tour = {
   // mobile/tablet. `ctaHref` points to the inquiry page until a dedicated
   // booking flow exists.
   booking: {
-    durationLabel: "11 Day Tour",
-    routeLabel: "Cebu to Siargao",
+    durationLabel: "11 Days / 10 Nights",
+    routeLabel: "Cebu -> Moalboal -> Siargao",
     priceFromLabel: "From",
     priceCurrency: "GBP",
     priceAmount: "£950",
@@ -405,9 +528,9 @@ export const philippineSunrise: Tour = {
   // Kept separate from `header` so listing copy can be tighter than the
   // detail-page H2.
   listingCard: {
-    duration: "11 Day Tour",
+    duration: "11 Days / 10 Nights",
     description:
-      "Canyoneering, sardine runs and Siargao sunsets on an 11-day Cebu-to-Siargao getaway.",
+      "Cebu, Moalboal, and Siargao with city tours, canyoneering, sardine run, surf, and island hopping.",
     price: "GBP £950",
     image: "/figma/tour-philippines-sunrise.png",
     imageAlt: "Philippines Sunrise tour",
