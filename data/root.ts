@@ -46,10 +46,10 @@ export const tours = [
 /* -------------------------------------------------------------------------- */
 
 export const destinations = [
-  { name: "Siargao Island", image: "/figma/dest-siargao-island.png" },
-  { name: "Moalboal", image: "/figma/dest-moalboal.png" },
-  { name: "El Nido", image: "/figma/dest-el-nido.png" },
-  { name: "Maldives", image: "/figma/dest-maldives.png" },
+  { name: "Siargao Island", image: "/figma/dest-siargao-island.png", href: "/destinations/siargao-island" },
+  { name: "Moalboal", image: "/figma/dest-moalboal.png", href: "/destinations/moalboal" },
+  { name: "El Nido", image: "/figma/dest-el-nido.png", href: "/destinations/el-nido" },
+  { name: "Maldives", image: "/figma/dest-maldives.png", href: "/destinations/maldives" },
 ];
 
 /* -------------------------------------------------------------------------- */

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/app/components/global/Header";
-import { hero, tours, destinations, testimonials, features } from "@/app/data/root";
+import { hero, tours, destinations, testimonials, features } from "@/data/root";
 
 /* -------------------------------------------------------------------------- */
 /* Shared UI                                                                   */
@@ -195,19 +195,21 @@ function Destinations() {
             key={destination.name}
             className="group relative overflow-hidden rounded-md"
           >
-            <div className="relative aspect-square w-full">
-              <Image
-                src={destination.image}
-                alt={destination.name}
-                fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              <span className="absolute bottom-4 left-4 font-sans text-h5-mobile md:text-h5-desktop text-white">
-                {destination.name}
-              </span>
-            </div>
+            <Link href={destination.href} className="block">
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={destination.image}
+                  alt={destination.name}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <span className="absolute bottom-4 left-4 font-sans text-h5-mobile md:text-h5-desktop text-white">
+                  {destination.name}
+                </span>
+              </div>
+            </Link>
           </li>
         ))}
       </ul>
