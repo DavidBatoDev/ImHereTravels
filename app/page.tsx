@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/app/components/global/Header";
-import { hero, tours, destinations, testimonials, features } from "@/app/data/root";
+import { hero, tours, destinations, testimonials, features } from "@/data/root";
 
 /* -------------------------------------------------------------------------- */
 /* Shared UI                                                                   */
