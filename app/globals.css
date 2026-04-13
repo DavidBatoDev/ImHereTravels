@@ -1,26 +1,259 @@
 @import "tailwindcss";
 
+/* ---------- Brand fonts (self-hosted) ---------- */
+
+/* HK Grotesk — primary sans (headings, subheads, standfirst) */
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("/Fonts/HKGrotesk/WEB/HKGrotesk-Regular.woff2") format("woff2"),
+       url("/Fonts/HKGrotesk/WEB/HKGrotesk-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("/Fonts/HKGrotesk/WEB/HKGrotesk-Medium.woff2") format("woff2"),
+       url("/Fonts/HKGrotesk/WEB/HKGrotesk-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("/Fonts/HKGrotesk/WEB/HKGrotesk-SemiBold.woff2") format("woff2"),
+       url("/Fonts/HKGrotesk/WEB/HKGrotesk-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("/Fonts/HKGrotesk/WEB/HKGrotesk-Bold.woff2") format("woff2"),
+       url("/Fonts/HKGrotesk/WEB/HKGrotesk-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* DM Sans — body, CTA, URL */
+@font-face {
+  font-family: "DM Sans";
+  src: url("/Fonts/DM Sans/DMSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/Fonts/DM Sans/DMSans-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/Fonts/DM Sans/DMSans-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/Fonts/DM Sans/DMSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Cartograph CF — display type (large titles, tagline) */
+@font-face {
+  font-family: "Cartograph CF";
+  src: url("/Fonts/Cartograph/CartographCF-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cartograph CF";
+  src: url("/Fonts/Cartograph/CartographCF-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Brand tokens ---------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary palette (§4.2) */
+  --color-crimson-red: #ef3340;
+  --color-light-red: #ff585d;
+  --color-midnight: #1c1f2a;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-grey: #959595;
+  --color-light-grey: #f2f0ee;
+  --color-dark-gray: #505050;
+
+  /* Secondary palette (§4.3) */
+  --color-royal-purple: #685bc7;
+  --color-light-purple: #b397f7;
+  --color-spring-green: #26d07c;
+  --color-light-green: #e1e66b;
+  --color-vivid-orange: #ff8200;
+  --color-light-orange: #ffb25b;
+  --color-sunglow-yellow: #fed141;
+  --color-light-yellow: #fbe687;
+
+  /* Surfaces */
+  --background: var(--color-white);
+  --foreground: var(--color-midnight);
+
+  /* Font stacks */
+  --font-display: "Cartograph CF", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "HK Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Radii (§10.4 normalized for web) */
+  --radius-sm: 0.5rem;   /* 8px  */
+  --radius-md: 1rem;     /* 16px */
+  --radius-lg: 1.5rem;   /* 24px */
+
+  /* Shadows (from Figma web style guide, node 32:7450) */
+  --shadow-xxsmall: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-xsmall: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-small: 0 2px 4px -2px rgb(0 0 0 / 0.06), 0 4px 8px -2px rgb(0 0 0 / 0.1);
+  --shadow-medium: 0 4px 6px -2px rgb(0 0 0 / 0.03), 0 12px 16px -4px rgb(0 0 0 / 0.08);
+  --shadow-large: 0 8px 8px -4px rgb(0 0 0 / 0.03), 0 20px 24px -4px rgb(0 0 0 / 0.08);
+  --shadow-xlarge: 0 24px 48px -12px rgb(0 0 0 / 0.18);
+  --shadow-xxlarge: 0 32px 64px -12px rgb(0 0 0 / 0.14);
 }
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-crimson-red: var(--color-crimson-red);
+  --color-light-red: var(--color-light-red);
+  --color-midnight: var(--color-midnight);
+  --color-grey: var(--color-grey);
+  --color-light-grey: var(--color-light-grey);
+  --color-dark-gray: var(--color-dark-gray);
+  --color-royal-purple: var(--color-royal-purple);
+  --color-light-purple: var(--color-light-purple);
+  --color-spring-green: var(--color-spring-green);
+  --color-light-green: var(--color-light-green);
+  --color-vivid-orange: var(--color-vivid-orange);
+  --color-light-orange: var(--color-light-orange);
+  --color-sunglow-yellow: var(--color-sunglow-yellow);
+  --color-light-yellow: var(--color-light-yellow);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-body: var(--font-body);
+
+  /* Radii */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  /* Shadows */
+  --shadow-xxsmall: var(--shadow-xxsmall);
+  --shadow-xsmall: var(--shadow-xsmall);
+  --shadow-small: var(--shadow-small);
+  --shadow-medium: var(--shadow-medium);
+  --shadow-large: var(--shadow-large);
+  --shadow-xlarge: var(--shadow-xlarge);
+  --shadow-xxlarge: var(--shadow-xxlarge);
+
+  /*
+   * Type hierarchy — Figma web spec (node 32:7450).
+   * Desktop and mobile tokens are exposed separately; apply responsively, e.g.
+   *   <h1 className="text-h1-mobile md:text-h1-desktop font-display">…</h1>
+   * H1/H2 use Cartograph CF Bold; H3–H6 use HK Grotesk Bold; B1/B2/B4 use DM Sans Medium.
+   */
+
+  /* H1 — Cartograph CF Bold */
+  --text-h1-desktop: 3rem;              /* 48px */
+  --text-h1-desktop--line-height: 1.2;
+  --text-h1-desktop--letter-spacing: -0.05em;
+  --text-h1-desktop--font-weight: 700;
+  --text-h1-mobile: 2.5rem;             /* 40px */
+  --text-h1-mobile--line-height: 1.2;
+  --text-h1-mobile--letter-spacing: -0.05em;
+  --text-h1-mobile--font-weight: 700;
+
+  /* H2 — Cartograph CF Bold */
+  --text-h2-desktop: 2.5rem;            /* 40px */
+  --text-h2-desktop--line-height: 1.2;
+  --text-h2-desktop--letter-spacing: -0.05em;
+  --text-h2-desktop--font-weight: 700;
+  --text-h2-mobile: 2.25rem;            /* 36px */
+  --text-h2-mobile--line-height: 1.2;
+  --text-h2-mobile--letter-spacing: -0.05em;
+  --text-h2-mobile--font-weight: 700;
+
+  /* H3 — HK Grotesk Bold */
+  --text-h3-desktop: 2.5rem;            /* 40px */
+  --text-h3-desktop--line-height: 1.2;
+  --text-h3-desktop--letter-spacing: -0.02em;
+  --text-h3-desktop--font-weight: 700;
+  --text-h3-mobile: 2rem;               /* 32px */
+  --text-h3-mobile--line-height: 1.2;
+  --text-h3-mobile--letter-spacing: 0;
+  --text-h3-mobile--font-weight: 700;
+
+  /* H4 — HK Grotesk Bold */
+  --text-h4-desktop: 2rem;              /* 32px */
+  --text-h4-desktop--line-height: 1.3;
+  --text-h4-desktop--letter-spacing: -0.01em;
+  --text-h4-desktop--font-weight: 700;
+  --text-h4-mobile: 1.5rem;             /* 24px */
+  --text-h4-mobile--line-height: 1.4;
+  --text-h4-mobile--letter-spacing: 0;
+  --text-h4-mobile--font-weight: 700;
+
+  /* H5 — HK Grotesk Bold */
+  --text-h5-desktop: 1.5rem;            /* 24px */
+  --text-h5-desktop--line-height: 1.4;
+  --text-h5-desktop--font-weight: 700;
+  --text-h5-mobile: 1.25rem;            /* 20px */
+  --text-h5-mobile--line-height: 1.4;
+  --text-h5-mobile--font-weight: 700;
+
+  /* H6 — HK Grotesk Bold */
+  --text-h6-desktop: 1.25rem;           /* 20px */
+  --text-h6-desktop--line-height: 1.4;
+  --text-h6-desktop--font-weight: 700;
+  --text-h6-mobile: 1.125rem;           /* 18px */
+  --text-h6-mobile--line-height: 1.4;
+  --text-h6-mobile--font-weight: 700;
+
+  /* B1 — DM Sans Medium */
+  --text-b1: 1.25rem;                   /* 20px */
+  --text-b1--line-height: 1.5;
+  --text-b1--font-weight: 500;
+
+  /* B2 — DM Sans Medium (desktop 18 / mobile 16) */
+  --text-b2-desktop: 1.125rem;          /* 18px */
+  --text-b2-desktop--line-height: 1.5;
+  --text-b2-desktop--font-weight: 500;
+  --text-b2-mobile: 1rem;               /* 16px */
+  --text-b2-mobile--line-height: 1.5;
+  --text-b2-mobile--font-weight: 500;
+
+  /* B4 — DM Sans Medium (desktop 14 / mobile 12) */
+  --text-b4-desktop: 0.875rem;          /* 14px */
+  --text-b4-desktop--line-height: 1.5;
+  --text-b4-desktop--font-weight: 500;
+  --text-b4-mobile: 0.75rem;            /* 12px */
+  --text-b4-mobile--line-height: 1.5;
+  --text-b4-mobile--font-weight: 500;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }

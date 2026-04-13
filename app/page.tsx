@@ -1,65 +1,577 @@
 import Image from "next/image";
+import Link from "next/link";
+
+/* -------------------------------------------------------------------------- */
+/* Data                                                                        */
+/* -------------------------------------------------------------------------- */
+
+const navLinks = [
+  { label: "Destinations", href: "#destinations" },
+  { label: "Tours", href: "#tours" },
+  { label: "Why us?", href: "#why-us" },
+  { label: "Travel Info", href: "#travel-info" },
+];
+
+const tours = [
+  {
+    title: "Philippines Sunrise",
+    duration: "11 Day Tour",
+    description:
+      "Experience thrilling canyoneering, mesmerizing marine life, surfing, and stunning sunsets!",
+    price: "GBP £950",
+    image: "/figma/tour-philippines-sunrise.png",
+  },
+  {
+    title: "Philippines Sunset",
+    duration: "11 Day Tour",
+    description:
+      "Escape to the islands, and immerse in rich culture, with island-hopping and unforgettable stunning sunsets!",
+    price: "USD $950",
+    image: "/figma/tour-philippines-sunset.png",
+  },
+  {
+    title: "Maldives Bucketlist",
+    duration: "10 Day Tour",
+    description:
+      "Tick off that bucketlist and explore by turquoise water, snorkel vibrant reefs, and unwind on island paradise.",
+    price: "GBP £908",
+    image: "/figma/tour-maldives-bucketlist.png",
+  },
+];
+
+const destinations = [
+  { name: "Siargao Island", image: "/figma/dest-siargao-island.png" },
+  { name: "Moalboal", image: "/figma/dest-moalboal.png" },
+  { name: "El Nido", image: "/figma/dest-el-nido.png" },
+  { name: "Maldives", image: "/figma/dest-maldives.png" },
+];
+
+const testimonials = [
+  {
+    date: "May 2023",
+    quote:
+      "Had an amazing time on the trial tour! Action packed with lots of fun things on the itinerary, and a great bunch of people. Would definitely go again!",
+    author: "Flynn Deanne",
+    location: "London, United Kingdom",
+    avatar: "/figma/avatar-flynn.png",
+  },
+  {
+    date: "February 2024",
+    quote:
+      "My experience has been amazing, I'll never forget it. I met extraordinary people and explored beautiful places. I definitely recommend to book a trip!",
+    author: "Manuel Madonna",
+    location: "Milan, Italy",
+    avatar: "/figma/avatar-manuel.png",
+  },
+  {
+    date: "July 2024",
+    quote:
+      "I enjoyed the tour! Seamless coordination of transportation and accommodation made me feel like a VIP throughout the trip. LOVED every bit of it! Highly recommend!",
+    author: "Bella Millers",
+    location: "Cagayan, Philippines",
+    avatar: "/figma/avatar-bella.png",
+  },
+];
+
+const features = [
+  {
+    icon: "/figma/feature-social-travel.png",
+    title: "Social Travel",
+    description:
+      "Explore the world together. Travel is also about people, not just places.",
+  },
+  {
+    icon: "/figma/feature-travel-with-ease.png",
+    title: "Travel with Ease",
+    description:
+      "Every detail is covered, so you can sit back and have a good time.",
+  },
+  {
+    icon: "/figma/feature-ethically-sustainable.png",
+    title: "Ethically & Sustainable",
+    description:
+      "We do right by the community and the planet when we travel.",
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/* Shared UI                                                                   */
+/* -------------------------------------------------------------------------- */
+
+function StarRow() {
+  return (
+    <div className="flex gap-0.5 text-crimson-red" aria-label="5 out of 5 stars">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} viewBox="0 0 20 20" className="size-4 fill-current">
+          <path d="M10 1.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L10 14.9l-5.3 2.7 1-5.8L1.5 7.7l5.9-.9z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function PillButton({
+  children,
+  href,
+  variant = "primary",
+  className = "",
+}: {
+  children: React.ReactNode;
+  href: string;
+  variant?: "primary" | "outline";
+  className?: string;
+}) {
+  const base =
+    "inline-flex items-center justify-center rounded-full px-6 py-3 font-body font-medium transition-colors";
+  const styles =
+    variant === "primary"
+      ? "bg-crimson-red text-white hover:bg-light-red"
+      : "border border-midnight text-midnight hover:bg-midnight hover:text-white";
+  return (
+    <Link href={href} className={`${base} ${styles} ${className}`}>
+      {children}
+    </Link>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Sections                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function NavBar() {
+  return (
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 md:px-8 md:py-4">
+        <Link href="/" aria-label="I'm Here Travels home">
+          <Image
+            src="/Logos/Horizontal/Digital/SVG/Red/Digital_Horizontal_Red.svg"
+            alt="I'm Here Travels"
+            width={120}
+            height={36}
+            priority
+            className="h-8 w-auto md:h-9"
+          />
+        </Link>
+        <nav className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="font-body text-b4-desktop text-midnight hover:text-crimson-red"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <PillButton href="#inquire" className="text-b4-mobile md:text-b4-desktop">
+          Inquire Now
+        </PillButton>
+      </div>
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative mx-auto w-full max-w-7xl px-4 md:px-8">
+      <div className="relative overflow-hidden rounded-lg">
+        <div className="relative aspect-[4/5] w-full md:aspect-[16/9] lg:aspect-[21/9]">
+          <Image
+            src="/figma/hero-siargao.png"
+            alt="Siargao Island"
+            fill
+            priority
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center text-white md:gap-6">
+          <Image
+            src="/figma/featured-trip-badge.png"
+            alt="Featured Trip"
+            width={140}
+            height={40}
+            className="h-10 w-auto"
+          />
+          <span className="sr-only">Featured Trip</span>
+          <h1 className="font-display text-h1-mobile md:text-h1-desktop">
+            Siargao Island
+            <br />
+            Adventure
+          </h1>
+          <PillButton href="#tours" className="mt-2">
+            View All Tours
+          </PillButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function NewTours() {
+  return (
+    <section id="tours" className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24">
+      <div className="mb-8 flex items-center justify-between md:mb-12">
+        <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+          New Tours
+        </h2>
+        <div className="hidden gap-2 md:flex">
+          <button
+            aria-label="Previous tours"
+            className="flex size-10 items-center justify-center rounded-full border border-midnight text-midnight hover:bg-midnight hover:text-white"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next tours"
+            className="flex size-10 items-center justify-center rounded-full border border-midnight text-midnight hover:bg-midnight hover:text-white"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {tours.map((tour) => (
+          <li
+            key={tour.title}
+            className="overflow-hidden rounded-lg bg-white shadow-small"
+          >
+            <div className="relative aspect-[4/3] w-full">
+              <Image
+                src={tour.image}
+                alt={tour.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="p-5 md:p-6">
+              <span className="inline-flex items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight">
+                <Image
+                  src="/Icons/SVG/Pin/pin-solid-red.svg"
+                  alt=""
+                  width={14}
+                  height={14}
+                />
+                {tour.duration}
+              </span>
+              <h3 className="mt-4 font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                {tour.title}
+              </h3>
+              <p className="mt-2 font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+                {tour.description}
+              </p>
+              <div className="mt-5 flex items-baseline gap-2">
+                <span className="font-body text-b4-desktop text-dark-gray">
+                  From
+                </span>
+                <span className="font-sans text-h6-mobile md:text-h6-desktop text-midnight">
+                  {tour.price}
+                </span>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-10 flex justify-center">
+        <PillButton href="#all-tours">View All Tours</PillButton>
+      </div>
+    </section>
+  );
+}
+
+function Destinations() {
+  return (
+    <section
+      id="destinations"
+      className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24"
+    >
+      <h2 className="mb-8 text-center font-sans text-h3-mobile md:text-h3-desktop text-midnight md:mb-12">
+        Your next destination
+      </h2>
+      <ul className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        {destinations.map((destination) => (
+          <li
+            key={destination.name}
+            className="group relative overflow-hidden rounded-md"
+          >
+            <div className="relative aspect-square w-full">
+              <Image
+                src={destination.image}
+                alt={destination.name}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+              <span className="absolute bottom-4 left-4 font-sans text-h5-mobile md:text-h5-desktop text-white">
+                {destination.name}
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Testimonials() {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24">
+      <h2 className="mb-8 text-center font-sans text-h3-mobile md:text-h3-desktop text-midnight md:mb-12">
+        What people say about us
+      </h2>
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((t) => (
+          <li
+            key={t.author}
+            className="flex flex-col gap-4 rounded-lg bg-white p-6 shadow-small"
+          >
+            <div className="flex items-center justify-between">
+              <StarRow />
+              <span className="font-body text-b4-desktop text-grey">
+                {t.date}
+              </span>
+            </div>
+            <p className="font-body text-b4-mobile md:text-b4-desktop text-midnight">
+              {t.quote}
+            </p>
+            <div className="mt-auto flex items-center gap-3 pt-2">
+              <Image
+                src={t.avatar}
+                alt={t.author}
+                width={40}
+                height={40}
+                className="size-10 rounded-full object-cover"
+              />
+              <div>
+                <p className="font-body text-b4-desktop font-medium text-midnight">
+                  {t.author}
+                </p>
+                <p className="font-body text-b4-desktop text-grey">
+                  {t.location}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function WhyChooseUs() {
+  return (
+    <section
+      id="why-us"
+      className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24"
+    >
+      <h2 className="mb-8 text-center font-sans text-h3-mobile md:text-h3-desktop text-midnight md:mb-12">
+        Why choose us?
+      </h2>
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {features.map((feature) => (
+          <li
+            key={feature.title}
+            className="flex flex-col items-center gap-4 rounded-lg bg-white p-8 text-center shadow-small"
+          >
+            <Image
+              src={feature.icon}
+              alt=""
+              width={80}
+              height={80}
+              className="size-20"
+            />
+            <h3 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+              {feature.title}
+            </h3>
+            <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+              {feature.description}
+            </p>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-10 flex justify-center">
+        <PillButton href="#learn-more" variant="outline">
+          Learn more
+        </PillButton>
+      </div>
+    </section>
+  );
+}
+
+function JoinCommunity() {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24">
+      <div className="overflow-hidden rounded-lg bg-light-grey">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="flex flex-col justify-center gap-4 p-8 md:p-12">
+            <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+              Join our community
+            </h2>
+            <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+              Stay up to date on the latest news, deals and tours when you sign
+              up.
+            </p>
+            <form
+              className="mt-2 flex flex-col gap-3"
+              action="#"
+              method="post"
+              aria-label="Newsletter signup"
+            >
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
+              />
+              <p className="font-body text-b4-desktop text-grey">
+                By submitting you agree with our{" "}
+                <Link
+                  href="#privacy"
+                  className="underline hover:text-crimson-red"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+              <button
+                type="submit"
+                className="mt-1 inline-flex items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+          <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-full md:min-h-[360px]">
+            <Image
+              src="/figma/join-community.png"
+              alt="Travelers enjoying a tropical beach"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  const columns = [
+    { heading: "About", links: ["Destinations", "Why us?", "Tours"] },
+    { heading: "Help", links: ["Contact Us", "FAQs", "Personalized Tours"] },
+    { heading: "Resources", links: ["Travel Info", "Newsletter", "Reviews"] },
+  ];
+
+  return (
+    <footer className="mt-16 bg-white">
+      <div className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
+          <div className="col-span-2 md:col-span-1">
+            <Image
+              src="/Logos/Horizontal/Digital/SVG/Red/Digital_Horizontal_Red.svg"
+              alt="I'm Here Travels"
+              width={120}
+              height={36}
+              className="h-8 w-auto"
+            />
+          </div>
+          {columns.map((col) => (
+            <div key={col.heading}>
+              <h3 className="font-sans text-b2-desktop font-bold text-crimson-red">
+                {col.heading}
+              </h3>
+              <ul className="mt-3 space-y-2">
+                {col.links.map((link) => (
+                  <li key={link}>
+                    <Link
+                      href="#"
+                      className="font-body text-b4-desktop text-midnight hover:text-crimson-red"
+                    >
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div>
+            <h3 className="font-sans text-b2-desktop font-bold text-crimson-red">
+              Connect
+            </h3>
+            <ul className="mt-3 flex gap-3">
+              {["Instagram", "Facebook", "YouTube"].map((label) => (
+                <li key={label}>
+                  <Link
+                    href="#"
+                    aria-label={label}
+                    className="flex size-9 items-center justify-center rounded-full bg-crimson-red text-white hover:bg-light-red"
+                  >
+                    <span className="sr-only">{label}</span>
+                    <span aria-hidden className="font-body text-b4-desktop">
+                      {label[0]}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-light-grey pt-6 md:flex-row md:justify-between">
+          <Image
+            src="/Logos/Clover/Digital/SVG/Red/Digital_Clover_Red.svg"
+            alt=""
+            width={28}
+            height={28}
+            className="size-7"
+          />
+          <p className="font-body text-b4-desktop text-grey">
+            © 2026 I&apos;m Here Travels. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link
+              href="#"
+              className="font-body text-b4-desktop text-grey hover:text-crimson-red"
+            >
+              Terms and Conditions
+            </Link>
+            <Link
+              href="#"
+              className="font-body text-b4-desktop text-grey hover:text-crimson-red"
+            >
+              Privacy Policy
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Page                                                                        */
+/* -------------------------------------------------------------------------- */
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <NavBar />
+      <main className="flex-1">
+        <div className="pt-4 md:pt-6">
+          <Hero />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <NewTours />
+        <Destinations />
+        <Testimonials />
+        <WhyChooseUs />
+        <JoinCommunity />
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
