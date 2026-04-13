@@ -150,13 +150,17 @@ function buildItinerary(t) {
 
 function buildBooking(t) {
   const { currency, amount } = priceParts(t.pricing);
+  const symbol = CURRENCY_SYMBOL[t.pricing?.currency] ?? "";
+  const deposit = t.pricing?.deposit;
   return {
     durationLabel: t.duration ?? "Tour",
     routeLabel: t.location ?? "",
     priceFromLabel: "From",
     priceCurrency: currency,
     priceAmount: amount,
-    ctaLabel: "Inquire Now",
+    depositAmount:
+      deposit && deposit > 0 ? `${symbol}${deposit.toLocaleString()}` : "",
+    ctaLabel: "Reserve Now",
     ctaHref: t.stripePaymentLink ?? "/contact-us",
     footnote: "Additional fees may apply",
   };
@@ -232,6 +236,35 @@ function buildFile(t) {
           "Have more questions? Check out our FAQs as we might already have the answers.",
         ctaLabel: "Show more",
         ctaHref: "/faqs",
+      },
+    ],
+  };
+  tour.tips = {
+    heading: "Tips",
+    items: [
+      {
+        icon: "luggage",
+        title: "Pack smart",
+        description:
+          "Bring comfortable walking shoes, quick-dry clothing, a reusable water bottle, and a power adapter suited for your destination.",
+      },
+      {
+        icon: "shield",
+        title: "Travel insurance",
+        description:
+          "We require all travelers to have valid travel insurance covering medical, cancellation, and activity risks for the duration of the trip.",
+      },
+      {
+        icon: "sun",
+        title: "Beat the climate",
+        description:
+          "Sunscreen, a hat, and insect repellent go a long way. Stay hydrated and listen to your body, especially on active days.",
+      },
+      {
+        icon: "handshake",
+        title: "Respect local customs",
+        description:
+          "Dress modestly at temples, learn a few local greetings, and tip where appropriate — small gestures make a big difference.",
       },
     ],
   };

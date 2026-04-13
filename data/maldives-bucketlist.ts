@@ -153,13 +153,39 @@ export const maldivesBucketlist: Tour = {
       }
     ]
   },
+  "tips": {
+    "heading": "Tips",
+    "items": [
+      {
+        "icon": "luggage",
+        "title": "Pack smart",
+        "description": "Bring comfortable walking shoes, quick-dry clothing, a reusable water bottle, and a power adapter suited for your destination."
+      },
+      {
+        "icon": "shield",
+        "title": "Travel insurance",
+        "description": "We require all travelers to have valid travel insurance covering medical, cancellation, and activity risks for the duration of the trip."
+      },
+      {
+        "icon": "sun",
+        "title": "Beat the climate",
+        "description": "Sunscreen, a hat, and insect repellent go a long way. Stay hydrated and listen to your body, especially on active days."
+      },
+      {
+        "icon": "handshake",
+        "title": "Respect local customs",
+        "description": "Dress modestly at temples, learn a few local greetings, and tip where appropriate — small gestures make a big difference."
+      }
+    ]
+  },
   "booking": {
     "durationLabel": "8 Days and 7 Nights",
     "routeLabel": "Maldives",
     "priceFromLabel": "From",
     "priceCurrency": "GBP",
     "priceAmount": "£1,400",
-    "ctaLabel": "Inquire Now",
+    "depositAmount": "£300",
+    "ctaLabel": "Reserve Now",
     "ctaHref": "https://book.stripe.com/28o02bgW377n0Rq5l8",
     "footnote": "Additional fees may apply"
   },

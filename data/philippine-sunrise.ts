@@ -340,6 +340,37 @@ export const philippineSunrise: Tour = {
       },
     ],
   },
+  // Universal travel tips shown on every tour — override per-tour when
+  // a trip has destination-specific advice worth surfacing.
+  tips: {
+    heading: "Tips",
+    items: [
+      {
+        icon: "luggage",
+        title: "Pack smart",
+        description:
+          "Bring comfortable walking shoes, quick-dry clothing, a reusable water bottle, and a power adapter suited for your destination.",
+      },
+      {
+        icon: "shield",
+        title: "Travel insurance",
+        description:
+          "We require all travelers to have valid travel insurance covering medical, cancellation, and activity risks for the duration of the trip.",
+      },
+      {
+        icon: "sun",
+        title: "Beat the climate",
+        description:
+          "Sunscreen, a hat, and insect repellent go a long way. Stay hydrated and listen to your body, especially on active days.",
+      },
+      {
+        icon: "handshake",
+        title: "Respect local customs",
+        description:
+          "Dress modestly at temples, learn a few local greetings, and tip where appropriate — small gestures make a big difference.",
+      },
+    ],
+  },
   // Right-column sticky booking card on desktop, inline below content on
   // mobile/tablet. `ctaHref` points to the inquiry page until a dedicated
   // booking flow exists.
@@ -349,7 +380,8 @@ export const philippineSunrise: Tour = {
     priceFromLabel: "From",
     priceCurrency: "GBP",
     priceAmount: "£950",
-    ctaLabel: "Inquire Now",
+    depositAmount: "£200",
+    ctaLabel: "Reserve Now",
     ctaHref: "https://book.stripe.com/9B63cv2Bt2uB8dR8c7co032",
     footnote: "Additional fees may apply",
   },
@@ -384,49 +416,11 @@ export const philippineSunrise: Tour = {
       },
     ],
   },
-  // Cross-sell cards. `slug` links to `/tours/<slug>`; if the linked tour
-  // doesn't exist in the registry yet, the card 404s on click.
-  relatedTours: {
-    heading: "Tours you might like",
-    items: [
-      {
-        slug: "siargao-island-adventure",
-        image: `${IMG}/related-siargao.jpg`,
-        imageAlt: "Siargao Island Adventure",
-        duration: "6 Day Tour",
-        title: "Siargao Island Adventure",
-        description:
-          "Surf, wakeboard and roadtrip across Siargao's hidden coves and crystal-clear waters.",
-        priceFromLabel: "From",
-        priceCurrency: "GBP",
-        priceAmount: "£430",
-      },
-      {
-        slug: "philippines-sunset",
-        image: `${IMG}/related-sunset.jpg`,
-        imageAlt: "Philippines Sunset",
-        duration: "10 Day Tour",
-        title: "Philippines Sunset",
-        description:
-          "Chase golden-hour horizons from Palawan to El Nido on a 10-day island escape.",
-        priceFromLabel: "From",
-        priceCurrency: "USD",
-        priceAmount: "$908",
-      },
-      {
-        slug: "maldives-bucketlist",
-        image: `${IMG}/related-maldives.jpg`,
-        imageAlt: "Maldives Bucketlist",
-        duration: "10 Day Tour",
-        title: "Maldives Bucketlist",
-        description:
-          "Overwater bungalows, reef snorkeling and bioluminescent nights in the Maldives.",
-        priceFromLabel: "From",
-        priceCurrency: "USD",
-        priceAmount: "$908",
-      },
-    ],
-  },
+  // Related-tour cards are auto-attached in `data/tours.ts` by picking
+  // the next three tours in registry order and pulling their cover image
+  // + price straight from the JSON. Override here only if a tour needs
+  // hand-picked recommendations.
+
   // Instagram-style 10-image grid. All tiles currently link to the brand
   // Instagram profile; replace `href` per-image to deep-link individual posts.
   community: {

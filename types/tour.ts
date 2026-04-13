@@ -13,7 +13,11 @@ export type TourIcon =
   | "info"
   | "faq"
   | "download"
-  | "instagram";
+  | "instagram"
+  | "luggage"
+  | "shield"
+  | "sun"
+  | "handshake";
 
 export interface TourTag {
   label: string;
@@ -76,6 +80,12 @@ export interface TourThingToKnow {
   ctaHref: string;
 }
 
+export interface TourTip {
+  icon: TourIcon;
+  title: string;
+  description: string;
+}
+
 export interface TourTestimonial {
   rating: number;
   date: string;
@@ -103,12 +113,26 @@ export interface TourCommunityImage {
   href: string;
 }
 
+export interface TourPriceCategory {
+  label: string;
+  amount: string; // e.g. "£2150"
+  // Background color for the category badge next to the amount.
+  badge?: "yellow" | "green" | "red" | "grey";
+}
+
 export interface TourBookingCard {
   durationLabel: string;
   routeLabel: string;
   priceFromLabel: string;
   priceCurrency: string;
   priceAmount: string;
+  // Optional tiered pricing (e.g. Standard vs With Skiing). When set,
+  // the card hides the single `priceAmount` and renders one row per
+  // category instead. Leave undefined for single-price tours.
+  priceCategories?: TourPriceCategory[];
+  // Deposit amount shown in the reservation notice below the CTA
+  // (e.g. "£300"). Omit to hide the notice.
+  depositAmount?: string;
   ctaLabel: string;
   ctaHref: string;
   footnote: string;
@@ -146,6 +170,7 @@ export interface Tour {
   whereWeStay?: { heading: string; items: TourAccommodation[] };
   faqs?: { heading: string; items: TourFaq[] };
   thingsToKnow?: { heading: string; items: TourThingToKnow[] };
+  tips?: { heading: string; items: TourTip[] };
   booking: TourBookingCard;
   testimonials?: { heading: string; items: TourTestimonial[] };
   relatedTours?: { heading: string; items: TourRelated[] };

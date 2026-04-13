@@ -93,7 +93,7 @@ function attachRelatedTours(
     });
     registry[slug] = {
       ...tour,
-      relatedTours: { heading: "Tours you might like", items },
+      relatedTours: { heading: "You might also like", items },
     };
   }
   return registry;
