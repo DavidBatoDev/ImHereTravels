@@ -4,7 +4,7 @@ import Icon from "./Icon";
 export default function WhatsIncluded({
   section,
 }: {
-  section: Tour["whatsIncluded"];
+  section: NonNullable<Tour["whatsIncluded"]>;
 }) {
   return (
     <section className="mt-10 w-full md:mt-14">

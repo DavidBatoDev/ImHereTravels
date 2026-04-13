@@ -20,24 +20,27 @@ export const tours = [
     duration: "11 Day Tour",
     description:
       "Experience thrilling canyoneering, mesmerizing marine life, surfing, and stunning sunsets!",
-    price: "GBP £950",
-    image: "/figma/tour-philippines-sunrise.png",
+    price: "GBP £1200",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341320242_philippinessunrise-header-1-3.webp?alt=media&token=176752d3-cd01-486b-b97b-d397a869db93",
   },
   {
     title: "Philippines Sunset",
     duration: "11 Day Tour",
     description:
       "Escape to the islands, and immerse in rich culture, with island-hopping and unforgettable stunning sunsets!",
-    price: "GBP £950",
-    image: "/figma/tour-philippines-sunset.png",
+    price: "GBP £1200",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341317907_philippinessunset-day-11.webp?alt=media&token=d3c35f6b-4503-438e-9cd4-c6d6848d0e8f",
   },
   {
     title: "Maldives Bucketlist",
-    duration: "10 Day Tour",
+    duration: "8 Day Tour",
     description:
       "Tick off that bucketlist and explore by turquoise water, snorkel vibrant reefs, and unwind on island paradise.",
-    price: "GBP £908",
-    image: "/figma/tour-maldives-bucketlist.png",
+    price: "GBP £1400",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
   },
 ];
 
@@ -46,20 +49,86 @@ export const tours = [
 /* -------------------------------------------------------------------------- */
 
 export const destinations = [
-  { name: "Philippines Sunrise", image: "/figma/dest-philippines-sunrise.jpg", href: "/all-tours/philippine-sunrise" },
-  { name: "Philippines Sunset", image: "/figma/dest-philippines-sunset.jpg", href: "/all-tours/philippine-sunset" },
-  { name: "Japan Adventure", image: "/figma/dest-japan-adventure.jpg", href: "/all-tours/japan-adventure" },
-  { name: "Bhutan Quest", image: "/figma/dest-bhutan-quest.jpg", href: "/all-tours/bhutan-quest" },
-  { name: "New Zealand Expedition", image: "/figma/dest-new-zealand-expedition.jpg", href: "/all-tours/new-zealand-expedition" },
-  { name: "Sri Lanka Wander", image: "/figma/dest-sri-lanka-wander.jpg", href: "/all-tours/sri-lanka-wander-tour" },
-  { name: "Argentina's Wonders", image: "/figma/dest-argentinas-wonders.jpg", href: "/all-tours/argentinas-wonders" },
-  { name: "Vietnam", image: "/figma/dest-vietnam.jpg", href: "/all-tours/vietnam" },
-  { name: "Brazil's Treasure", image: "/figma/dest-brazils-treasure.jpg", href: "/all-tours/brazils-treasure" },
-  { name: "China Discovery", image: "/figma/dest-china-discovery.jpg", href: "/all-tours/china-discovery" },
-  { name: "India Discovery", image: "/figma/dest-india-discovery.jpg", href: "/all-tours/india-discovery-tour" },
-  { name: "India Holi Festival", image: "/figma/dest-india-holi-festival.jpg", href: "/all-tours/india-holi-festival-tour" },
-  { name: "Nepal Horizons", image: "/figma/dest-nepal-horizons.jpg", href: "/all-tours/nepal-horizons" },
-  { name: "Tanzania Exploration", image: "/figma/dest-tanzania-exploration.jpg", href: "/all-tours/tanzania-exploration" },
+  {
+    name: "Philippines Sunrise",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341320242_philippinessunrise-header-1-3.webp?alt=media&token=176752d3-cd01-486b-b97b-d397a869db93",
+    href: "/tours/philippine-sunrise",
+  },
+  {
+    name: "Philippines Sunset",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341317907_philippinessunset-day-11.webp?alt=media&token=d3c35f6b-4503-438e-9cd4-c6d6848d0e8f",
+    href: "/tours/philippine-sunset",
+  },
+  {
+    name: "Japan Adventure",
+    image: "/figma/dest-japan-adventure.jpg",
+    href: "/tours/japan-adventure",
+  },
+  {
+    name: "Bhutan Quest",
+    image:
+      "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/bhutan-triphighlight-12.webp?w=1280&ssl=1",
+    href: "/tours/bhutan-quest",
+  },
+  {
+    name: "New Zealand Expedition",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341296278_new-zealand-header-1.webp?alt=media&token=0f4c3603-faac-4a9b-98a0-6a64c61cac13",
+    href: "/tours/new-zealand-expedition",
+  },
+  {
+    name: "Sri Lanka Wander",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
+    href: "/tours/sri-langka-wander-tour",
+  },
+  {
+    name: "Argentina's Wonders",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
+    href: "/tours/argentinas-wonders",
+  },
+  {
+    name: "Vietnam",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341305320_vietnam-header-4.webp?alt=media&token=be502580-7b8c-47ce-98c3-ce9c250af05e",
+    href: "/tours/vietnam-expedition",
+  },
+  {
+    name: "Brazil's Treasures",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341307739_brazil-header-4.webp?alt=media&token=811f0f81-f1ba-4267-9da5-69c568c29335",
+    href: "/tours/brazils-treasures",
+  },
+  {
+    name: "China Discovery",
+    image: "/figma/dest-china-discovery.jpg",
+    href: "/tours/china-discovery",
+  },
+  {
+    name: "India Discovery",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341302125_india-header-1.webp?alt=media&token=3f969113-15f2-4d4e-bc0c-0f5e8ac5043e",
+    href: "/tours/india-discovery-tour",
+  },
+  {
+    name: "India Holi Festival",
+    image: "/figma/dest-india-holi-festival.jpg",
+    href: "/tours/india-holi-festival-tour",
+  },
+  {
+    name: "Nepal Horizons",
+    image: "/figma/dest-nepal-horizons.jpg",
+    href: "/tours/nepal-horizons",
+  },
+  {
+    name: "Tanzania Exploration",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
+    href: "/tours/tanzania-exploration",
+  },
 ];
 
 export const featuredDestinations = destinations.slice(0, 8);

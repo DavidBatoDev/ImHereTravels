@@ -4,7 +4,7 @@ import type { Tour } from "@/types/tour";
 export default function TripHighlights({
   section,
 }: {
-  section: Tour["tripHighlights"];
+  section: NonNullable<Tour["tripHighlights"]>;
 }) {
   return (
     <section className="mt-10 w-full md:mt-14">
@@ -12,9 +12,9 @@ export default function TripHighlights({
         {section.heading}
       </h2>
       <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {section.items.map((h) => (
+        {section.items.map((h, i) => (
           <li
-            key={h.title}
+            key={`${h.title}-${i}`}
             className="overflow-hidden rounded-lg bg-white shadow-small"
           >
             <div className="relative aspect-[4/3] w-full bg-light-grey">

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Tour } from "@/types/tour";
 
-export default function TourMap({ section }: { section: Tour["map"] }) {
+export default function TourMap({ section }: { section: NonNullable<Tour["map"]> }) {
   return (
     <section className="mt-10 w-full md:mt-14">
       <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">

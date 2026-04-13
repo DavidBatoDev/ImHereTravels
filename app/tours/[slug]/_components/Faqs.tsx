@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Tour, TourFaq } from "@/types/tour";
 
-export default function Faqs({ section }: { section: Tour["faqs"] }) {
+export default function Faqs({ section }: { section: NonNullable<Tour["faqs"]> }) {
   return (
     <section className="mt-10 w-full md:mt-14">
       <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">

@@ -4,7 +4,7 @@ import type { Tour } from "@/types/tour";
 export default function WhereWeStay({
   section,
 }: {
-  section: Tour["whereWeStay"];
+  section: NonNullable<Tour["whereWeStay"]>;
 }) {
   return (
     <section className="mt-10 w-full md:mt-14">

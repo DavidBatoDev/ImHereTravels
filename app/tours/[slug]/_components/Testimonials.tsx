@@ -19,7 +19,7 @@ function Stars({ count }: { count: number }) {
 export default function Testimonials({
   section,
 }: {
-  section: Tour["testimonials"];
+  section: NonNullable<Tour["testimonials"]>;
 }) {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">

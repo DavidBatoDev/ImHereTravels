@@ -6,7 +6,7 @@ import Icon from "./Icon";
 export default function CommunityGrid({
   section,
 }: {
-  section: Tour["community"];
+  section: NonNullable<Tour["community"]>;
 }) {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">

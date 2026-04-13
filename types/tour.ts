@@ -121,29 +121,35 @@ export interface Tour {
   slug: string;
   meta: { title: string; description: string };
   breadcrumbs: TourCrumb[];
-  gallery: { hero: string; heroAlt: string; thumbnails: { src: string; alt: string }[] };
+  gallery: {
+    hero: string;
+    heroAlt: string;
+    thumbnails: { src: string; alt: string }[];
+  };
   header: {
     title: string;
     tags: TourTag[];
     description: string;
   };
   keyFacts: TourKeyFact[];
-  whatsIncluded: { heading: string; items: TourIncludedItem[] };
-  tripHighlights: { heading: string; items: TourHighlight[] };
-  map: { heading: string; image: string; imageAlt: string };
+  // Optional sections — rendered only when the data is present.
+  // Most JSON-sourced tours won't have all of these.
+  whatsIncluded?: { heading: string; items: TourIncludedItem[] };
+  tripHighlights?: { heading: string; items: TourHighlight[] };
+  map?: { heading: string; image: string; imageAlt: string };
   itinerary: {
     heading: string;
     downloadLabel: string;
     downloadHref: string;
     days: TourDay[];
   };
-  whereWeStay: { heading: string; items: TourAccommodation[] };
-  faqs: { heading: string; items: TourFaq[] };
-  thingsToKnow: { heading: string; items: TourThingToKnow[] };
+  whereWeStay?: { heading: string; items: TourAccommodation[] };
+  faqs?: { heading: string; items: TourFaq[] };
+  thingsToKnow?: { heading: string; items: TourThingToKnow[] };
   booking: TourBookingCard;
-  testimonials: { heading: string; items: TourTestimonial[] };
-  relatedTours: { heading: string; items: TourRelated[] };
-  community: { heading: string; images: TourCommunityImage[] };
+  testimonials?: { heading: string; items: TourTestimonial[] };
+  relatedTours?: { heading: string; items: TourRelated[] };
+  community?: { heading: string; images: TourCommunityImage[] };
 
   listingCard: {
     duration: string;

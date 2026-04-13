@@ -8,23 +8,27 @@ import { useState } from "react";
 const navItems = [
   {
     label: "Tours",
-    href: "#tours",
+    href: "/tours",
     dropdown: [
-      { label: "All Tours", href: "#tours" },
-      { label: "Philippines Sunrise", href: "#tours" },
-      { label: "Philippines Sunset", href: "#tours" },
-      { label: "Maldives Bucketlist", href: "#tours" },
+      { label: "All Tours", href: "/tours" },
+      { label: "Philippines Sunrise", href: "/tours/philippine-sunrise" },
+      { label: "Philippines Sunset", href: "/tours/philippine-sunset" },
+      { label: "Japan Adventure", href: "/tours/japan-adventure" },
+      { label: "Bhutan Quest", href: "/tours/bhutan-quest" },
+      { label: "New Zealand Expedition", href: "/tours/new-zealand-expedition" },
+      { label: "Sri Lanka Wander", href: "/tours/sri-lanka-wander-tour" },
+      { label: "Vietnam", href: "/tours/vietnam" },
     ],
   },
   {
     label: "Destinations",
-    href: "#destinations",
+    href: "/destinations",
     dropdown: [
-      { label: "All Destinations", href: "#destinations" },
-      { label: "Siargao Island", href: "#destinations" },
-      { label: "El Nido", href: "#destinations" },
-      { label: "Moalboal", href: "#destinations" },
-      { label: "Maldives", href: "#destinations" },
+      { label: "All Destinations", href: "/destinations" },
+      { label: "Philippines", href: "/philippines-destinations" },
+      { label: "Japan", href: "/tours/japan-adventure" },
+      { label: "Bhutan", href: "/tours/bhutan-quest" },
+      { label: "New Zealand", href: "/tours/new-zealand-expedition" },
     ],
   },
   {

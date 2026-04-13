@@ -5,7 +5,7 @@ import type { Tour } from "@/types/tour";
 export default function RelatedTours({
   section,
 }: {
-  section: Tour["relatedTours"];
+  section: NonNullable<Tour["relatedTours"]>;
 }) {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">

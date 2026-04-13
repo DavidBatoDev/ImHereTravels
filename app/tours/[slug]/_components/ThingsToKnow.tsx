@@ -6,7 +6,7 @@ import Icon from "./Icon";
 export default function ThingsToKnow({
   section,
 }: {
-  section: Tour["thingsToKnow"];
+  section: NonNullable<Tour["thingsToKnow"]>;
 }) {
   return (
     <section className="mt-10 w-full md:mt-14">
