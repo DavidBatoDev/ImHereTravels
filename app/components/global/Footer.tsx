@@ -37,7 +37,7 @@ const footerColumns = [
   {
     heading: "Help",
     links: [
-      { label: "Contact Us", href: "#contact" },
+      { label: "Contact Us", href: "/contact-us" },
       { label: "FAQs", href: "/faqs" },
       { label: "Personalized Tours", href: "#personalized" },
     ],
