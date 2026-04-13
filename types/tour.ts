@@ -86,15 +86,6 @@ export interface TourTip {
   description: string;
 }
 
-export interface TourTestimonial {
-  rating: number;
-  date: string;
-  body: string;
-  avatar: string;
-  author: string;
-  location: string;
-}
-
 export interface TourRelated {
   slug: string;
   image: string;
@@ -172,7 +163,6 @@ export interface Tour {
   thingsToKnow?: { heading: string; items: TourThingToKnow[] };
   tips?: { heading: string; items: TourTip[] };
   booking: TourBookingCard;
-  testimonials?: { heading: string; items: TourTestimonial[] };
   relatedTours?: { heading: string; items: TourRelated[] };
   community?: { heading: string; images: TourCommunityImage[] };
 

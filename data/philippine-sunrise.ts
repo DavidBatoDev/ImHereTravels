@@ -385,37 +385,6 @@ export const philippineSunrise: Tour = {
     ctaHref: "https://book.stripe.com/9B63cv2Bt2uB8dR8c7co032",
     footnote: "Additional fees may apply",
   },
-  // Tour-specific reviews. `rating` is 1–5; component renders that many
-  // filled stars. Avatars are square — UI crops to circles.
-  testimonials: {
-    heading: "What people say about us",
-    items: [
-      {
-        rating: 5,
-        date: "May 2023",
-        body: "Had an amazing time on the trial tour! Action packed with lots of fun things on the itinerary, and a great bunch of people. Would definitely go again!",
-        avatar: `${IMG}/avatar-flynn.jpg`,
-        author: "Flynn Deanne",
-        location: "London, United Kingdom",
-      },
-      {
-        rating: 5,
-        date: "February 2024",
-        body: "My experience has been amazing, I'll never forget it. I met extraordinary people and explored beautiful places. I definitely recommend to book a trip!",
-        avatar: `${IMG}/avatar-manuel.jpg`,
-        author: "Manuel Madonna",
-        location: "Milan, Italy",
-      },
-      {
-        rating: 5,
-        date: "July 2024",
-        body: "I enjoyed the tour! Seamless coordination of transportation and accommodation made me feel like a VIP throughout the trip! LOVED every bit of it!! I highly recommend!",
-        avatar: `${IMG}/avatar-bella.jpg`,
-        author: "Bella Millan",
-        location: "Cagayan, Philippines",
-      },
-    ],
-  },
   // Related-tour cards are auto-attached in `data/tours.ts` by picking
   // the next three tours in registry order and pulling their cover image
   // + price straight from the JSON. Override here only if a tour needs

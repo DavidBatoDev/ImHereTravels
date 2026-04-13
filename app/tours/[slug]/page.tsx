@@ -102,9 +102,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
           </div>
         </div>
 
-        {tour.testimonials?.heading && (
-          <Testimonials section={tour.testimonials} />
-        )}
+        <Testimonials />
         {tour.relatedTours?.heading && (
           <RelatedTours section={tour.relatedTours} />
         )}
