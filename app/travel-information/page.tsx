@@ -48,7 +48,7 @@ function CardsSection() {
         {travelInfoCards.map((card) => (
           <div
             key={card.id}
-            className="group flex flex-col overflow-hidden rounded-lg bg-white shadow-xsmall transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-medium"
+            className="group flex flex-col overflow-hidden rounded-lg bg-white shadow-xsmall transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-medium active:-translate-y-1 active:shadow-medium"
           >
             {/* Image */}
             <div className="relative h-70 w-full shrink-0 overflow-hidden">
@@ -57,7 +57,7 @@ function CardsSection() {
                 alt=""
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105 group-active:scale-105"
               />
             </div>
 
@@ -74,7 +74,7 @@ function CardsSection() {
               <div className="pt-4">
                 <Link
                   href={card.linkHref}
-                  className="font-body text-b2-mobile text-midnight underline transition-colors duration-200 hover:text-crimson-red group-hover:text-crimson-red md:text-b2-desktop"
+                  className="font-body text-b2-mobile text-midnight underline transition-colors duration-200 hover:text-crimson-red group-hover:text-crimson-red group-active:text-crimson-red md:text-b2-desktop"
                 >
                   {card.linkLabel}
                 </Link>
