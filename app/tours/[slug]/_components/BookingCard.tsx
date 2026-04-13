@@ -16,18 +16,19 @@ export default function BookingCard({
       }`}
     >
       <div className="px-6 pb-5 pt-6 md:px-7 md:pt-7">
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline gap-x-2 gap-y-1">
           <span className="font-body text-b4-desktop text-dark-gray">
             {booking.priceFromLabel}
           </span>
-          <span className="font-display text-h3-mobile md:text-h3-desktop text-midnight">
-            {booking.priceCurrency} {booking.priceAmount}
+          <span className="font-body text-b4-desktop text-dark-gray">
+            {booking.priceCurrency}
           </span>
-          <span className="ml-auto font-body text-b4-mobile text-grey">
-            / person
+          <span className="font-display text-h3-mobile md:text-h3-desktop text-midnight whitespace-nowrap leading-none">
+            {booking.priceAmount}
           </span>
+          <span className="font-body text-b4-mobile text-grey">/ person</span>
         </div>
-        <p className="mt-1 font-body text-b4-mobile text-grey">
+        <p className="mt-2 font-body text-b4-mobile text-grey">
           {booking.footnote}
         </p>
       </div>

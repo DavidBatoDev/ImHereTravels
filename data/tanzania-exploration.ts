@@ -108,80 +108,60 @@ export const tanzaniaExploration: Tour = {
         "dayNumber": 1,
         "title": "Arrival in Arusha",
         "description": "Arrive in Arusha, check-in, welcome dinner and briefing",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/01/tanzania-day-3.webp?w=1280&ssl=1",
-        "imageAlt": "Arrival in Arusha",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Arusha to Serengeti",
         "description": "Transfer to Serengeti, afternoon game drive",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/01/tanzania-day-5.webp?w=1280&ssl=1",
-        "imageAlt": "Arusha to Serengeti",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "Serengeti Game Drives",
         "description": "Full day game drives in search of the Big Five",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/01/tanzania-day-9.webp?w=1280&ssl=1",
-        "imageAlt": "Serengeti Game Drives",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Serengeti to Ngorongoro",
         "description": "Morning game drive, transfer to Ngorongoro",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Serengeti to Ngorongoro",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Ngorongoro Crater",
         "description": "Full day exploring the crater floor",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Ngorongoro Crater",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Travel to Zanzibar",
         "description": "Flight to Zanzibar, check-in and beach time",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Travel to Zanzibar",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "Zanzibar Exploration",
         "description": "Stone Town tour, spice plantation visit",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Zanzibar Exploration",
         "details": []
       },
       {
         "dayNumber": 8,
         "title": "Safari Blue Adventure",
         "description": "Full day boat trip, snorkeling, and beach activities",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Safari Blue Adventure",
         "details": []
       },
       {
         "dayNumber": 9,
         "title": "Zanzibar Free Day",
         "description": "Relax on the beach or optional activities",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Zanzibar Free Day",
         "details": []
       },
       {
         "dayNumber": 10,
         "title": "Final Day & Departure",
         "description": "Final breakfast, transfer to airport",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-        "imageAlt": "Final Day & Departure",
         "details": []
       }
     ]

@@ -88,64 +88,48 @@ export const maldivesBucketlist: Tour = {
         "dayNumber": 1,
         "title": "Welcome to Paradise - Hulhumale",
         "description": "Touchdown in the Maldives! As soon as you step off the plane, the tropical breeze welcomes you. After a smooth airport transfer, we’ll check into The White Harp Beach Hotel, where you can relax or hit the beach for a golden sunset. In the evening, we’ll gather for a welcome dinner by the ocean, sharing laughs and toasting to the start of an unforgettable journey. For those who want to keep the night going, an optional cocktail evening on a cruise awaits!",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/02/maldives-triphighlight-4.webp?w=1280&ssl=1",
-        "imageAlt": "Welcome to Paradise - Hulhumale",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Island Life Begins - Maafushi Island",
         "description": "After breakfast, we kick things off with a guided walking tour of Male, exploring colorful markets, historic mosques, and local culture. Then, it’s time for our speedboat ride to Maafushi Island—our tropical home for the next few days. Check in, settle down, and enjoy free time before we gather for a cozy bonfire night by the beach, sharing travel stories under the stars.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/05/maldives-triphighlight-3-1.webp?w=1280&ssl=1",
-        "imageAlt": "Island Life Begins - Maafushi Island",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "Snorkeling & Sandbanks Adventure",
         "description": "Today is all about adventure! We’re heading out on an epic island-hopping tour, exploring hidden gems like Gulhi and Guraidhoo islands, snorkeling at Anantara Reef, and chilling at a dreamy sandbank surrounded by crystal-clear waters. After a day of sun and sea, we’ll return to Maafushi for a delicious beachside BBQ dinner.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/05/maldives-triphighlight-2-1.webp?w=1280&ssl=1",
-        "imageAlt": "Snorkeling & Sandbanks Adventure",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Free Day or Optional Excursions",
         "description": "The day is yours! Whether you want to relax on the beach, explore Maafushi, or join an optional excursion like a dolphin cruise, paddleboarding, or a snorkeling adventure, the choice is yours. We’ll wrap up the evening with sunset cocktails by the beach—pure island vibes.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-        "imageAlt": "Free Day or Optional Excursions",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Luxury Escape - Eriyadu Island Resort",
         "description": "Escape to an uninhabited island for the ultimate castaway experience! Just a quick speedboat ride from Rasdhoo, this island paradise is perfect for sunbathing, snorkeling, and swimming in a clear blue lagoon. It’s your own private slice of heaven!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-        "imageAlt": "Luxury Escape - Eriyadu Island Resort",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Adventure & Relaxation in Eriyadu",
         "description": "Wake up in paradise and take the day at your own pace. Whether you’re up for scuba diving, jet skiing, or just lounging by the infinity pool, Eriyadu has something for everyone. Don’t forget to catch the golden sunset with a cocktail in hand—it’s an experience you won’t forget.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-        "imageAlt": "Adventure & Relaxation in Eriyadu",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "Final Day in Paradise",
         "description": "It’s our last full day, and we’re making the most of it! Choose from deep-sea fishing, spa treatments, or a sunset dolphin cruise. In the evening, we’ll gather for a farewell dinner under the stars, celebrating new friendships and unforgettable memories.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-        "imageAlt": "Final Day in Paradise",
         "details": []
       },
       {
         "dayNumber": 8,
         "title": "Free Day or Whale Shark Hunt",
         "description": "After breakfast, it’s time to pack up and say goodbye to the Maldives. With hearts full of memories and cameras full of breathtaking shots, we take our speedboat transfer back to Male Airport, promising to return to paradise again. Until next time!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-        "imageAlt": "Free Day or Whale Shark Hunt",
         "details": []
       }
     ]

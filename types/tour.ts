@@ -49,8 +49,10 @@ export interface TourDay {
   dayNumber: number;
   title: string;
   description: string;
-  image: string;
-  imageAlt: string;
+  // Optional — many JSON-sourced tours have no per-day photo. The day
+  // card simply renders without an image when these are absent.
+  image?: string;
+  imageAlt?: string;
   details: TourDayDetail[];
 }
 

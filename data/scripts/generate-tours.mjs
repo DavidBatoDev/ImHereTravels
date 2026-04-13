@@ -125,15 +125,21 @@ function buildHighlights(t) {
 }
 
 function buildItinerary(t) {
-  const cover = t.media?.coverImage || FALLBACK_IMAGE;
-  const days = (t.details?.itinerary ?? []).map((d, i) => ({
-    dayNumber: d.day ?? i + 1,
-    title: d.title ?? "",
-    description: d.description ?? "",
-    image: d.image || t.details?.highlights?.[i]?.image || cover,
-    imageAlt: d.title ?? "",
-    details: [],
-  }));
+  const days = (t.details?.itinerary ?? []).map((d, i) => {
+    const day = {
+      dayNumber: d.day ?? i + 1,
+      title: d.title ?? "",
+      description: d.description ?? "",
+      details: [],
+    };
+    // Image is optional; only include when the JSON actually has one for
+    // this day (no fallback to cover/highlight images).
+    if (d.image) {
+      day.image = d.image;
+      day.imageAlt = d.title ?? "";
+    }
+    return day;
+  });
   return {
     heading: "Itinerary",
     downloadLabel: "Download Itinerary",

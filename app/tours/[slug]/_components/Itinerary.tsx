@@ -78,16 +78,22 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
             }}
             className="overflow-hidden"
           >
-            <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-[348px_1fr]">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-light-grey">
-                <Image
-                  src={day.image}
-                  alt={day.imageAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 348px"
-                  className="object-cover"
-                />
-              </div>
+            <div
+              className={`mt-5 grid grid-cols-1 gap-6 ${
+                day.image ? "md:grid-cols-[348px_1fr]" : ""
+              }`}
+            >
+              {day.image && (
+                <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-light-grey">
+                  <Image
+                    src={day.image}
+                    alt={day.imageAlt ?? day.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 348px"
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <div>
                 <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
                   {day.description}

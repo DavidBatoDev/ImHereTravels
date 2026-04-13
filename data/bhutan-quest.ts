@@ -94,56 +94,42 @@ export const bhutanQuest: Tour = {
         "dayNumber": 1,
         "title": "Arrival in Bhutan",
         "description": "You’ve made it to Bhutan arriving in Paro international airport where you will be greeted by your local guide who will transfer you to our first hotel where you can relax and chill or go out to explore the choice is yours. In the evening we will have dinner to meet your fellow travel companions.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/bhutan-triphighlight-12.webp?w=1280&ssl=1",
-        "imageAlt": "Arrival in Bhutan",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Ride the Rapids",
         "description": "After a leisurely breakfast we will take a short van ride to visit the famous Punakha Dzong which served as both the religous and administrative centre of Bhutan in the past, after Punakha Dzong we make our way to visit Punakha Suspension Bridge the longest suspension bridge in Bhutan. This is were the real fun begins we then make our way to white-water rafting in Mo Chu river to get the adrenaline pumping. Lunch will then be served as a riverside picnic along the same river we just rafted down before making our way to Gadgety.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/bhutan-triphighlight-2.webp?w=1280&ssl=1",
-        "imageAlt": "Ride the Rapids",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "Visit Gangteng Monastery",
         "description": "Fuel up on breakfast before visiting Gangteng Monastery, a key Nyingmapa site. We’ll then enjoy our first trek along the valley’s nature trail, famous for its winter Black-Necked Crane migration. Afterward, we’ll drive the winding hillside roads to Thimphu, Bhutan’s capital (population ~90,000). Following hotel check-in, we’ll visit the impressive Tashichho Dzong, then return to the hotel to freshen up before dinner and a well-deserved drink.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/bhutan-triphighlight-3.webp?w=1280&ssl=1",
-        "imageAlt": "Visit Gangteng Monastery",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Thimphu City tour",
         "description": "Today we explore Thimphu, Bhutan’s capital, beginning at the Memorial Chorten with its golden spires and bells. We’ll then visit the Folk Heritage Museum for insight into Bhutanese life, followed by the National Library of Bhutan (est. 1967) to see rare texts and traditional handmade papers. In the evening, we return to the hotel to freshen up before dinner.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/10/bhutan-triphighlight-4.webp",
-        "imageAlt": "Thimphu City tour",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Visit the National Museum and Paro Dzong",
         "description": "After breakfast, we travel from Thimphu to Paro, the final leg of our journey. We’ll begin with the National Museum of Bhutan, showcasing art and bronze statues from across the country, then visit the 16th-century Paro Dzong, a masterpiece of Bhutanese architecture. To end the day, we’ll relax at the Namgay Artisanal Brewery, sampling local beers with views of flights landing at Paro airport.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-header-1.webp",
-        "imageAlt": "Visit the National Museum and Paro Dzong",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Tiger’s Nest Temple",
         "description": "After breakfast, we set out on a hike to Tiger’s Nest (Taktsang Monastery), one of Bhutan’s most iconic sites. From the viewpoint, enjoy breathtaking vistas of the Paro Valley and river, before continuing on to the monastery to learn its rich history. Post-hike, guests may opt for a traditional hot stone bath to recover, before gathering in the evening for a farewell dinner to celebrate our adventure.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-header-1.webp",
-        "imageAlt": "Tiger’s Nest Temple",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "Checkout",
         "description": "Grab everyone’s insta handles and checkout after one last breakfast together. Our local guide will help organise airport transfers for everyone, it’s not goodbye it’s see you later.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-header-1.webp",
-        "imageAlt": "Checkout",
         "details": []
       }
     ]

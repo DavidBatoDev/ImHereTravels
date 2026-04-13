@@ -69,21 +69,21 @@ export default async function TourDetailPage({ params }: { params: Params }) {
               <div className="mt-6 rounded-lg bg-white px-5 py-8 md:px-10 md:py-10">
                 <TourHeader header={tour.header} />
                 {tour.keyFacts.length > 0 && <KeyFacts items={tour.keyFacts} />}
-                {tour.whatsIncluded && (
+                {tour.whatsIncluded?.heading && (
                   <WhatsIncluded section={tour.whatsIncluded} />
                 )}
-                {tour.tripHighlights && (
+                {tour.tripHighlights?.heading && (
                   <TripHighlights section={tour.tripHighlights} />
                 )}
-                {tour.map && <TourMap section={tour.map} />}
-                {tour.itinerary.days.length > 0 && (
+                {tour.map?.heading && <TourMap section={tour.map} />}
+                {tour.itinerary.heading && tour.itinerary.days.length > 0 && (
                   <Itinerary section={tour.itinerary} />
                 )}
-                {tour.whereWeStay && (
+                {tour.whereWeStay?.heading && (
                   <WhereWeStay section={tour.whereWeStay} />
                 )}
-                {tour.faqs && <Faqs section={tour.faqs} />}
-                {tour.thingsToKnow && (
+                {tour.faqs?.heading && <Faqs section={tour.faqs} />}
+                {tour.thingsToKnow?.heading && (
                   <ThingsToKnow section={tour.thingsToKnow} />
                 )}
               </div>
@@ -99,9 +99,15 @@ export default async function TourDetailPage({ params }: { params: Params }) {
           </div>
         </div>
 
-        {tour.testimonials && <Testimonials section={tour.testimonials} />}
-        {tour.relatedTours && <RelatedTours section={tour.relatedTours} />}
-        {tour.community && <CommunityGrid section={tour.community} />}
+        {tour.testimonials?.heading && (
+          <Testimonials section={tour.testimonials} />
+        )}
+        {tour.relatedTours?.heading && (
+          <RelatedTours section={tour.relatedTours} />
+        )}
+        {tour.community?.heading && (
+          <CommunityGrid section={tour.community} />
+        )}
       </main>
     </>
   );

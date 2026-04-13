@@ -100,88 +100,66 @@ export const argentinasWonders: Tour = {
         "dayNumber": 1,
         "title": "Hola, Buenos Aires!",
         "description": "Land at Ezeiza International Airport (EZE) and enjoy a warm welcome from our team with big signs and smiles. A private 45-minute transfer takes you to your hotel. Spend the afternoon exploring this vibrant city at your own pace—think cobblestone streets, outdoor cafes, and the aroma of Argentine beef. Tonight, bond with your crew over a welcome dinner featuring steak and Malbec!",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/09/argentine-triphighlight-3.webp?w=1280&ssl=1",
-        "imageAlt": "Hola, Buenos Aires!",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Flight Buenos Aires to Calafate",
         "description": "After breakfast, a private 30-minute transfer gets you to Jorge Newbery Airport (AEP) for your flight to El Calafate (approx. 3 hours). From there, a shared 3-hour ride takes you to El Chaltén. Settle into your hotel and soak in the wild vibes and the rest of the day is yours!",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/09/argentina-triphighlight-1.webp?w=1280&ssl=1",
-        "imageAlt": "Flight Buenos Aires to Calafate",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "El Chaltén Adventures",
         "description": "Fuel up with breakfast, then explore El Chaltén at your leisure. This hiker’s paradise offers trails for all levels—pick your path and dive into Patagonia’s beauty. Later, a private 3-hour transfer (driver only) brings you back to El Calafate, with entry to Los Glaciares National Park included.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/09/argentine-triphighlight-2.webp?w=1280&ssl=1",
-        "imageAlt": "El Chaltén Adventures",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Glacier Trekking Glory",
         "description": "Today’s the big thrill! After breakfast, we’ll pick you up for a full-day Minitrekking adventure on Perito Moreno Glacier. Cruise across Rico Lake, trek the ice with crampons, and enjoy stunning views from the walkways. It’s a 10-hour shared tour with bilingual guides bring your own lunch and soak in Patagonia’s wild magic!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Glacier Trekking Glory",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Buenos Aires Redux",
         "description": "Post-breakfast, a private transfer takes you to El Calafate Airport for your 3-hour flight back to Buenos Aires (AEP). A 30-minute ride lands you at your hotel. This afternoon, hop on a bike for a 3.5-4 hour private tour through Recoleta and Palermo—pedal through parks, past mansions, and into BA’s chic vibe.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Buenos Aires Redux",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Private navigation at El Tigre",
         "description": "After breakfast, dive into a full-day private city tour (7 hours). Hit Plaza de Mayo, stroll San Telmo and La Boca, and visit Recoleta Cemetery with a bilingual guide. Tonight, head out on your own for a tango show with dinner, savor Malbec and let the music sweep you away!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Private navigation at El Tigre",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "Buenos Aires Your Way",
         "description": "Enjoy breakfast, then make the day yours! Sip coffee at a café, hunt for leather goodies in Palermo Soho, or just soak up BA’s buzz. It’s all up to you in this vibrant city.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Buenos Aires Your Way",
         "details": []
       },
       {
         "dayNumber": 8,
         "title": "Jungle Bound",
         "description": "After breakfast, a private 30-minute transfer takes you to Jorge Newbery Airport (AEP) for a 2-hour flight to Puerto Iguazú. A private 20-30 minute ride (with guide) gets you to your hotel. Relax in this tropical gateway to the falls and the day’s yours to unwind.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Jungle Bound",
         "details": []
       },
       {
         "dayNumber": 9,
         "title": "Iguazú Falls Up Close",
         "description": "Post-breakfast, we’ll pick you up for a full-day private tour of Iguazú Falls (Argentine side). Walk the trails, ride the ecological train to Devil’s Throat, and feel the power of 275 waterfalls. Add the Great Adventure Boat Trip for a thrilling ride under the cascades—bring spare clothes, you’ll get soaked! It’s a 7-hour jungle blast.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Iguazú Falls Up Close",
         "details": []
       },
       {
         "dayNumber": 10,
         "title": "Brazilian views",
         "description": "After breakfast, cross the border (passport ready!) for a half-day private tour of Iguazú Falls (Brazilian side). Enjoy panoramic views, stroll the walkways, and feel the mist—2-3 hours of pure awe. Back to your hotel afterward to chill.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Brazilian views",
         "details": []
       },
       {
         "dayNumber": 11,
         "title": "Adios, Argentina!",
         "description": "Enjoy breakfast, then spend your last day at leisure in Puerto Iguazú. Soak up the jungle vibes, then make your own way to the airport (IGR). You’re leaving with epic memories and a camera full of wonders!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341310782_argentina-header-2.webp?alt=media&token=6148f26b-1c54-47bd-8833-5a6472e273d8",
-        "imageAlt": "Adios, Argentina!",
         "details": []
       }
     ]

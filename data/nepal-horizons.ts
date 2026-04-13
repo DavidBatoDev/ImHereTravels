@@ -102,72 +102,54 @@ export const nepalHorizons: Tour = {
         "dayNumber": 1,
         "title": "A Himalayan Welcome",
         "description": "Welcome to Kathmandu! Settle in at your hotel—the rest of the day is free for you to relax after your journey or explore the nearby area at your own pace. Let’s have an evening of culture with welcome dinner at a local Nepali restaurant.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-1.webp?w=1280&ssl=1",
-        "imageAlt": "A Himalayan Welcome",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Heritage Hunt",
         "description": "Let’s start the day at the sacred Bagmati River, where the iconic Pashupatinath Temple whispers stories of devotion. Next, feel the calm energy at the majestic Boudhanath Stupa before stepping back in time at the historic Kathmandu Durbar Square. In the afternoon, wander through the charming streets of Bhaktapur filled with ancient palaces, stunning temples, and vibrant local life.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-2.webp?w=1280&ssl=1",
-        "imageAlt": "Heritage Hunt",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "Journey To Chitwan",
         "description": "We’ll take a scenic drive along Trishuli River to Chitwan National Park. After a relaxed check-in and delicious lunch, let’s take a stroll to the village to catch a beautiful sunset view by the riverbank.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-3.webp?w=1280&ssl=1",
-        "imageAlt": "Journey To Chitwan",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Into the Wild",
         "description": "Wake up to nature and kick off the day with a peaceful canoe ride through Chitwan’s waterways, spotting rare birds and maybe a croc or two! Then, let’s lace up for a jungle walk with our expert naturalist—the best way to see wildlife up close! After lunch, hop on a Jeep Safari deep into the forest, on the lookout for rhinos, sloth bears, and if luck is on your side… the legendary Royal Bengal Tiger! Cap off the day with Tharu Tribal Dance under the stars and a hearty dinner.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-4.webp?w=1280&ssl=1",
-        "imageAlt": "Into the Wild",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Bandipur Awaits",
         "description": "Say goodbye to the jungle and hello to Bandipur, a charming hilltop town frozen in time. Stroll its colorful bazaar, soak up those Himalayan views, and breathe in the mountain air. Ready for a little adventure? Hike to Ramkot Village and experience authentic rural life. Bonus: If you’re feeling curious, you can taste local homemade liquor (Raksi) straight from the source—cheers to that!\n",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/nepal-header-1.webp",
-        "imageAlt": "Bandipur Awaits",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Lakes & Peaks",
         "description": "After a refreshing forest walk, we drive off to Pokhara, the ultimate chill-and-thrill destination.\nWe’ll glide across Phewa Lake in a boat, visit a temple on a tiny island, and soak in the mesmerizing reflection of Machhapuchhre (Fishtail Peak). Pure magic!",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/nepal-header-1.webp",
-        "imageAlt": "Lakes & Peaks",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "Hike to Heaven",
         "description": "Fuel up—it’s hike day! From Kande, we’ll begin our scenic trek to Australian Base Camp, winding through lush forests, Gurung villages, and stone-paved trails, rewarded with jaw-dropping views of Annapurna, Manaslu, and Fishtail. After our scenic trek, we’ll return to Pokhara for some well-earned downtime.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/nepal-header-1.webp",
-        "imageAlt": "Hike to Heaven",
         "details": []
       },
       {
         "dayNumber": 8,
         "title": "Your Day, Your Way",
         "description": "Today is yours! Stroll the lakeside, sip coffee in cozy cafés, shop for souvenirs, or simply relax. In the evening, we’ll gather for a farewell dinner to toast our adventure together. Laughter, stories, and good vibes guaranteed.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/nepal-header-1.webp",
-        "imageAlt": "Your Day, Your Way",
         "details": []
       },
       {
         "dayNumber": 9,
         "title": "Until Next Time",
         "description": "Enjoy your last breakfast with a view before heading to the airport. You’re leaving Nepal but trust us, part of your heart will stay behind.",
-        "image": "https://imheretravels.com/wp-content/uploads/2025/08/nepal-header-1.webp",
-        "imageAlt": "Until Next Time",
         "details": []
       }
     ]

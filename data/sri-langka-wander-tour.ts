@@ -113,96 +113,72 @@ export const sriLangkaWanderTour: Tour = {
         "dayNumber": 1,
         "title": "Arrival in Negombo",
         "description": "You’ve just arrived, time to start the trip of a lifetime! Once you’ve collected your bags at Bandaranaike International Airport, our local guide will be there to assist you and transfer you to our first hotel. Relax for a bit or head out exploring; it's all up to you. In the evening, it's time to meet your fellow travelers.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/08/srilanka-triphighlight-3.webp?w=1280&ssl=1",
-        "imageAlt": "Arrival in Negombo",
         "details": []
       },
       {
         "dayNumber": 2,
         "title": "Travel to Colombo and City Tour",
         "description": "After breakfast, we set off to Colombo to delve into the country's culture, history, and modernity. We'll visit the National Museum and the famous Lotus Tower for breathtaking city views. Get that perfect city pic and prepare for dinner back at the hotel.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/08/srilanka-triphighlight-2.webp?w=1280&ssl=1",
-        "imageAlt": "Travel to Colombo and City Tour",
         "details": []
       },
       {
         "dayNumber": 3,
         "title": "Visit Dambulla Rock Temple",
         "description": "We journey to Dambulla to explore the stunning cave temples and the Golden Temple. After checking into our accommodation in Habarana, we'll hike to the top of Pidurangala for amazing sunset views.",
-        "image": "https://imheretravels.com/wp-content/uploads/2024/08/srilanka-day-10.webp",
-        "imageAlt": "Visit Dambulla Rock Temple",
         "details": []
       },
       {
         "dayNumber": 4,
         "title": "Sigiriya and Cycling Tour",
         "description": "On the morning of day four, embark on a cycling tour that takes you through the scenic surroundings of Sigiriya. The tour highlights include a visit to the iconic World Heritage Site of Sigiriya, where you'll climb the stairs through the great lion's paws and explore the ancient fortress and its innovative hydraulic system.",
-        "image": "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/08/srilanka-triphighlight-1.webp?w=1280&ssl=1",
-        "imageAlt": "Sigiriya and Cycling Tour",
         "details": []
       },
       {
         "dayNumber": 5,
         "title": "Matale Spice Gardens and Kandy",
         "description": "Explore Matale's spice gardens and sample herbal tea before heading to the vibrant city of Kandy. Visit Buddhist sites, stroll through local markets, and enjoy traditional music and a cultural show in the evening.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Matale Spice Gardens and Kandy",
         "details": []
       },
       {
         "dayNumber": 6,
         "title": "Nuwara Eliya & Train Ride to Ella",
         "description": "Drive through tea-covered hills to Nuwara Eliya, then take the iconic scenic train ride from Nanu Oya to Ella, capturing stunning views of green valleys and small villages along the way.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Nuwara Eliya & Train Ride to Ella",
         "details": []
       },
       {
         "dayNumber": 7,
         "title": "It’s Time to Explore Ella",
         "description": "Hike to Ella’s Rock or Little Adams Peak, visit tea estates, or stroll through tranquil forests. After a day of exploring, prepare for dinner and maybe a few drinks.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "It’s Time to Explore Ella",
         "details": []
       },
       {
         "dayNumber": 8,
         "title": "Rest and Recharge",
         "description": "Travel to Arugam Bay for a chill day. Relax by the beach with cocktails or take a surf lesson. In the evening, meet up for dinner and drinks.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Rest and Recharge",
         "details": []
       },
       {
         "dayNumber": 9,
         "title": "Surfing & Jeep Safari Kumana National Park",
         "description": "Fuel up with a big breakfast and get ready for a day of surfing with highly qualified instructors. After surfing, a jeep safari through Kumana National Park. Spot crocodiles, leopards, and elephants!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Surfing & Jeep Safari Kumana National Park",
         "details": []
       },
       {
         "dayNumber": 10,
         "title": "Galle City Tour",
         "description": "Head to Galle to explore the mesmerizing Galle Fort and enjoy panoramic views of the Indian Ocean.",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Galle City Tour",
         "details": []
       },
       {
         "dayNumber": 11,
         "title": "Madu Ganga Experience",
         "description": "Experience a cruise in a canopied, outboard motor-powered boat. Boat safari along the river is a relaxing trip with plenty of interesting stops. Later visit Kosgoda Turtle hatchery Discover the inspiring conservation efforts at the Kosgoda Turtle Hatchery, a sanctuary dedicated to protecting endangered sea turtles",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Madu Ganga Experience",
         "details": []
       },
       {
         "dayNumber": 12,
         "title": "Checkout",
         "description": "Exchange contacts with your new friends and check out after breakfast. Our trustee tour guide can help you organise your onward travel plans. It's not goodbye—it's see you later!",
-        "image": "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
-        "imageAlt": "Checkout",
         "details": []
       }
     ]
