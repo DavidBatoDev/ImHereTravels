@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/app/components/global/Header";
+import Footer from "@/app/components/global/Footer";
 import ShareButton from "./_components/ShareButton";
 import { getAllTourSlugs, getTourBySlug } from "@/data/tours";
 import Breadcrumbs from "./_components/Breadcrumbs";
@@ -14,6 +15,7 @@ import Itinerary from "./_components/Itinerary";
 import WhereWeStay from "./_components/WhereWeStay";
 import Faqs from "./_components/Faqs";
 import ThingsToKnow from "./_components/ThingsToKnow";
+import Tips from "./_components/Tips";
 import Testimonials from "./_components/Testimonials";
 import RelatedTours from "./_components/RelatedTours";
 import CommunityGrid from "./_components/CommunityGrid";
@@ -86,6 +88,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
                 {tour.thingsToKnow?.heading && (
                   <ThingsToKnow section={tour.thingsToKnow} />
                 )}
+                {tour.tips?.heading && <Tips section={tour.tips} />}
               </div>
 
               <div className="mt-6 lg:hidden">
@@ -109,6 +112,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
           <CommunityGrid section={tour.community} />
         )}
       </main>
+      <Footer />
     </>
   );
 }

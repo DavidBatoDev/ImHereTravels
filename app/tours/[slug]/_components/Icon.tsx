@@ -14,6 +14,10 @@ import {
   HelpCircle,
   Download,
   Camera,
+  Luggage,
+  ShieldCheck,
+  Sun,
+  HeartHandshake,
   type LucideIcon,
 } from "lucide-react";
 import type { TourIcon } from "@/types/tour";
@@ -34,6 +38,10 @@ const MAP: Record<TourIcon, LucideIcon> = {
   faq: HelpCircle,
   download: Download,
   instagram: Camera,
+  luggage: Luggage,
+  shield: ShieldCheck,
+  sun: Sun,
+  handshake: HeartHandshake,
 };
 
 export default function Icon({

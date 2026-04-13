@@ -18,7 +18,10 @@ export default function RelatedTours({
             key={t.slug}
             className="overflow-hidden rounded-lg bg-white shadow-small"
           >
-            <Link href={`/tours/${t.slug}`} className="block">
+            <Link
+              href={`/tours/${t.slug}`}
+              className="flex h-full flex-col"
+            >
               <div className="relative aspect-[4/3] w-full bg-light-grey">
                 <Image
                   src={t.image}
@@ -28,8 +31,8 @@ export default function RelatedTours({
                   className="object-cover"
                 />
               </div>
-              <div className="p-5 md:p-6">
-                <span className="inline-flex items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight">
+              <div className="flex flex-1 flex-col p-5 md:p-6">
+                <span className="inline-flex w-fit items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight">
                   <Image
                     src="/Icons/SVG/Pin/pin-solid-red.svg"
                     alt=""
@@ -44,7 +47,7 @@ export default function RelatedTours({
                 <p className="mt-2 font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
                   {t.description}
                 </p>
-                <div className="mt-5 flex items-baseline gap-2">
+                <div className="mt-auto flex items-baseline gap-2 pt-5">
                   <span className="font-body text-b4-desktop text-dark-gray">
                     {t.priceFromLabel}
                   </span>

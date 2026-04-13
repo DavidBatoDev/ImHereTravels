@@ -1,5 +1,35 @@
 import Image from "next/image";
-import type { Tour } from "@/types/tour";
+
+// Static testimonials shared across every tour detail page.
+// Edit this list directly — there's no per-tour override.
+const HEADING = "What people say about us";
+
+const ITEMS = [
+  {
+    rating: 5,
+    date: "May 2023",
+    body: "Had an amazing time on the trial tour! Action packed with lots of fun things on the itinerary, and a great bunch of people. Would definitely go again!",
+    avatar: "/tours/philippine-sunrise/avatar-flynn.jpg",
+    author: "Flynn Deanne",
+    location: "London, United Kingdom",
+  },
+  {
+    rating: 5,
+    date: "February 2024",
+    body: "My experience has been amazing, I'll never forget it. I met extraordinary people and explored beautiful places. I definitely recommend to book a trip!",
+    avatar: "/tours/philippine-sunrise/avatar-manuel.jpg",
+    author: "Manuel Madonna",
+    location: "Milan, Italy",
+  },
+  {
+    rating: 5,
+    date: "July 2024",
+    body: "I enjoyed the tour! Seamless coordination of transportation and accommodation made me feel like a VIP throughout the trip! LOVED every bit of it!! I highly recommend!",
+    avatar: "/tours/philippine-sunrise/avatar-bella.jpg",
+    author: "Bella Millan",
+    location: "Cagayan, Philippines",
+  },
+];
 
 function Stars({ count }: { count: number }) {
   return (
@@ -16,21 +46,17 @@ function Stars({ count }: { count: number }) {
   );
 }
 
-export default function Testimonials({
-  section,
-}: {
-  section: NonNullable<Tour["testimonials"]>;
-}) {
+export default function Testimonials() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">
       <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
-        {section.heading}
+        {HEADING}
       </h2>
       <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {section.items.map((t) => (
+        {ITEMS.map((t) => (
           <li
             key={t.author}
-            className="flex flex-col gap-4 rounded-lg bg-white p-6 shadow-small"
+            className="flex flex-col gap-6 rounded-lg bg-white p-8 shadow-small md:p-10"
           >
             <div className="flex items-center justify-between">
               <Stars count={t.rating} />
@@ -38,24 +64,24 @@ export default function Testimonials({
                 {t.date}
               </span>
             </div>
-            <p className="font-body text-b4-mobile md:text-b4-desktop text-midnight">
+            <p className="font-body text-b2-mobile md:text-b2-desktop text-midnight">
               {t.body}
             </p>
-            <div className="mt-auto flex items-center gap-3 pt-2">
-              <div className="relative size-10 overflow-hidden rounded-full bg-light-grey">
+            <div className="mt-auto flex items-center gap-4 pt-2">
+              <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-light-grey">
                 <Image
                   src={t.avatar}
                   alt=""
                   fill
-                  sizes="40px"
+                  sizes="56px"
                   className="object-cover"
                 />
               </div>
               <div>
-                <p className="font-body text-b4-desktop font-medium text-midnight">
+                <p className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
                   {t.author}
                 </p>
-                <p className="font-body text-b4-desktop text-grey">
+                <p className="font-body text-b4-desktop text-vivid-orange">
                   {t.location}
                 </p>
               </div>

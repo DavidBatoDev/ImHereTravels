@@ -47,22 +47,25 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 text-left"
       >
-        <div>
-          <p className="font-body text-b4-desktop text-crimson-red">
-            Day {day.dayNumber}
-          </p>
-          <h3 className="mt-1 font-sans text-h5-mobile md:text-h5-desktop text-midnight">
-            {day.title}
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden
+            className="flex size-7 shrink-0 items-center justify-center rounded-full bg-crimson-red font-sans text-b4-desktop font-bold text-white"
+          >
+            {day.dayNumber}
+          </span>
+          <h3 className="font-sans text-h6-mobile md:text-h6-desktop text-midnight">
+            <span className="font-bold">Day {day.dayNumber}</span>{" "}
+            <span className="font-bold text-crimson-red">{day.title}</span>
           </h3>
         </div>
-        <span
+        <ChevronDown
           aria-hidden
-          className={`flex size-9 shrink-0 items-center justify-center rounded-full border border-midnight text-midnight transition-transform ${
+          strokeWidth={2}
+          className={`size-5 shrink-0 text-midnight transition-transform ${
             open ? "rotate-180" : ""
           }`}
-        >
-          <ChevronDown className="size-4" strokeWidth={2} />
-        </span>
+        />
       </button>
 
       <AnimatePresence initial={false}>
@@ -80,11 +83,14 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
           >
             <div
               className={`mt-5 grid grid-cols-1 gap-6 ${
-                day.image ? "md:grid-cols-[348px_1fr]" : ""
+                day.image ? "md:grid-cols-[1fr_348px]" : ""
               }`}
             >
+              <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+                {day.description}
+              </p>
               {day.image && (
-                <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-light-grey">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-light-grey md:row-span-2">
                   <Image
                     src={day.image}
                     alt={day.imageAlt ?? day.title}
@@ -94,30 +100,25 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
                   />
                 </div>
               )}
-              <div>
-                <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
-                  {day.description}
-                </p>
-                {day.details.length > 0 && (
-                  <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {day.details.map((d) => (
-                      <li key={d.label} className="flex items-start gap-3">
-                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-light-grey text-midnight">
-                          <Icon name={d.icon} className="size-4" />
-                        </span>
-                        <div>
-                          <p className="font-sans text-b4-desktop font-bold text-midnight">
-                            {d.label}
-                          </p>
-                          <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
-                            {d.value}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              {day.details.length > 0 && (
+                <ul className="mt-2 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                  {day.details.map((d) => (
+                    <li key={d.label} className="flex items-start gap-3">
+                      <span className="shrink-0 text-midnight">
+                        <Icon name={d.icon} className="size-5" />
+                      </span>
+                      <div>
+                        <p className="font-sans text-b4-desktop font-bold text-midnight">
+                          {d.label}
+                        </p>
+                        <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+                          {d.value}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </motion.div>
         )}

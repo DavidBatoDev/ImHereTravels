@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/app/components/global/Header";
+import Footer from "@/app/components/global/Footer";
 import { getAllTours } from "@/data/tours";
 
 export const metadata = {
@@ -15,7 +16,7 @@ export default function ToursPage() {
     <>
       <Header />
       <main className="flex-1">
-        <section className="mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24">
+        <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 md:px-8 md:pb-24 md:pt-10">
           <h1 className="font-display text-h1-mobile md:text-h1-desktop text-midnight">
             All Tours
           </h1>
@@ -72,6 +73,7 @@ export default function ToursPage() {
           </ul>
         </section>
       </main>
+      <Footer />
     </>
   );
 }
