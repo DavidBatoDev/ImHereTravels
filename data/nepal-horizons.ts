@@ -16,7 +16,7 @@ export const nepalHorizons: Tour = {
       "Join the 9-day Nepal Horizons tour: Kathmandu's sacred temples, Chitwan jungle safari, Bandipur village, and a hike to Australian Base Camp. GBP £1,099.",
   },
   gallery: {
-    hero: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
+    hero: "/images/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
     heroAlt: "Nepal Horizons — Himalayan temples and peaks",
     thumbnails: [],
   },
@@ -64,25 +64,25 @@ export const nepalHorizons: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
         imageAlt: "Pashupatinath Temple and Durbar Square",
         title: "Sacred temples of Kathmandu",
         subtitle: "Explore Pashupatinath & Durbar Square, the spiritual heart of Nepal",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-2.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-triphighlight-2.webp",
         imageAlt: "Jeep safari in Chitwan National Park",
         title: "Jungle adventure in Chitwan",
         subtitle: "Jungle walk & jeep safari in search of rhinos, tigers & rare birds",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-3.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-triphighlight-3.webp",
         imageAlt: "Bandipur bazaar streets",
         title: "Cultural immersion in Bandipur",
         subtitle: "Charming bazaar streets for the authentic rural life",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-4.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-triphighlight-4.webp",
         imageAlt: "Australian Base Camp Annapurna views",
         title: "Hike to Australian Base Camp",
         subtitle: "Scenic trek with panoramic views of Annapurna and Manaslu",
@@ -99,7 +99,7 @@ export const nepalHorizons: Tour = {
         title: "A Himalayan Welcome",
         description:
           "Welcome to Kathmandu! Settle in at your hotel — the rest of the day is free for you to relax after your journey or explore the nearby area at your own pace. Let's have an evening of culture with a welcome dinner at a local Nepali restaurant.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-1.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-1.webp",
         imageAlt: "Kathmandu arrival",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Ama-La" },
@@ -112,7 +112,7 @@ export const nepalHorizons: Tour = {
         title: "Heritage Hunt",
         description:
           "Let's start the day at the sacred Bagmati River, where the iconic Pashupatinath Temple whispers stories of devotion. Next, feel the calm energy at the majestic Boudhanath Stupa before stepping back in time at the historic Kathmandu Durbar Square. In the afternoon, wander through the charming streets of Bhaktapur filled with ancient palaces, stunning temples, and vibrant local life.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-2.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-2.webp",
         imageAlt: "Pashupatinath Temple and Bhaktapur",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Ama-La" },
@@ -130,7 +130,7 @@ export const nepalHorizons: Tour = {
         title: "Journey To Chitwan",
         description:
           "We'll take a scenic drive along the Trishuli River to Chitwan National Park. After a relaxed check-in and delicious lunch, let's take a stroll to the village to catch a beautiful sunset view by the riverbank.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-3.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-3.webp",
         imageAlt: "Trishuli River drive to Chitwan",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Landmark Forest Park" },
@@ -148,7 +148,7 @@ export const nepalHorizons: Tour = {
         title: "Into the Wild",
         description:
           "Wake up to nature and kick off the day with a peaceful canoe ride through Chitwan's waterways, spotting rare birds and maybe a croc or two! Then, let's lace up for a jungle walk with our expert naturalist — the best way to see wildlife up close. After lunch, hop on a Jeep Safari deep into the forest, on the lookout for rhinos, sloth bears, and if luck is on your side… the legendary Royal Bengal Tiger! Cap off the day with a Tharu Tribal Dance under the stars and a hearty dinner.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-4.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-4.webp",
         imageAlt: "Chitwan jungle safari",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Landmark Forest Park" },
@@ -165,7 +165,7 @@ export const nepalHorizons: Tour = {
         title: "Bandipur Awaits",
         description:
           "Say goodbye to the jungle and hello to Bandipur, a charming hilltop town frozen in time. Stroll its colorful bazaar, soak up those Himalayan views, and breathe in the mountain air. Ready for a little adventure? Hike to Ramkot Village and experience authentic rural life. Bonus: if you're feeling curious, you can taste local homemade liquor (Raksi) straight from the source — cheers to that!",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-5.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-5.webp",
         imageAlt: "Bandipur bazaar",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Durbar Himalaya" },
@@ -178,7 +178,7 @@ export const nepalHorizons: Tour = {
         title: "Lakes & Peaks",
         description:
           "After a refreshing forest walk, we drive off to Pokhara, the ultimate chill-and-thrill destination. We'll glide across Phewa Lake in a boat, visit a temple on a tiny island, and soak in the mesmerizing reflection of Machhapuchhre (Fishtail Peak). Pure magic!",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-6.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-6.webp",
         imageAlt: "Phewa Lake and Fishtail Peak",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Landmark" },
@@ -195,7 +195,7 @@ export const nepalHorizons: Tour = {
         title: "Hike to Heaven",
         description:
           "Fuel up — it's hike day! From Kande, we'll begin our scenic trek to Australian Base Camp, winding through lush forests, Gurung villages, and stone-paved trails, rewarded with jaw-dropping views of Annapurna, Manaslu, and Fishtail. After our scenic trek, we'll return to Pokhara for some well-earned downtime.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-7.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-7.webp",
         imageAlt: "Australian Base Camp trek",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Landmark" },
@@ -208,7 +208,7 @@ export const nepalHorizons: Tour = {
         title: "Your Day, Your Way",
         description:
           "Today is yours! Stroll the lakeside, sip coffee in cozy cafés, shop for souvenirs, or simply relax. In the evening, we'll gather for a farewell dinner to toast our adventure together. Laughter, stories, and good vibes guaranteed.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-8.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-8.webp",
         imageAlt: "Pokhara lakeside",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Hotel Landmark" },
@@ -221,7 +221,7 @@ export const nepalHorizons: Tour = {
         title: "Until Next Time",
         description:
           "Enjoy your last breakfast with a view before heading to the airport. You're leaving Nepal but trust us, part of your heart will stay behind.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-day-9.webp",
+        image: "/images/wp-content/uploads/2025/08/nepal-day-9.webp",
         imageAlt: "Nepal departure",
         details: [{ icon: "meals", label: "Meals", value: "Breakfast" }],
       },
@@ -232,28 +232,28 @@ export const nepalHorizons: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/hotel-ama-la-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/hotel-ama-la-accommodation.webp",
         imageAlt: "Hotel Ama-La",
         name: "Hotel Ama-La",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/landmark-forest-park-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/landmark-forest-park-accommodation.webp",
         imageAlt: "Landmark Forest Park",
         name: "Landmark Forest Park",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/hotel-durbar-himalaya-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/hotel-durbar-himalaya-accommodation.webp",
         imageAlt: "Hotel Durbar Himalaya",
         name: "Hotel Durbar Himalaya",
         nights: "1 night in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/hotel-landmark-pokhara-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/hotel-landmark-pokhara-accommodation.webp",
         imageAlt: "Hotel Landmark Pokhara",
         name: "Hotel Landmark Pokhara",
         nights: "3 nights in Hotel",
@@ -359,7 +359,7 @@ export const nepalHorizons: Tour = {
     description:
       "Kathmandu's sacred temples, Chitwan jungle safari, Bandipur's charm, and a scenic trek to Australian Base Camp.",
     price: "GBP £1,099",
-    image: "https://imheretravels.com/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
+    image: "/images/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
     imageAlt: "Nepal Horizons",
   },
 };

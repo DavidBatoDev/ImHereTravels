@@ -76,19 +76,19 @@ export const brazilsTreasures: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-trip-highlight-1.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-trip-highlight-1.webp",
         imageAlt: "Amazon River with pink dolphins",
         title: "Cruise the Amazon River and meet Pink Dolphins",
         subtitle: "",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-trip-highlight-2.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-trip-highlight-2.webp",
         imageAlt: "São Paulo neighborhoods",
         title: "Explore São Paulo's buzzing Neighborhoods",
         subtitle: "",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-trip-highlight-3.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-trip-highlight-3.webp",
         imageAlt: "Sambadrome Carnival",
         title: "Experience the electric energy of the Sambadrome during Carnival",
         subtitle: "",
@@ -105,7 +105,7 @@ export const brazilsTreasures: Tour = {
         title: "Arrival in Manaus",
         description:
           "Welcome to Brazil! Upon arrival in Manaus, our local team will greet you at the airport and transfer you to your hotel for a well-deserved rest. Depending on your arrival time, you can explore the local area or unwind in your room. The Amazon vibes start here, surrounded by rainforest rhythm.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-1.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-1.webp",
         imageAlt: "Arrival in Manaus",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "TRYP by Wyndham Manaus" },
@@ -121,7 +121,7 @@ export const brazilsTreasures: Tour = {
         title: "Grand Amazon River Experience",
         description:
           "Today, we journey deep into the Amazon River. Cruise past wooden stilt houses, witness the Meeting of the Waters, and feed friendly pink dolphins. We'll also visit an Indigenous village to learn about their traditions and way of life. A hearty Amazonian lunch onboard completes the adventure.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-2.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-2.webp",
         imageAlt: "Amazon River cruise",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "TRYP by Wyndham Manaus" },
@@ -138,7 +138,7 @@ export const brazilsTreasures: Tour = {
         title: "Flight to São Paulo",
         description:
           "We leave the jungle behind and fly to Brazil's largest city São Paulo. After landing, we'll head straight to our hotel in the vibrant neighborhood of Moema. Unwind from the flight or take a walk around the nearby streets filled with local cafés and energy.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-3.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-3.webp",
         imageAlt: "São Paulo skyline",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Mercure Sao Paulo Paulista" },
@@ -151,7 +151,7 @@ export const brazilsTreasures: Tour = {
         title: "Transfer to Paraty",
         description:
           "After breakfast, we take a scenic drive down the Costa Verde to the colonial town of Paraty. With colorful buildings, cobblestone streets, and lush mountains, it's a photographer's dream. Check in to your charming hotel and enjoy a calm evening walking the quaint lanes or enjoying a drink at the square.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-4.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-4.webp",
         imageAlt: "Paraty colonial town",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Pousada Porto Imperial" },
@@ -164,7 +164,7 @@ export const brazilsTreasures: Tour = {
         title: "Island Hopping in Paraty",
         description:
           "We set sail today for a tropical escape across Paraty's bay. Visit paradise islands, snorkel in clear waters, and soak in the sun. Our boat will stop at secret beaches and scenic spots while serving up delicious food and music onboard. Bring your sunscreen — it's a chill day!",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-5.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-5.webp",
         imageAlt: "Paraty island hopping",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Pousada Porto Imperial" },
@@ -181,7 +181,7 @@ export const brazilsTreasures: Tour = {
         title: "Journey from Paraty to Rio de Janeiro",
         description:
           "Today we head to one of the most iconic cities in the world — Rio de Janeiro! After the road trip, check into your beachfront hotel in Copacabana. You'll have time to relax, stroll the famous sidewalk, or dip your toes into the Atlantic before dinner. The Marvelous City awaits.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-6.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-6.webp",
         imageAlt: "Copacabana Beach Rio",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Americas Copacabana Hotel" },
@@ -208,7 +208,7 @@ export const brazilsTreasures: Tour = {
         title: "City Icons of Rio",
         description:
           "We're checking off the icons today! Visit Christ the Redeemer for panoramic views of the city, then take a cable car up Sugarloaf Mountain. Stop by the artistic Selarón Steps for some photos and get a real taste of Rio's magic. It's a day of legends and unforgettable sights.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-8.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-8.webp",
         imageAlt: "Christ the Redeemer and Sugarloaf",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Americas Copacabana Hotel" },
@@ -225,7 +225,7 @@ export const brazilsTreasures: Tour = {
         title: "Favela Jeep Tour",
         description:
           "Gain new perspective on Rio with a guided favela jeep tour, offering a raw and respectful look at the city's other side.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-9.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-9.webp",
         imageAlt: "Rio favela jeep tour",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Americas Copacabana Hotel" },
@@ -238,7 +238,7 @@ export const brazilsTreasures: Tour = {
         title: "Helicopter Ride",
         description:
           "Soar above Rio's skyline on a breathtaking helicopter ride and/or just take it slow with a day lounging on Ipanema Beach.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-10.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-10.webp",
         imageAlt: "Helicopter over Rio",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Americas Copacabana Hotel" },
@@ -251,7 +251,7 @@ export const brazilsTreasures: Tour = {
         title: "Sambadrome Carnival Night",
         description:
           "The grand finale is here! Tonight, you'll witness the spectacle of Brazil's Carnival at the Sambadrome. Dressed in sequins or sipping caipirinhas, it's a magical, musical night full of rhythm and sparkle.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/07/brazil-day-11.webp",
+        image: "/images/wp-content/uploads/2025/07/brazil-day-11.webp",
         imageAlt: "Sambadrome Carnival parade",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Americas Copacabana Hotel" },
@@ -287,28 +287,28 @@ export const brazilsTreasures: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/TRYP-by-wyndham-manaus-accommodation2.webp",
+          "/images/wp-content/uploads/2026/02/TRYP-by-wyndham-manaus-accommodation2.webp",
         imageAlt: "TRYP by Wyndham Manaus",
         name: "TRYP by Wyndham Manaus",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/mercure-sao-paulo-paulista-accommodation.webp",
+          "/images/wp-content/uploads/2026/02/mercure-sao-paulo-paulista-accommodation.webp",
         imageAlt: "Mercure Sao Paulo Paulista",
         name: "Mercure Sao Paulo Paulista",
         nights: "1 night in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/pousada-porto-imperial-accommodation.webp",
+          "/images/wp-content/uploads/2026/02/pousada-porto-imperial-accommodation.webp",
         imageAlt: "Pousada Porto Imperial",
         name: "Pousada Porto Imperial",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/americas-copacabana-hotel-accommodation2.webp",
+          "/images/wp-content/uploads/2026/02/americas-copacabana-hotel-accommodation2.webp",
         imageAlt: "Americas Copacabana Hotel",
         name: "Americas Copacabana Hotel",
         nights: "6 nights in Hotel",

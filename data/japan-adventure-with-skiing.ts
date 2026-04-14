@@ -19,7 +19,7 @@ export const japanAdventureWithSkiing: Tour = {
     "description": "Experience the perfect blend of tradition and innovation on this unforgettable journey through Japan. We start off in Tokyo, the vibrant capital where modern skyscrapers meet historic temples. Enjoy a"
   },
   "gallery": {
-    "hero": "https://imheretravels.com/wp-content/uploads/2025/10/japan-header-4.webp",
+    "hero": "/images/wp-content/uploads/2025/10/japan-header-4.webp",
     "heroAlt": "Japan Adventure (With Skiing)",
     "thumbnails": []
   },
@@ -60,25 +60,25 @@ export const japanAdventureWithSkiing: Tour = {
     "heading": "Trip Highlights",
     "items": [
       {
-        "image": "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
+        "image": "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
         "imageAlt": "Tokyo City Tour",
         "title": "Tokyo City Tour",
         "subtitle": ""
       },
       {
-        "image": "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-3.webp",
+        "image": "/images/wp-content/uploads/2025/10/japan-trip-highlight-3.webp",
         "imageAlt": "Tea Ceremony in Kyoto",
         "title": "Tea Ceremony in Kyoto",
         "subtitle": ""
       },
       {
-        "image": "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-4.webp",
+        "image": "/images/wp-content/uploads/2025/10/japan-trip-highlight-4.webp",
         "imageAlt": "Skiing in Sapporo",
         "title": "Skiing in Sapporo",
         "subtitle": ""
       },
       {
-        "image": "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-2.webp",
+        "image": "/images/wp-content/uploads/2025/10/japan-trip-highlight-2.webp",
         "imageAlt": "Famous Bullet Train",
         "title": "Famous Bullet Train",
         "subtitle": ""
@@ -211,7 +211,7 @@ export const japanAdventureWithSkiing: Tour = {
     "duration": "10 Days and 9 Nights",
     "description": "Experience the perfect blend of tradition and innovation on this unforgettable journey through Japan. We start off in Tokyo, the vibrant capital where modern sk",
     "price": "GBP £2,370",
-    "image": "https://imheretravels.com/wp-content/uploads/2025/10/japan-header-4.webp",
+    "image": "/images/wp-content/uploads/2025/10/japan-header-4.webp",
     "imageAlt": "Japan Adventure (With Skiing)"
   }
 };

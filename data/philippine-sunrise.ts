@@ -115,28 +115,28 @@ export const philippineSunrise: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-1.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-triphighlight-1.webp",
         imageAlt: "Canyoneering in Moalboal",
         title: "Canyoneering in Moalboal",
         subtitle: "Enjoy waterfalls and fresh water rivers",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-2.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-triphighlight-2.webp",
         imageAlt: "Roadtrip up north of Siargao",
         title: "Roadtrip up north of Siargao",
         subtitle: "See hidden gems and surf in paradise",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-4.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-triphighlight-4.webp",
         imageAlt: "Sardine Run",
         title: "Sardine Run",
         subtitle: "See the spectacle marine life",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-triphighlight-3.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-triphighlight-3.webp",
         imageAlt: "Surf in paradise",
         title: "Surf in paradise",
         subtitle: "Catch some waves in crystal waters",
@@ -164,7 +164,7 @@ export const philippineSunrise: Tour = {
         description:
           "Hey there, sunshine! Welcome to Cebu! Get ready to kick off your adventure in style. We'll scoop you up and whisk you off to your hotel, where you can unwind or hit up Ayala mall for some retail therapy. Later, join us for dinner and get ready to meet your new squad over drinks!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-1.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-1.webp",
         imageAlt: "Cebu Arrival",
         details: [
           {
@@ -185,7 +185,7 @@ export const philippineSunrise: Tour = {
         description:
           "After a lazy morning to recharge, we're off on a historical tour of Churches and Temples Cebu City! Get ready to explore cool churches and temples. Afterward, recharge for the night ahead, Cebu's nightlife is waiting for us!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-2.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-2.webp",
         imageAlt: "Cebu Historical Tour",
         details: [
           {
@@ -202,7 +202,7 @@ export const philippineSunrise: Tour = {
         description:
           "Rise and shine, adventurers! We're off to Moalboal! But first, we'll make a pitstop at the epic Simala Church for some Insta-worthy shots. Then, it's all about chilling beachside or poolside before we hit up Moalboal's hotspots!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-3.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-3.webp",
         imageAlt: "Travel to Moalboal and Chill",
         details: [
           {
@@ -223,7 +223,7 @@ export const philippineSunrise: Tour = {
         description:
           "After a well-deserved lie-in, it's time for the main event: Moalboal's famous sardine run and snorkeling with turtles! Dive in and explore the vibrant underwater world before considering an optional discovery dive. Then, it's time to recharge for another epic night!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-4.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-4.webp",
         imageAlt: "Sardine Run and Snorkeling",
         details: [
           {
@@ -245,7 +245,7 @@ export const philippineSunrise: Tour = {
         description:
           "Get ready to unleash your inner daredevil! Today, we're hitting the canyons for some adrenaline-pumping fun! Zip line through the canyon, take the plunge from insane heights, and get ready for an epic rush! Then, it's time to prep for another wild night in Moalboal!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-5-1.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-5-1.webp",
         imageAlt: "Canyoneering",
         details: [
           {
@@ -263,7 +263,7 @@ export const philippineSunrise: Tour = {
         description:
           "Early birds, it's time to catch that flight to Siargao! Once we touch down, it's straight to the hotel to drop our bags and head out for Siargao's famous sunset. Get ready to soak in those island vibes and start the night off right!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-6.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-6.webp",
         imageAlt: "Flight to Siargao and Sunset Chill",
         details: [
           {
@@ -285,7 +285,7 @@ export const philippineSunrise: Tour = {
         description:
           "Surf's up, dudes and dudettes! Get ready to ride the waves like a pro with local instructors by your side. Afterward, kick back and chill with some optional activities before we hit Siargao's nightlife scene for round two!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-7.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-7.webp",
         imageAlt: "Surf and Chill Afternoon",
         details: [
           {
@@ -307,7 +307,7 @@ export const philippineSunrise: Tour = {
         description:
           "Hop on board for a day of island hopping around Siargao's hidden gems! We'll snorkel, swim, and soak up the sun while exploring the best of what this paradise has to offer.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-8.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-8.webp",
         imageAlt: "Island Hopping",
         details: [
           {
@@ -329,7 +329,7 @@ export const philippineSunrise: Tour = {
         description:
           "Get ready for a full day road trip around Siargao! We'll explore stunning spots along the way, including the iconic Maasin River. Expect scenic drives, a delicious beachfront lunch stop, and plenty of time to soak in the island vibes while making memories to last a lifetime.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-9.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-9.webp",
         imageAlt: "North Trip",
         details: [
           {
@@ -351,7 +351,7 @@ export const philippineSunrise: Tour = {
         description:
           "It's your day, your way! Whether you want to catch some extra waves, discover hidden cafes, explore the island at your own pace, or simply soak up the sun, this free day is all about doing what feels good. Embrace the Siargao vibes and make the most of your island escape.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/siargao-day-6.webp",
+          "/images/wp-content/uploads/2024/05/siargao-day-6.webp",
         imageAlt: "Free Day in Siargao",
         details: [
           {
@@ -373,7 +373,7 @@ export const philippineSunrise: Tour = {
         description:
           "It's time to say goodbye (for now) and swap those Instagram handles with your newfound crew before going on your onward travels.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunrise-day-11.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunrise-day-11.webp",
         imageAlt: "Checkout",
         details: [
           {
@@ -393,21 +393,21 @@ export const philippineSunrise: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/redplanet-accommodation.webp",
+          "/images/wp-content/uploads/2024/05/redplanet-accommodation.webp",
         imageAlt: "Red Planet (or similar)",
         name: "Red Planet (or similar)",
         nights: "2 nights (Days 1-2)",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/lovesdiveresort-accommodation.webp",
+          "/images/wp-content/uploads/2024/05/lovesdiveresort-accommodation.webp",
         imageAlt: "Love's Dive Resort in Moalboal",
         name: "Love's Dive Resort (or similar)",
         nights: "3 nights (Days 3-5)",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/seasky-accommodation.webp",
+          "/images/wp-content/uploads/2024/05/seasky-accommodation.webp",
         imageAlt: "Siargao Seasky hotel",
         name: "Siargao Seasky (or similar)",
         nights: "5 nights (Days 6-10, checkout Day 11)",

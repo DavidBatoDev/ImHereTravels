@@ -19,7 +19,7 @@ export const indiaHoliFestivalTour: Tour = {
     "description": "It’s time to start exploring India. This tour is perfect for those first time travellers that have always wanted to explore the wonders of India but don’t want to do it alone. This tour will let you e"
   },
   "gallery": {
-    "hero": "https://imheretravels.com/wp-content/uploads/2025/01/india-header-2.webp",
+    "hero": "/images/wp-content/uploads/2025/01/india-header-2.webp",
     "heroAlt": "India Holi Festival Tour",
     "thumbnails": []
   },
@@ -242,7 +242,7 @@ export const indiaHoliFestivalTour: Tour = {
     "duration": "13 Days and 12 Nights",
     "description": "It’s time to start exploring India. This tour is perfect for those first time travellers that have always wanted to explore the wonders of India but don’t want ",
     "price": "GBP £1,099",
-    "image": "https://imheretravels.com/wp-content/uploads/2025/01/india-header-2.webp",
+    "image": "/images/wp-content/uploads/2025/01/india-header-2.webp",
     "imageAlt": "India Holi Festival Tour"
   }
 };

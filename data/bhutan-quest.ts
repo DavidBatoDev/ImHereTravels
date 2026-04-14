@@ -16,7 +16,7 @@ export const bhutanQuest: Tour = {
       "Join the 7-day Bhutan Quest: trek to Tiger's Nest, raft the Mo Chhu, visit Dzongs, and explore Thimphu. Small group, local guides, GBP £1,355.",
   },
   gallery: {
-    hero: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-header-1.webp",
+    hero: "/images/wp-content/uploads/2025/08/bhutan-header-1.webp",
     heroAlt: "Bhutan Quest — Himalayan landscapes",
     thumbnails: [],
   },
@@ -88,7 +88,7 @@ export const bhutanQuest: Tour = {
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/10/bhutan-triphighlight-4.webp",
+          "/images/wp-content/uploads/2025/10/bhutan-triphighlight-4.webp",
         imageAlt: "Dochula Pass with 108 chortens",
         title: "Dochula Pass",
         subtitle:
@@ -106,7 +106,7 @@ export const bhutanQuest: Tour = {
         title: "Arrival in Bhutan",
         description:
           "You've made it to Bhutan arriving in Paro international airport where you will be greeted by your local guide who will transfer you to our first hotel where you can relax and chill or go out to explore — the choice is yours. In the evening we will have dinner to meet your fellow travel companions.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-1.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-1.webp",
         imageAlt: "Bhutan Day 1 — Arrival in Paro",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "River Valley Resort (or similar)" },
@@ -119,7 +119,7 @@ export const bhutanQuest: Tour = {
         title: "Ride the Rapids",
         description:
           "After a leisurely breakfast we will take a short van ride to visit the famous Punakha Dzong which served as both the religious and administrative centre of Bhutan in the past. After Punakha Dzong we make our way to visit Punakha Suspension Bridge — the longest suspension bridge in Bhutan. This is where the real fun begins: we then make our way to white-water rafting in Mo Chu river to get the adrenaline pumping. Lunch will then be served as a riverside picnic along the same river we just rafted down before making our way to Gangtey.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-2.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-2.webp",
         imageAlt: "White-water rafting on Mo Chhu River",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "ABC Eco Lodge" },
@@ -136,7 +136,7 @@ export const bhutanQuest: Tour = {
         title: "Visit Gangteng Monastery",
         description:
           "Fuel up on breakfast before visiting Gangteng Monastery, a key Nyingmapa site. We'll then enjoy our first trek along the valley's nature trail, famous for its winter Black-Necked Crane migration. Afterward, we'll drive the winding hillside roads to Thimphu, Bhutan's capital (population ~90,000). Following hotel check-in, we'll visit the impressive Tashichho Dzong, then return to the hotel to freshen up before dinner and a well-deserved drink.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-3.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-3.webp",
         imageAlt: "Gangteng Monastery valley",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Damisa Bhutan" },
@@ -153,7 +153,7 @@ export const bhutanQuest: Tour = {
         title: "Thimphu City Tour",
         description:
           "Today we explore Thimphu, Bhutan's capital, beginning at the Memorial Chorten with its golden spires and bells. We'll then visit the Folk Heritage Museum for insight into Bhutanese life, followed by the National Library of Bhutan (est. 1967) to see rare texts and traditional handmade papers. In the evening, we return to the hotel to freshen up before dinner.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-4.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-4.webp",
         imageAlt: "Thimphu city Memorial Chorten",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Damisa Bhutan" },
@@ -170,7 +170,7 @@ export const bhutanQuest: Tour = {
         title: "Visit the National Museum and Paro Dzong",
         description:
           "After breakfast, we travel from Thimphu to Paro, the final leg of our journey. We'll begin with the National Museum of Bhutan, showcasing art and bronze statues from across the country, then visit the 16th-century Paro Dzong, a masterpiece of Bhutanese architecture. To end the day, we'll relax at the Namgay Artisanal Brewery, sampling local beers with views of flights landing at Paro airport.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-5.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-5.webp",
         imageAlt: "Paro Dzong",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Rema Resort" },
@@ -187,7 +187,7 @@ export const bhutanQuest: Tour = {
         title: "Tiger's Nest Temple",
         description:
           "After breakfast, we set out on a hike to Tiger's Nest (Taktsang Monastery), one of Bhutan's most iconic sites. From the viewpoint, enjoy breathtaking vistas of the Paro Valley and river, before continuing on to the monastery to learn its rich history. Post-hike, guests may opt for a traditional hot stone bath to recover, before gathering in the evening for a farewell dinner to celebrate our adventure.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-6.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-6.webp",
         imageAlt: "Tiger's Nest Temple hike",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Rema Resort" },
@@ -200,7 +200,7 @@ export const bhutanQuest: Tour = {
         title: "Checkout",
         description:
           "Grab everyone's insta handles and checkout after one last breakfast together. Our local guide will help organise airport transfers for everyone — it's not goodbye, it's see you later.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-day-7.webp",
+        image: "/images/wp-content/uploads/2025/08/bhutan-day-7.webp",
         imageAlt: "Paro airport departure",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "Rema Resort (checkout)" },
@@ -214,28 +214,28 @@ export const bhutanQuest: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/river-valley-hotel-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/river-valley-hotel-accommodation.webp",
         imageAlt: "River Valley Resort",
         name: "River Valley Resort (or similar)",
         nights: "1 night in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/abc-lodge-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/abc-lodge-accommodation.webp",
         imageAlt: "ABC Lodge",
         name: "ABC Lodge",
         nights: "1 night in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/damisa-hotel-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/damisa-hotel-accommodation.webp",
         imageAlt: "Damisa Bhutan",
         name: "Damisa Bhutan",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/08/rema-resort-accommodation.webp",
+          "/images/wp-content/uploads/2025/08/rema-resort-accommodation.webp",
         imageAlt: "Rema Resort",
         name: "Rema Resort",
         nights: "2 nights in Hotel",
@@ -341,7 +341,7 @@ export const bhutanQuest: Tour = {
     description:
       "Trek to Tiger's Nest, raft the Mo Chhu, and explore Bhutan's most stunning Dzongs, monasteries, and Himalayan landscapes.",
     price: "GBP £1,355",
-    image: "https://imheretravels.com/wp-content/uploads/2025/08/bhutan-header-1.webp",
+    image: "/images/wp-content/uploads/2025/08/bhutan-header-1.webp",
     imageAlt: "Bhutan Quest",
   },
 };

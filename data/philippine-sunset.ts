@@ -121,21 +121,21 @@ export const philippineSunset: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-triphighlight-1.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-triphighlight-1.webp",
         imageAlt: "El Nido Island Hopping",
         title: "El Nido Island Hopping",
         subtitle: "Beautiful islands, lagoons, & beaches",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-triphighlight-2.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-triphighlight-2.webp",
         imageAlt: "Isla Experience",
         title: "Isla Experience",
         subtitle: "Enjoy the island under the stars",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-6.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-6.webp",
         imageAlt: "Kayaking & Canoeing",
         title: "Kayaking & Canoeing",
         subtitle: "Paddle through hidden lagoons",
@@ -154,7 +154,7 @@ export const philippineSunset: Tour = {
         description:
           "Touching down in Manila, our vibrant city of excitement and culture, you'll be greeted by our friendly van ready to whisk you away to our cozy hotel. Take some time to unwind and soak in the anticipation of the adventures ahead before joining us for a delightful meet and greet dinner. Get ready to bond with your fellow travelers and dive into the pulse of Manila's nightlife scene!",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-1.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-1.webp",
         imageAlt: "Welcome to Manila!",
         details: [
           {
@@ -175,7 +175,7 @@ export const philippineSunset: Tour = {
         description:
           "Embrace a leisurely morning to recharge your energy after your journey. Then, we're off on a captivating historical tour of Manila. Immerse yourself in the stories of the city's history before freshening up for an evening of culinary delights and exploring Manila's vibrant nightlife.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-2.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-2.webp",
         imageAlt: "Dive into Manila's History",
         details: [
           {
@@ -196,7 +196,7 @@ export const philippineSunset: Tour = {
         description:
           "Kicking off early for a scenic flight to Port Barton. Arriving at our beachfront haven, prepare to be spellbound by the mesmerizing sunset as we sip on refreshing drinks by the shore.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-3.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-3.webp",
         imageAlt: "Flight to Port Barton",
         details: [
           {
@@ -217,7 +217,7 @@ export const philippineSunset: Tour = {
         description:
           "Start your day as we embark on an island-hopping adventure! Discover hidden coves, dive into crystal-clear waters, and encounter marine wonders as we snorkel with turtles. With each island revealing its own enchanting charm, let's toast to adventure amidst breathtaking landscapes.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-4.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-4.webp",
         imageAlt: "Island Hopping and Snorkeling",
         details: [
           {
@@ -243,7 +243,7 @@ export const philippineSunset: Tour = {
         description:
           "Farewell, Port Barton, and hello, El Nido! Brace yourself for a scenic journey filled with awe-inspiring vistas. Upon arrival, let the golden hues of sunset wash over you as we kick back on the beach with drinks in hand. It's the perfect welcome to this tropical paradise.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-5.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-5.webp",
         imageAlt: "Journey to El Nido",
         details: [
           {
@@ -269,7 +269,7 @@ export const philippineSunset: Tour = {
         description:
           "We set sail for a day of exploration in El Nido. Paddle through turquoise lagoons, and on pristine beaches. Whether you're kayaking or snorkeling, every moment promises to be picture-perfect. Cap off the day with a magical sunset cruise, painting the sky with vibrant hues.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-6.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-6.webp",
         imageAlt: "Kayaking and Island Exploration",
         details: [
           {
@@ -295,7 +295,7 @@ export const philippineSunset: Tour = {
         description:
           "Indulge in a day of blissful relaxation at Nacpan Beach, where time seems to stand still amidst the soft sands and azure waters. Feel the thrill of soaring through the sky on a sunset zipline, adding an extra dash of excitement to your beach day.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-7.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-7.webp",
         imageAlt: "Relaxation at Nacpan Beach",
         details: [
           {
@@ -321,7 +321,7 @@ export const philippineSunset: Tour = {
         description:
           "Escape to the tranquil oasis of Isla Darocoton, where palm-fringed shores and crystal-clear waters await. Unwind in your beachfront paradise, listening to the gentle lull of the waves and savoring the serenity of this secluded haven.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-8.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-8.webp",
         imageAlt: "Off-Grid Experience at Isla Darocoton",
         details: [
           {
@@ -347,7 +347,7 @@ export const philippineSunset: Tour = {
         description:
           "Embark on an underwater adventure to a mesmerizing shipwreck site, where colorful marine life awaits your discovery. Delve into Filipino culture with a hands-on cooking class and village tour, immersing yourself in the warmth and hospitality of the locals. As night falls, gather around the bonfire for an evening of laughter and song under the starlit sky.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-9.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-9.webp",
         imageAlt: "Shipwreck Snorkel and Cultural Experience",
         details: [
           {
@@ -373,7 +373,7 @@ export const philippineSunset: Tour = {
         description:
           "Today is all yours to soak in the beauty of El Nido at your own pace. Whether you choose to explore hidden lagoons, chill on the beach, or treat yourself to some local eats, this is your moment to do you. As the sun sets on our final evening together, we'll gather one last time to celebrate the memories, the friendships, and the magic of the journey.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-10.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-10.webp",
         imageAlt: "Free Day in El Nido",
         details: [
           {
@@ -399,7 +399,7 @@ export const philippineSunset: Tour = {
         description:
           "As we bid farewell to this slice of paradise, take a moment to reflect on the adventures shared and the friendships forged. Until we meet again, may the spirit of the Philippines stay with you, like a glowing sunset painting the sky with memories of adventure and joy.",
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/philippinessunset-day-11.webp",
+          "/images/wp-content/uploads/2024/05/philippinessunset-day-11.webp",
         imageAlt: "Farewell",
         details: [
           {
@@ -416,28 +416,28 @@ export const philippineSunset: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/lubd-accommodation.webp",
+          "/images/wp-content/uploads/2024/05/lubd-accommodation.webp",
         imageAlt: "Lub D Makati (or similar)",
         name: "Lub D Makati (or similar)",
         nights: "2 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/10/ferellee-beach-bront-inn-accommodation2.webp",
+          "/images/wp-content/uploads/2025/10/ferellee-beach-bront-inn-accommodation2.webp",
         imageAlt: "Ferellee Beach Front Inn",
         name: "Ferellee Beach Front Inn",
         nights: "2 nights in Cottages",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2024/05/isla-accommodation-1.webp",
+          "/images/wp-content/uploads/2024/05/isla-accommodation-1.webp",
         imageAlt: "Isla Experience",
         name: "Isla Experience",
         nights: "2 nights in Beach Hut",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/01/southanchorage-accommodation.webp",
+          "/images/wp-content/uploads/2025/01/southanchorage-accommodation.webp",
         imageAlt: "South Anchorage",
         name: "South Anchorage",
         nights: "4 nights in Hotel",

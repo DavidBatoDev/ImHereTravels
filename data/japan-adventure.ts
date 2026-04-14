@@ -16,7 +16,7 @@ export const japanAdventure: Tour = {
       "Join the 10-day Japan Adventure: Tokyo city tour, bullet train to Kyoto, tea ceremony, and Sapporo's snowy charm. Optional skiing. GBP £2,150.",
   },
   gallery: {
-    hero: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
+    hero: "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
     heroAlt: "Japan Adventure — Tokyo, Kyoto, Sapporo",
     thumbnails: [],
   },
@@ -65,27 +65,27 @@ export const japanAdventure: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
         imageAlt: "Tokyo City Tour",
         title: "Tokyo City Tour",
         subtitle:
           "Explore Tokyo and immerse yourself in the various popular landmarks the capital has to offer",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-2.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-2.webp",
         imageAlt: "Japan bullet train",
         title: "Famous Bullet Train",
         subtitle: "Hop aboard the infamous bullet train and make your way to Kyoto",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-3.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-3.webp",
         imageAlt: "Traditional tea ceremony in Kyoto",
         title: "Tea Ceremony in Kyoto",
         subtitle:
           "Experience the traditional tea ceremony and, if you're keen, try making some tea sweets",
       },
       {
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-4.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-4.webp",
         imageAlt: "Skiing in Sapporo",
         title: "Skiing in Sapporo (optional)",
         subtitle: "Extend your winter adventure with a trip to a nearby ski resort",
@@ -102,7 +102,7 @@ export const japanAdventure: Tour = {
         title: "Welcome to Tokyo",
         description:
           "A driver will wait for you upon arrival at the airport and transfer you and your fellow travelers to your accommodation in downtown Tokyo. Use the rest of your day for your own first exploration of the city.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-1.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-1.webp",
         imageAlt: "Tokyo arrival",
         details: [
           {
@@ -122,7 +122,7 @@ export const japanAdventure: Tour = {
         title: "Tokyo City Tour",
         description:
           "Explore Japan's dynamic capital like a local! Hop on Tokyo's world-renowned public transport system and visit must-see neighborhoods and landmarks. Recommended stops: Akihabara (anime, gaming, tech), Ueno, Asakusa with its famous Sensoji Temple and Nakamise Shopping Street, Shibuya and the famous scramble crossing, Harajuku's fashion district and the nearby Meiji-jingu shrine, and Shinjuku — where we recommend getting a bird's-eye view of the city from the Tokyo Metropolitan Government Building's observation deck. Finish the day with a meal in a typical Japanese izakaya and try some local specialties.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-2.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-2.webp",
         imageAlt: "Tokyo Shibuya scramble",
         details: [
           {
@@ -139,7 +139,7 @@ export const japanAdventure: Tour = {
         title: "Tokyo Free Day",
         description:
           "Explore other areas of Tokyo and the surrounding area at your own pace or relax at the hotel — the day is yours. Recommended day trips include Kamakura and Enoshima by the coast, or for something more traditional, Kawagoe in nearby Saitama prefecture. Otherwise, indulge in fun activities such as a visit to the teamLabs digital art museum or go shopping in one of the countless malls.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-3.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-3.webp",
         imageAlt: "Tokyo free day",
         details: [
           {
@@ -156,7 +156,7 @@ export const japanAdventure: Tour = {
         title: "Tokyo to Kyoto",
         description:
           "Today after breakfast we will hop aboard the famous bullet train (shinkansen) from Tokyo to the old capital of Kyoto. The rest of the day is free for you to explore on your own. We recommend checking out Yasaka Shrine and the Higashiyama area, or a trip to Fushimi Inari Taisha.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-4.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-4.webp",
         imageAlt: "Shinkansen bullet train to Kyoto",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "S-Peria Hotel (or similar)" },
@@ -169,7 +169,7 @@ export const japanAdventure: Tour = {
         title: "Kyoto City Tour",
         description:
           "Step into Japan's ancient capital and immerse yourself in serene temples, historical streets, and unforgettable scenic beauty — all in comfort with a chartered bus for the day. Stops include Kinkakuji, Arashiyama with its bamboo grove and picturesque river, Nishiki Market (Kyoto's Kitchen — ideal for lunch), Kiyomizudera, and Gion. Afterwards rest up and prepare for dinner and possibly a few drinks.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-5.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-5.webp",
         imageAlt: "Kyoto Kinkakuji and Gion",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "S-Peria Hotel (or similar)" },
@@ -182,7 +182,7 @@ export const japanAdventure: Tour = {
         title: "Tea Ceremony",
         description:
           "Today we will dive into some of Japan's rich culture as we experience a traditional Japanese tea ceremony and try your hand at tea sweets making under the guidance of a local teacher. The rest of the day is yours at leisure.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-6.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-6.webp",
         imageAlt: "Japanese tea ceremony",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "S-Peria Hotel (or similar)" },
@@ -195,7 +195,7 @@ export const japanAdventure: Tour = {
         title: "Kyoto to Sapporo",
         description:
           "You will transfer from Kyoto to one of Osaka's airports and then fly to Japan's northernmost prefecture and island of Hokkaido. After arriving in the regional capital of Sapporo the rest of the day is at leisure — go out exploring or just relax at the hotel, it's entirely up to you.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-7.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-7.webp",
         imageAlt: "Travel to Sapporo",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "New Otani Inn (or similar)" },
@@ -208,7 +208,7 @@ export const japanAdventure: Tour = {
         title: "Sapporo City Tour",
         description:
           "Enjoy the freedom of exploring Hokkaido's snowy capital at your own pace. Sapporo is a charming city with a cozy winter atmosphere, ideal for foodies, culture lovers, and snow seekers alike. Stops include Sapporo Clock Tower, Nijo Market, Sapporo's TV Tower and Odori Park, Ramen Yokocho, the Sapporo Beer Museum or Shiroi Koibito Park, and Tanukikoji Shopping Street. Then rest up and prepare for dinner.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-8.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-8.webp",
         imageAlt: "Sapporo snowy streets",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "New Otani Inn (or similar)" },
@@ -221,7 +221,7 @@ export const japanAdventure: Tour = {
         title: "Ski Day (Optional)",
         description:
           "Extend your winter adventure with a trip to a nearby ski resort! Perfect for skiing, snowboarding, or simply soaking in snowy mountain views with a cup of hot cocoa. Otherwise this day is at leisure. We recommend a day trip to nearby Otaru, a historic port town, for those less interested in hitting the slopes. If you have onward travels, our local tour guide can assist you with airport transfers.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-9-1.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-9-1.webp",
         imageAlt: "Skiing in Hokkaido",
         details: [
           { icon: "accommodation", label: "Accommodation", value: "New Otani Inn (or similar)" },
@@ -234,7 +234,7 @@ export const japanAdventure: Tour = {
         title: "Until Next Time",
         description:
           "Enjoy your last breakfast with a view before heading to the airport. You're leaving Japan but trust us, part of your heart will stay behind.",
-        image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-day-10.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-10.webp",
         imageAlt: "Sapporo departure",
         details: [
           { icon: "activities", label: "Activity", value: "Check Out" },
@@ -248,21 +248,21 @@ export const japanAdventure: Tour = {
     items: [
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/sunshine-city-prince-hotel-accommodation.webp",
+          "/images/wp-content/uploads/2026/02/sunshine-city-prince-hotel-accommodation.webp",
         imageAlt: "Sunshine City Prince Hotel",
         name: "Sunshine City Prince Hotel (or similar)",
         nights: "3 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2025/10/s-peria-hotel-accommodation.webp",
+          "/images/wp-content/uploads/2025/10/s-peria-hotel-accommodation.webp",
         imageAlt: "S-Peria Hotel",
         name: "S-Peria Hotel (or similar)",
         nights: "3 nights in Hotel",
       },
       {
         image:
-          "https://imheretravels.com/wp-content/uploads/2026/02/new-otani-inn-sapporo-accommodation.webp",
+          "/images/wp-content/uploads/2026/02/new-otani-inn-sapporo-accommodation.webp",
         imageAlt: "New Otani Inn Sapporo",
         name: "New Otani Inn Sapporo (or similar)",
         nights: "3 nights in Hotel",
@@ -371,7 +371,7 @@ export const japanAdventure: Tour = {
     description:
       "Tokyo's neon streets, the shinkansen to Kyoto, a traditional tea ceremony, and Sapporo's snowy charm — with optional skiing.",
     price: "GBP £2,150",
-    image: "https://imheretravels.com/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
+    image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
     imageAlt: "Japan Adventure",
   },
 };
