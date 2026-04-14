@@ -24,22 +24,176 @@
 
 ---
 
-## ✦ Quick Start
+## ✦ Getting Started (Step-by-Step)
 
-> **Prerequisites:** Node.js ≥ 20, npm ≥ 10
+New to the stack? Follow every step below, in order. By the end you'll have the site running on your own machine at `http://localhost:3000`.
+
+### Step 1 — Install Git
+
+Git is how you download the project and sync changes.
+
+1. Go to **[git-scm.com/downloads](https://git-scm.com/downloads)**.
+2. Download the installer for your OS (**Windows**, **macOS**, or **Linux**).
+3. Run the installer and accept the defaults.
+4. Open a terminal and verify:
+
+   ```bash
+   git --version
+   # should print something like: git version 2.45.0
+   ```
+
+> **Windows users:** the installer also adds **Git Bash** — we recommend using it as your terminal so you can follow the Unix-style commands in this README verbatim.
+
+---
+
+### Step 2 — Install Node.js (v20 LTS or newer)
+
+Node.js runs Next.js. It also ships with **npm**, the package manager we use.
+
+1. Visit **[nodejs.org/en/download](https://nodejs.org/en/download)**.
+2. Download the **LTS** build (currently 20.x or 22.x — either works).
+3. Run the installer — accept the defaults.
+4. Close and reopen your terminal, then check both tools are on your PATH:
+
+   ```bash
+   node --version   # v20.x.x or higher
+   npm --version    # 10.x.x or higher
+   ```
+
+> **Already have an older Node?** Use [nvm](https://github.com/nvm-sh/nvm) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows) to install Node 20 side-by-side without breaking other projects.
+
+---
+
+### Step 3 — Install Visual Studio Code
+
+VSCode is our recommended editor.
+
+1. Download from **[code.visualstudio.com](https://code.visualstudio.com/download)**.
+2. Install with defaults. On Windows, tick **"Add to PATH"** and **"Open with Code"** in the installer options — they make life easier.
+3. Launch VSCode and install these extensions (open the Extensions panel with `Ctrl+Shift+X` / `Cmd+Shift+X`):
+   - **ESLint** — `dbaeumer.vscode-eslint`
+   - **Tailwind CSS IntelliSense** — `bradlc.vscode-tailwindcss`
+   - **Prettier** — `esbenp.prettier-vscode`
+   - **GitLens** _(optional but lovely)_ — `eamodio.gitlens`
+
+---
+
+### Step 4 — Clone the Repository
+
+1. Pick a folder to keep your projects in (e.g. `~/projects` or `D:\GitHub`).
+2. In your terminal:
+
+   ```bash
+   cd ~/projects                                   # or your chosen folder
+   git clone https://github.com/YOUR-ORG/ImHereTravels.git
+   cd ImHereTravels/web
+   ```
+
+3. Open the project in VSCode:
+
+   ```bash
+   code .
+   ```
+
+   _(If `code` isn't recognised, open VSCode manually → **File → Open Folder** → pick the `web` folder.)_
+
+---
+
+### Step 5 — Install Project Dependencies
+
+Inside the `web/` folder, run:
 
 ```bash
-# 1. Install dependencies
 npm install
+```
 
-# 2. Copy the env template and fill in credentials
-cp .env.example .env
+This reads [`package.json`](package.json) and downloads everything Next.js, React, Tailwind, and Framer Motion need into a local `node_modules/` folder. First install takes 1–3 minutes.
 
-# 3. Start the dev server
+> You do **not** need to install Next.js globally — `npm install` puts it in the project for you.
+
+---
+
+### Step 6 — Configure Environment Variables
+
+The contact form talks to the Gmail API. Even if you aren't testing email locally, the file must exist.
+
+1. In VSCode's terminal (<kbd>Ctrl</kbd>+<kbd>`</kbd>), duplicate the template:
+
+   ```bash
+   cp .env.example .env          # macOS / Linux / Git Bash
+   copy .env.example .env        # Windows CMD / PowerShell
+   ```
+
+2. Open [`.env`](.env.example) and paste the Gmail OAuth2 credentials (ask a teammate for them):
+
+   ```bash
+   GMAIL_CLIENT_ID=your-client-id
+   GMAIL_CLIENT_SECRET=your-client-secret
+   GMAIL_REFRESH_TOKEN=your-refresh-token
+   ```
+
+> `.env` is gitignored — credentials never get committed. Leave the values blank if you just want to browse the site without testing contact-form submissions.
+
+---
+
+### Step 7 — Start the Dev Server
+
+Still in `web/`, run:
+
+```bash
 npm run dev
 ```
 
-Open **[http://localhost:3000](http://localhost:3000)** in your browser. Hot-reload is enabled — edits to files under [`app/`](app/) appear instantly.
+You should see:
+
+```
+ ▲ Next.js 16.2.3
+ - Local:    http://localhost:3000
+ ✓ Ready in 1.2s
+```
+
+Open **[http://localhost:3000](http://localhost:3000)** in any browser. 🎉
+
+**Hot reload** is on — save any file in [`app/`](app/) and the page updates automatically.
+
+---
+
+### Step 8 — Running from VSCode's Built-in Terminal
+
+Day-to-day, you'll stay inside VSCode:
+
+1. Open the terminal: **View → Terminal** or <kbd>Ctrl</kbd>+<kbd>`</kbd>.
+2. Ensure you're in the `web/` folder (the prompt should end in `…/ImHereTravels/web`).
+3. Start the dev server: `npm run dev`.
+4. Stop the server anytime with <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+
+Use the **+** icon in the terminal panel to open a second terminal for running git commands or linting while the dev server keeps running.
+
+---
+
+### Step 9 — Verify Your Setup
+
+Run these once to make sure everything is wired up correctly:
+
+```bash
+npm run lint     # should exit with no errors
+npm run build    # should produce a .next/ folder and finish successfully
+```
+
+If both succeed, you're ready to contribute. ✅
+
+---
+
+### Troubleshooting
+
+| Problem | Fix |
+| ------- | --- |
+| `command not found: npm` | Node.js didn't add itself to PATH — reinstall and restart the terminal. |
+| `EACCES` / permission errors on macOS/Linux | Don't use `sudo`. Fix npm's prefix per [npm docs](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally). |
+| Port `3000` already in use | Run `npm run dev -- -p 3001` to switch ports. |
+| `Module not found` after pulling changes | Re-run `npm install` — someone added a new dependency. |
+| Styling looks broken | Restart the dev server; Tailwind v4 rebuilds tokens on start. |
+| Gmail OAuth error on `/contact-us` | Check `.env` values; ensure the refresh token hasn't expired. |
 
 ---
 
