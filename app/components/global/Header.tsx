@@ -32,6 +32,8 @@ const navItems = [
     ],
   },
   { label: "About Us", href: "/about-us" },
+  { label: "Pre departure info", href: "/pre-departure" },
+  { label: "Travel Safety", href: "/travel-safety" },
 ];
 
 function ChevronDown() {
