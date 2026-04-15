@@ -56,24 +56,21 @@ export const maldivesBucketlist: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image:
-          "https://i0.wp.com/imheretravels.com/wp-content/uploads/2025/02/maldives-triphighlight-4.webp?w=1280&ssl=1",
-        imageAlt: "Snorkeling",
-        title: "Snorkeling",
-        subtitle: "",
-      },
-      {
-        image:
-          "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/05/maldives-triphighlight-3-1.webp?w=1280&ssl=1",
-        imageAlt: "Floating Resorts",
+        image: "/tours/maldives-bucketlist/highlight-floating-resorts.webp",
+        imageAlt: "Aerial view of floating resort overwater bungalows in the Maldives",
         title: "Floating Resorts",
         subtitle: "",
       },
       {
-        image:
-          "https://i0.wp.com/imheretravels.com/wp-content/uploads/2024/05/maldives-triphighlight-2-1.webp?w=1280&ssl=1",
-        imageAlt: "Sunset Paddle",
+        image: "/tours/maldives-bucketlist/highlight-sunset-paddle.webp",
+        imageAlt: "Silhouette of a paddleboarder at golden sunset on calm Maldives waters",
         title: "Sunset Paddle",
+        subtitle: "",
+      },
+      {
+        image: "/tours/maldives-bucketlist/highlight-snorkeling.webp",
+        imageAlt: "Divers on a boat ready to snorkel the Maldives reefs",
+        title: "Snorkeling",
         subtitle: "",
       },
     ],

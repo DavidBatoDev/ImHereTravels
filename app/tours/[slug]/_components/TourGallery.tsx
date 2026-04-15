@@ -33,11 +33,11 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
           loop
           spaceBetween={0}
           slidesPerView={1}
-          className="!overflow-hidden rounded-lg"
+          className="overflow-hidden! rounded-lg"
         >
           {slides.map((slide, i) => (
             <SwiperSlide key={i}>
-              <div className="relative aspect-[16/9] w-full bg-light-grey">
+              <div className="relative aspect-video w-full bg-light-grey">
                 <Image
                   src={slide.src}
                   alt={slide.alt}
@@ -79,14 +79,14 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
           }}
           watchSlidesProgress
           slideToClickedSlide
-          className="tg-thumbs mt-4 !overflow-hidden"
+          className="tg-thumbs mt-4 overflow-hidden!"
         >
           {slides.map((slide, i) => (
             <SwiperSlide
               key={i}
-              className="!h-auto cursor-pointer overflow-hidden rounded-md opacity-60 transition-opacity [&.swiper-slide-thumb-active]:opacity-100"
+              className="h-auto! cursor-pointer overflow-hidden rounded-md opacity-60 transition-opacity [&.swiper-slide-thumb-active]:opacity-100"
             >
-              <div className="relative aspect-[4/3] w-full bg-light-grey">
+              <div className="relative aspect-4/3 w-full bg-light-grey">
                 <Image
                   src={slide.src}
                   alt=""

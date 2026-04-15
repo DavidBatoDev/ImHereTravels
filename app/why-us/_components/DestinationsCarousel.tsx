@@ -55,7 +55,7 @@ export default function DestinationsCarousel({
         }}
         navigation={{ prevEl: ".dest-prev", nextEl: ".dest-next" }}
         keyboard={{ enabled: true }}
-        className="!overflow-hidden"
+        className="overflow-hidden!"
       >
         {items.map((dest) => (
           <SwiperSlide key={dest.name}>
@@ -70,7 +70,7 @@ export default function DestinationsCarousel({
                 sizes="(max-width: 768px) 80vw, 25vw"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
               <p className="absolute bottom-4 left-4 font-sans font-bold text-h5-mobile text-white drop-shadow-sm md:text-h5-desktop">
                 {dest.name}
               </p>

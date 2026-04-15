@@ -31,8 +31,29 @@ const navItems = [
       { label: "Vietnam Expedition", href: "/tours/vietnam-expedition" },
     ],
   },
+  {
+    label: "Destinations",
+    href: "/all-destinations",
+    dropdown: [
+      { label: "All Destinations", href: "/all-destinations" },
+      { label: "Philippines", href: "/all-destinations/philippines" },
+      { label: "Maldives", href: "/all-destinations/maldives" },
+      { label: "Japan", href: "/all-destinations/japan" },
+      { label: "India", href: "/all-destinations/india" },
+      { label: "Nepal", href: "/all-destinations/nepal" },
+      { label: "Bhutan", href: "/all-destinations/bhutan" },
+      { label: "Sri Lanka", href: "/all-destinations/sri-lanka" },
+      { label: "Vietnam", href: "/all-destinations/vietnam" },
+      { label: "China", href: "/all-destinations/china" },
+      { label: "Tanzania", href: "/all-destinations/tanzania" },
+      { label: "New Zealand", href: "/all-destinations/new-zealand" },
+      { label: "Argentina", href: "/all-destinations/argentina" },
+      { label: "Brazil", href: "/all-destinations/brazil" },
+    ],
+  },
   { label: "About Us", href: "/about-us" },
   { label: "Pre departure info", href: "/pre-departure" },
+  { label: "Travel Info", href: "/travel-information" },
   { label: "Travel Safety", href: "/travel-safety" },
 ];
 
@@ -91,7 +112,7 @@ export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [toursOpen, setToursOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (y) => {
@@ -114,7 +135,7 @@ export default function Header() {
 
   const closeMenu = () => {
     setMenuOpen(false);
-    setToursOpen(false);
+    setOpenDropdown(null);
   };
 
   return (
@@ -134,10 +155,10 @@ export default function Header() {
           className="shrink-0"
         >
           <Image
-            src="/logos/Horizontal/Digital/SVG/Red/Digital_Horizontal_Red.svg"
+            src="/logos/Wordmark/Digital/PNG/Red/Digital_Wordmark_Red.png"
             alt="I'm Here Travels"
             width={120}
-            height={36}
+            height={90}
             priority
             className="h-8 w-auto sm:h-9 lg:h-10"
           />
@@ -230,23 +251,27 @@ export default function Header() {
                         </Link>
                         <button
                           type="button"
-                          aria-label={toursOpen ? "Collapse tours" : "Expand tours"}
-                          aria-expanded={toursOpen}
-                          onClick={() => setToursOpen((v) => !v)}
+                          aria-label={openDropdown === item.href ? `Collapse ${item.label}` : `Expand ${item.label}`}
+                          aria-expanded={openDropdown === item.href}
+                          onClick={() =>
+                            setOpenDropdown(
+                              openDropdown === item.href ? null : item.href,
+                            )
+                          }
                           className="flex size-10 items-center justify-center rounded-full text-midnight transition-colors hover:bg-light-grey"
                         >
                           <ChevronDown
                             className={`transition-transform duration-200 ${
-                              toursOpen ? "rotate-180" : ""
+                              openDropdown === item.href ? "rotate-180" : ""
                             }`}
                           />
                         </button>
                       </div>
 
                       <AnimatePresence initial={false}>
-                        {toursOpen && (
+                        {openDropdown === item.href && (
                           <motion.ul
-                            key="tours-sub"
+                            key={`${item.href}-sub`}
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}

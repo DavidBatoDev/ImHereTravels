@@ -20,6 +20,7 @@ import Testimonials from "./_components/Testimonials";
 import RelatedTours from "./_components/RelatedTours";
 import CommunityGrid from "./_components/CommunityGrid";
 import BookingCard from "./_components/BookingCard";
+import TourViewRecorder from "./_components/TourViewRecorder";
 
 type Params = Promise<{ slug: string }>;
 
@@ -50,6 +51,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
     <>
       <Header />
       <main className="flex-1">
+        <TourViewRecorder slug={tour.slug} />
         <Breadcrumbs tourName={tour.name} />
 
         <div className="mx-auto w-full max-w-7xl px-4 md:px-8">

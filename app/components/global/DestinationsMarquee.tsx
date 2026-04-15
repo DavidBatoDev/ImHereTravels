@@ -46,7 +46,7 @@ export default function DestinationsMarquee({
         768: { slidesPerView: 3.2, spaceBetween: 24 },
         1024: { slidesPerView: 4.2, spaceBetween: 24 },
       }}
-      className="!overflow-hidden [&_.swiper-wrapper]:!ease-linear"
+      className="overflow-hidden! [&_.swiper-wrapper]:ease-linear!"
     >
       {items.map((dest) => (
         <SwiperSlide key={dest.name}>
@@ -61,7 +61,7 @@ export default function DestinationsMarquee({
               sizes="(max-width: 640px) 80vw, (max-width: 1024px) 30vw, 22vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
             <span className="absolute bottom-4 left-4 font-sans text-h5-mobile md:text-h5-desktop text-white">
               {dest.name}
             </span>

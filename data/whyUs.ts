@@ -111,9 +111,11 @@ export const whyUsCta = {
 
 export const whyUsInstagram = {
   handle: "@Imheretravels",
-  placeholder:
-    "https://www.figma.com/api/mcp/asset/046e9db5-8b3f-42da-856f-5c5398587980",
-  count: 10,
+  profileUrl: "https://www.instagram.com/imheretravels/",
+  images: Array.from({ length: 10 }).map((_, i) => ({
+    src: `/tours/philippine-sunrise/community-${i + 1}.jpg`,
+    alt: `I'm Here Travels community photo ${i + 1}`,
+  })),
 };
 
 /* -------------------------------------------------------------------------- */

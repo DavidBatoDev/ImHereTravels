@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
@@ -8,11 +8,48 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { Tour, TourDay } from "@/types/tour";
 import Icon from "./Icon";
 
+/* -------------------------------------------------------------------------- */
+/* Parent — manages single active index + scroll tracking                     */
+/* -------------------------------------------------------------------------- */
+
 export default function Itinerary({
   section,
 }: {
   section: Tour["itinerary"];
 }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
+
+  useEffect(() => {
+    // Trigger line: 30% from the top of the viewport.
+    // Whichever day-row's top edge is closest to this line becomes active.
+    const TRIGGER_RATIO = 0.3;
+
+    function onScroll() {
+      const triggerY = window.innerHeight * TRIGGER_RATIO;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      rowRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const { top } = el.getBoundingClientRect();
+        const dist = Math.abs(top - triggerY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      });
+
+      setActiveIndex(bestIdx);
+    }
+
+    // Run once on mount so day 1 expands immediately if the section is visible.
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section className="mt-10 w-full md:mt-14">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -30,20 +67,40 @@ export default function Itinerary({
 
       <ol className="mt-8 divide-y divide-light-grey border-t border-light-grey">
         {section.days.map((day, i) => (
-          <DayItem key={day.dayNumber} day={day} defaultOpen={i === 0} />
+          <DayItem
+            key={day.dayNumber}
+            day={day}
+            open={activeIndex === i}
+            onClick={() => setActiveIndex(i)}
+            ref={(el) => {
+              rowRefs.current[i] = el;
+            }}
+          />
         ))}
       </ol>
     </section>
   );
 }
 
-function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) {
-  const [open, setOpen] = useState(!!defaultOpen);
+/* -------------------------------------------------------------------------- */
+/* DayItem — controlled open state, forwarded ref for scroll tracking         */
+/* -------------------------------------------------------------------------- */
+
+interface DayItemProps {
+  day: TourDay;
+  open: boolean;
+  onClick: () => void;
+}
+
+const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
+  { day, open, onClick },
+  ref,
+) {
   return (
-    <li className="py-6">
+    <li ref={ref} className="py-6">
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={onClick}
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 text-left"
       >
@@ -62,7 +119,7 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
         <ChevronDown
           aria-hidden
           strokeWidth={2}
-          className={`size-5 shrink-0 text-midnight transition-transform ${
+          className={`size-5 shrink-0 text-midnight transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -90,7 +147,7 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
                 {day.description}
               </p>
               {day.image && (
-                <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-light-grey md:row-span-2">
+                <div className="relative aspect-16/10 overflow-hidden rounded-md bg-light-grey md:row-span-2">
                   <Image
                     src={day.image}
                     alt={day.imageAlt ?? day.title}
@@ -125,4 +182,4 @@ function DayItem({ day, defaultOpen }: { day: TourDay; defaultOpen?: boolean }) 
       </AnimatePresence>
     </li>
   );
-}
+});

@@ -22,7 +22,7 @@ export default function RelatedTours({
               href={`/tours/${t.slug}`}
               className="flex h-full flex-col"
             >
-              <div className="relative aspect-[4/3] w-full bg-light-grey">
+              <div className="relative aspect-4/3 w-full bg-light-grey">
                 <Image
                   src={t.image}
                   alt={t.imageAlt}

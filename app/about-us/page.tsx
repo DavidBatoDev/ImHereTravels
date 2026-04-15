@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 function Hero() {
   return (
-    <section className="relative h-[260px] overflow-hidden md:h-[360px]">
+    <section className="relative h-65 overflow-hidden md:h-90">
       <Image
         src={aboutHero.image}
         alt=""

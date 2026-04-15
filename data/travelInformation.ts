@@ -36,7 +36,7 @@ export const travelInfoCards = [
     title: "Travel/Visa Requirements",
     body: "Need the latest info on visa and travel document requirements? Look no further! Our guide has you covered with all the up-to-date info you need.",
     linkLabel: "Learn more",
-    linkHref: "#",
+    linkHref: "/travel-requirements",
   },
   {
     id: "pre-departure",
@@ -44,7 +44,7 @@ export const travelInfoCards = [
     title: "Pre-departure Info",
     body: "Be prepared before you leave for your trip. All of the info below as it's designed to help you have a smooth travel experience.",
     linkLabel: "Learn more",
-    linkHref: "#",
+    linkHref: "/pre-departure",
   },
   {
     id: "safety",
@@ -52,7 +52,7 @@ export const travelInfoCards = [
     title: "Travel Safety",
     body: "Keeping you safe and having a blast on our travels is a must! Some easy ways you can boost your own personal safety while you're out exploring.",
     linkLabel: "Learn more",
-    linkHref: "#",
+    linkHref: "/travel-safety",
   },
   {
     id: "faqs",

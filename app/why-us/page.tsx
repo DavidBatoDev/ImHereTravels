@@ -108,7 +108,7 @@ function InstagramIcon() {
 
 function Hero() {
   return (
-    <section className="relative h-[260px] overflow-hidden md:h-[360px]">
+    <section className="relative h-65 overflow-hidden md:h-90">
       <Image
         src={whyUsHero.image}
         alt=""
@@ -256,29 +256,32 @@ function ReviewsSection() {
 }
 
 function InstagramSection() {
-  const cells = Array.from({ length: whyUsInstagram.count });
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">
       <h2 className="mb-8 text-center font-sans text-h4-mobile text-midnight md:text-h4-desktop">
         With {whyUsInstagram.handle}
       </h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {cells.map((_, i) => (
-          <div
+        {whyUsInstagram.images.map((img, i) => (
+          <Link
             key={i}
-            className="relative aspect-square overflow-hidden rounded-lg"
+            href={whyUsInstagram.profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={img.alt}
+            className="group relative aspect-square overflow-hidden rounded-lg"
           >
             <Image
-              src={whyUsInstagram.placeholder}
-              alt=""
+              src={img.src}
+              alt={img.alt}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div className="absolute left-2 top-2 rounded-full bg-white/80 p-1 text-midnight">
               <InstagramIcon />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
@@ -289,31 +292,10 @@ function FAQSection() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">
       <div className="overflow-hidden rounded-lg bg-white px-6 py-12 md:px-16 md:py-16">
-        {/* FAQ accordion */}
-        <h2 className="mb-8 text-center font-sans text-h4-mobile text-midnight md:text-h4-desktop">
-          {whyUsFaqsSection.heading}
-        </h2>
-        <dl className="divide-y divide-light-grey">
-          {whyUsFaqs.map((faq, i) => (
-            <details key={i} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-sans text-h6-mobile text-midnight md:text-h6-desktop">
-                {faq.q}
-                <span className="ml-auto shrink-0 transition-transform duration-200 group-open:rotate-180">
-                  <ChevronDown />
-                </span>
-              </summary>
-              <p className="mt-3 font-body text-b2-mobile text-dark-gray md:text-b2-desktop">
-                {faq.a}
-              </p>
-            </details>
-          ))}
-        </dl>
-
-        {/* CTA */}
-        <div className="mt-12 flex flex-col items-center gap-4 text-center">
-          <h3 className="font-display text-h2-mobile text-midnight md:text-h2-desktop">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h2 className="font-display text-h2-mobile text-midnight md:text-h2-desktop">
             {whyUsCta.heading}
-          </h3>
+          </h2>
           <p className="font-body text-b2-mobile text-dark-gray md:text-b2-desktop">
             {whyUsCta.body}
           </p>
@@ -332,45 +314,46 @@ function FAQSection() {
 function NewsletterSection() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
-      <div className="overflow-hidden rounded-lg bg-white">
-        <div className="flex flex-col md:flex-row">
+      <div
+        className="overflow-hidden rounded-lg bg-white shadow-small"
+        style={{ width: "1200px", maxWidth: "100%", height: "640px" }}
+      >
+        <div className="flex h-full flex-col md:flex-row">
           {/* Text + form */}
-          <div className="flex flex-col gap-8 px-8 py-12 md:flex-1 md:pl-16 md:pr-20 md:py-12">
-            <div className="flex flex-col gap-4">
-              <h2 className="font-display text-h2-mobile text-midnight md:text-h2-desktop">
-                {whyUsNewsletter.heading}
-              </h2>
-              <p className="font-body text-b2-mobile text-midnight md:text-b2-desktop">
-                {whyUsNewsletter.body}
-              </p>
-            </div>
-            <form className="flex flex-col gap-4">
+          <div className="flex flex-col justify-center gap-4 p-8 md:w-1/2 md:shrink-0 md:p-12">
+            <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+              {whyUsNewsletter.heading}
+            </h2>
+            <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+              {whyUsNewsletter.body}
+            </p>
+            <form className="mt-2 flex flex-col gap-3">
               <input
                 type="email"
                 placeholder={whyUsNewsletter.inputPlaceholder}
-                className="w-full rounded-sm border border-grey/40 px-4 py-3 font-body text-b2-mobile text-midnight outline-none placeholder:text-grey focus:border-midnight md:text-b2-desktop"
+                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
               />
-              <p className="font-body text-b4-desktop text-dark-gray">
+              <p className="font-body text-b4-desktop text-grey">
                 {whyUsNewsletter.privacyLabel}{" "}
-                <span className="underline">{whyUsNewsletter.privacyLink}</span>
+                <span className="underline hover:text-crimson-red">{whyUsNewsletter.privacyLink}</span>
                 .
               </p>
               <button
                 type="submit"
-                className="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-10 py-3 font-body font-bold text-b2-mobile text-white transition-colors hover:bg-light-red md:text-b2-desktop"
+                className="mt-1 inline-flex w-fit items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
               >
                 {whyUsNewsletter.button}
               </button>
             </form>
           </div>
-          {/* Image */}
-          <div className="relative h-64 md:h-auto md:flex-1">
+          {/* Image — flex-1 so it fills exactly the remaining half */}
+          <div className="relative flex-1">
             <Image
               src={whyUsNewsletter.image}
               alt="Travel experience"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
+              className="object-cover object-[center_85%]"
             />
           </div>
         </div>

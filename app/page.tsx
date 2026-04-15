@@ -133,7 +133,7 @@ function NewTours() {
               href={tour.href}
               className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden">
+              <div className="relative aspect-4/3 w-full overflow-hidden">
                 <Image
                   src={tour.image}
                   alt={tour.title}
@@ -287,8 +287,11 @@ function WhyChooseUs() {
 function JoinCommunity() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">
-      <div className="overflow-hidden rounded-lg bg-white shadow-small">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+      <div
+        className="overflow-hidden rounded-lg bg-white shadow-small"
+        style={{ width: "1200px", maxWidth: "100%", height: "640px" }}
+      >
+        <div className="grid h-full grid-cols-1 md:grid-cols-2">
           <div className="flex flex-col justify-center gap-4 p-8 md:p-12">
             <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
               Join our community
@@ -327,7 +330,7 @@ function JoinCommunity() {
               </button>
             </form>
           </div>
-          <div className="relative aspect-[4/3] w-full md:aspect-auto md:h-full md:min-h-[360px]">
+          <div className="relative h-full w-full">
             <Image
               src="/figma/join-community.jpg"
               alt="Travelers enjoying a tropical beach"

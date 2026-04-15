@@ -1,8 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import { getAllTours } from "@/data/tours";
+import {
+  getAllDestinations,
+  getDestinationBySlug,
+} from "@/data/destinations";
+import type { Tour } from "@/types/tour";
+import TourCard from "./_components/TourCard";
+import ToursFilterBar from "./_components/ToursFilterBar";
+import type { SortKey } from "./_components/ToursFilterBar";
+import RecentlyViewedTours from "./_components/RecentlyViewedTours";
 
 export const metadata = {
   title: "All Tours — I'm Here Travels",
@@ -10,8 +18,100 @@ export const metadata = {
     "Browse every I'm Here Travels adventure: small-group getaways across the Philippines, Maldives and beyond.",
 };
 
-export default function ToursPage() {
-  const tours = getAllTours();
+/* -------------------------------------------------------------------------- */
+/* Helpers                                                                     */
+/* -------------------------------------------------------------------------- */
+
+function parsePriceGBP(priceAmount: string): number {
+  return parseFloat(priceAmount.replace(/[^0-9.]/g, "")) || 0;
+}
+
+function parseDurationDays(duration: string): number {
+  const m = duration.match(/\d+/);
+  return m ? parseInt(m[0], 10) : 0;
+}
+
+const VALID_SORTS: SortKey[] = [
+  "relevant",
+  "price-asc",
+  "price-desc",
+  "duration-asc",
+  "duration-desc",
+];
+
+function sortTours(tours: Tour[], sort: SortKey): Tour[] {
+  const s = [...tours];
+  switch (sort) {
+    case "price-asc":
+      return s.sort(
+        (a, b) =>
+          parsePriceGBP(a.booking.priceAmount) -
+          parsePriceGBP(b.booking.priceAmount),
+      );
+    case "price-desc":
+      return s.sort(
+        (a, b) =>
+          parsePriceGBP(b.booking.priceAmount) -
+          parsePriceGBP(a.booking.priceAmount),
+      );
+    case "duration-asc":
+      return s.sort(
+        (a, b) =>
+          parseDurationDays(a.listingCard.duration) -
+          parseDurationDays(b.listingCard.duration),
+      );
+    case "duration-desc":
+      return s.sort(
+        (a, b) =>
+          parseDurationDays(b.listingCard.duration) -
+          parseDurationDays(a.listingCard.duration),
+      );
+    default:
+      return s; // "relevant" = registry order
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Page                                                                        */
+/* -------------------------------------------------------------------------- */
+
+export default async function ToursPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ destination?: string; sort?: string }>;
+}) {
+  const { destination, sort } = await searchParams;
+
+  const allTours = getAllTours();
+  const allDestinations = getAllDestinations();
+
+  // Validate destination param — ignore unknown slugs
+  const validDest =
+    destination && allDestinations.some((d) => d.slug === destination)
+      ? destination
+      : undefined;
+
+  // Filter
+  let filtered = allTours;
+  if (validDest) {
+    const dest = getDestinationBySlug(validDest)!;
+    filtered = allTours.filter((t) => dest.tourSlugs.includes(t.slug));
+  }
+
+  // Validate sort param
+  const validSort: SortKey =
+    sort && VALID_SORTS.includes(sort as SortKey)
+      ? (sort as SortKey)
+      : "relevant";
+
+  // Sort
+  const sorted = sortTours(filtered, validSort);
+
+  const destOptions = allDestinations.map((d) => ({
+    slug: d.slug,
+    name: d.name,
+  }));
+
   return (
     <>
       <Header />
@@ -25,53 +125,35 @@ export default function ToursPage() {
             more.
           </p>
 
-          <ul className="mt-10 grid grid-cols-1 gap-6 md:mt-14 md:grid-cols-2 lg:grid-cols-3">
-            {tours.map((tour) => (
-              <li
-                key={tour.slug}
-                className="overflow-hidden rounded-lg bg-white shadow-small"
+          <ToursFilterBar
+            destinations={destOptions}
+            currentDestination={validDest}
+            currentSort={validSort}
+            totalCount={sorted.length}
+          />
+
+          {sorted.length === 0 ? (
+            <div className="mt-16 text-center">
+              <p className="font-body text-b2-desktop text-dark-gray">
+                No tours found for this destination.
+              </p>
+              <Link
+                href="/tours"
+                className="mt-6 inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
               >
-                <Link href={`/tours/${tour.slug}`} className="block">
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src={tour.listingCard.image}
-                      alt={tour.listingCard.imageAlt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-5 md:p-6">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight">
-                      <Image
-                        src="/Icons/SVG/Pin/pin-solid-red.svg"
-                        alt=""
-                        width={14}
-                        height={14}
-                      />
-                      {tour.listingCard.duration}
-                    </span>
-                    <h2 className="mt-4 font-sans text-h5-mobile md:text-h5-desktop text-midnight">
-                      {tour.header.title.split("|").slice(-1)[0]?.trim() ??
-                        tour.header.title}
-                    </h2>
-                    <p className="mt-2 font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
-                      {tour.listingCard.description}
-                    </p>
-                    <div className="mt-5 flex items-baseline gap-2">
-                      <span className="font-body text-b4-desktop text-dark-gray">
-                        From
-                      </span>
-                      <span className="font-sans text-h6-mobile md:text-h6-desktop text-midnight">
-                        {tour.listingCard.price}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                View All Tours
+              </Link>
+            </div>
+          ) : (
+            <ul className="mt-10 grid grid-cols-1 gap-6 md:mt-14 md:grid-cols-2 lg:grid-cols-3">
+              {sorted.map((tour) => (
+                <TourCard key={tour.slug} tour={tour} />
+              ))}
+            </ul>
+          )}
         </section>
+
+        <RecentlyViewedTours allTours={allTours} />
       </main>
       <Footer />
     </>
