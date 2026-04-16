@@ -42,10 +42,14 @@ export async function generateMetadata({
   return {
     title: tour.meta.title,
     description: tour.meta.description,
+    alternates: {
+      canonical: `${BASE_URL}/tours/${tour.slug}`,
+    },
     openGraph: {
       title: tour.meta.title,
       description: tour.meta.description,
       type: "website",
+      url: `${BASE_URL}/tours/${tour.slug}`,
       images: [{ url: tour.gallery.hero, alt: tour.gallery.heroAlt }],
     },
   };
