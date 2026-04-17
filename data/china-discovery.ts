@@ -16,9 +16,16 @@ export const chinaDiscovery: Tour = {
       "Join the 10-day China Discovery tour: Forbidden City, Mutianyu Great Wall, Shanghai Tower, Zhujiajiao Water Town. Small group, local guides, GBP £1,200.",
   },
   gallery: {
-    hero: "/images/wp-content/uploads/2025/10/china-trip-highlight-1.webp",
-    heroAlt: "China Discovery — Beijing and Shanghai",
-    thumbnails: [],
+    hero: "/tours/china-discovery/hero-1.webp",
+    heroAlt: "Forbidden City entrance gates, Beijing, China",
+    thumbnails: [
+      { src: "/tours/china-discovery/thumb-1.webp", alt: "Bronze lion statue outside a palace, Beijing" },
+      { src: "/tours/china-discovery/thumb-2.webp", alt: "Mutianyu Great Wall winding through mountain forest" },
+      { src: "/tours/china-discovery/thumb-3.webp", alt: "Ornate imperial pavilion rooftops, Beijing" },
+      { src: "/tours/china-discovery/thumb-4.webp", alt: "Shanghai skyline at sunset with Oriental Pearl Tower" },
+      { src: "/tours/china-discovery/thumb-5.webp", alt: "Colourful painted corridor at the Summer Palace" },
+      { src: "/tours/china-discovery/thumb-6.webp", alt: "Stone arch bridge over a lake at the Summer Palace" },
+    ],
   },
   header: {
     title: "10 Days | China Discovery",
