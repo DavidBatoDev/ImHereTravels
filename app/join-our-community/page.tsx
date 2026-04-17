@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import { joinMetadata, joinHero, joinForm } from "@/data/joinOurCommunity";
 
@@ -132,7 +131,6 @@ function FormSection() {
 export default function JoinOurCommunityPage() {
   return (
     <>
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Hero />
         <FormSection />

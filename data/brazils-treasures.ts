@@ -11,7 +11,7 @@ export const brazilsTreasures: Tour = {
   slug: "brazils-treasures",
   name: "Brazil's Treasures",
   meta: {
-    title: "Discover Brazil's Treasures — 12 Day Manaus to Rio Adventure",
+    title: "Brazil's Treasures — 12 Day Manaus to Rio Adventure",
     description:
       "Join the 12-day Brazil's Treasures tour: Amazon River cruise, pink dolphins, Paraty island hopping, Sugarloaf, Christ the Redeemer, and Sambadrome Carnival.",
   },
@@ -21,7 +21,7 @@ export const brazilsTreasures: Tour = {
     thumbnails: [],
   },
   header: {
-    title: "12 Days | Discover Brazil's Treasures",
+    title: "12 Days | Brazil's Treasures",
     tags: [
       { label: "Manaus", icon: "location" },
       { label: "Amazon Rainforest", icon: "location" },

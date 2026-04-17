@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import FaqAccordion from "./_components/FaqAccordion";
 import { faqsHero, faqCategories, faqsCta, faqsMetadata } from "@/data/faqs";
@@ -95,7 +94,6 @@ export default function FAQsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Hero />
         <FAQCategories />

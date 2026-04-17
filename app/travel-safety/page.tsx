@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import {
   travelSafetyMetadata,
@@ -214,7 +213,6 @@ function ContactCta() {
 export default function TravelSafetyPage() {
   return (
     <>
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Hero />
         <ContentCard />

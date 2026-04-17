@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import SherpaWidget from "@/app/components/SherpaWidget";
 import {
@@ -82,7 +81,6 @@ function TitleSection() {
 export default function TravelRequirementsPage() {
   return (
     <>
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Breadcrumbs />
         <TitleSection />

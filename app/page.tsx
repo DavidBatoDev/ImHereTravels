@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import HeroTitle from "@/app/components/global/HeroTitle";
@@ -297,7 +296,6 @@ function JoinCommunity() {
 export default function Home() {
   return (
     <>
-      <Header />
       <main className="flex-1">
         <Hero />
         <NewToursCarousel tours={tours} />

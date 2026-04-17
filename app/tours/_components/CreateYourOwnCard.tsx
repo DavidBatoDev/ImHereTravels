@@ -32,7 +32,7 @@ export default function CreateYourOwnCard() {
 
         <div className="mt-auto pt-8">
           <Link
-            href="/contact-us"
+            href="/personalized-tours"
             className="inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white transition-colors hover:bg-light-red focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             Create Now

@@ -60,7 +60,7 @@ function PersonalizedToursCard() {
           </p>
         </div>
         <Link
-          href="/contact-us"
+          href="/personalized-tours"
           className="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white transition-colors hover:bg-light-red focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red focus-visible:ring-offset-2"
         >
           Create Now

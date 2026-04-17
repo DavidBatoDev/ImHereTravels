@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import {
   personalizedToursMetadata,
@@ -86,7 +85,6 @@ export default function PersonalizedToursPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personalizedToursJsonLd) }}
       />
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Hero />
         <FormSection />

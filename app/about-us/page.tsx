@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import {
   aboutHero,
@@ -287,7 +286,6 @@ function CTASection() {
 export default function AboutPage() {
   return (
     <>
-      <Header />
       {/* overflow-x-clip prevents horizontal scroll from stickers peeking out */}
       <main className="flex-1 overflow-x-clip bg-light-grey">
         <Hero />

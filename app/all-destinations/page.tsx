@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import { getAllDestinations } from "@/data/destinations";
@@ -25,7 +24,6 @@ export default function AllDestinationsPage() {
 
   return (
     <>
-      <Header />
       <main className="flex-1">
         {/* ── Hero band ──────────────────────────────────────────────────── */}
         <section className="bg-midnight px-4 py-14 text-white md:px-8 md:py-20">

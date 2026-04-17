@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import FaqAccordion from "@/app/faqs/_components/FaqAccordion";
@@ -159,7 +158,6 @@ export default async function DestinationPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildDestinationJsonLd(destination)) }}
       />
-      <Header />
       <main className="flex-1">
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="relative h-65 w-full overflow-hidden md:h-90">

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import {
   privacyMetadata,
@@ -135,7 +134,6 @@ function NewsletterSection() {
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <Header />
       <main className="flex-1 bg-light-grey">
         <Hero />
         <ContentSection />

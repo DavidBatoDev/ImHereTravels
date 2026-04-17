@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import Header from "@/app/components/global/Header";
 import Footer from "@/app/components/global/Footer";
 import {
   getDestinationBySlug,
@@ -128,7 +127,6 @@ export default async function DestinationReviewsPage({
 
   return (
     <>
-      <Header />
       <main className="flex-1 bg-light-grey">
         {/* ── Header banner ─────────────────────────────────────────── */}
         <div className="border-b border-light-grey bg-white">
