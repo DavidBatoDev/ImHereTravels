@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+
+const BASE_URL = "https://www.imheretravels.com";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: BASE_URL,
+  },
+};
 import Reveal from "@/app/components/global/Reveal";
 import HeroTitle from "@/app/components/global/HeroTitle";
 import { hero, tours, destinations, testimonials, features } from "@/data/root";

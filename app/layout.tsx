@@ -6,6 +6,9 @@ const BASE_URL = "https://www.imheretravels.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+  alternates: {
+    canonical: BASE_URL,
+  },
   title: {
     template: "%s — I'm Here Travels",
     default: "I'm Here Travels | Small-Group Tours to the Philippines & Beyond",
