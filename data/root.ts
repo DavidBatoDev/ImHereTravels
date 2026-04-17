@@ -36,14 +36,33 @@ export const tours = [
     href: "/tours/philippine-sunset",
   },
   {
-    title: "Maldives Bucketlist",
-    duration: "8 Day Tour",
+    title: "China Discovery",
+    duration: "10 Day Tour",
     description:
-      "Tick off that bucketlist and explore by turquoise water, snorkel vibrant reefs, and unwind on island paradise.",
-    price: "GBP £1400",
+      "Explore ancient history and modern marvels — from the Forbidden City and Great Wall to the Shanghai skyline.",
+    price: "GBP £1,200",
+    image: "/tours/china-discovery/hero-1.webp",
+    href: "/tours/china-discovery",
+  },
+  {
+    title: "Vietnam Expedition",
+    duration: "11 Day Tour",
+    description:
+      "Journey north to south through Vietnam's rich culture — Hanoi, Halong Bay, Hoi An, and Ho Chi Minh City.",
+    price: "GBP £1,200",
     image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341315607_maldives-header-1.webp?alt=media&token=f8ec555a-c844-4b1d-a4ce-cac0ca5fdd0e",
-    href: "/tours/maldives-bucketlist",
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341305320_vietnam-header-4.webp?alt=media&token=be502580-7b8c-47ec-98c3-ce9c250af05e",
+    href: "/tours/vietnam-expedition",
+  },
+  {
+    title: "Tanzania Exploration",
+    duration: "10 Day Tour",
+    description:
+      "Trek Kilimanjaro, witness incredible wildlife on safari, and relax on the stunning beaches of Zanzibar.",
+    price: "GBP £1,949",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
+    href: "/tours/tanzania-exploration",
   },
 ];
 

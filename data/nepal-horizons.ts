@@ -16,9 +16,14 @@ export const nepalHorizons: Tour = {
       "Join the 9-day Nepal Horizons tour: Kathmandu's sacred temples, Chitwan jungle safari, Bandipur village, and a hike to Australian Base Camp. GBP £1,099.",
   },
   gallery: {
-    hero: "/images/wp-content/uploads/2025/08/nepal-triphighlight-1.webp",
-    heroAlt: "Nepal Horizons — Himalayan temples and peaks",
-    thumbnails: [],
+    hero: "/tours/nepal-horizons/hero-1.webp",
+    heroAlt: "Boudhanath Stupa with colourful prayer flags, Kathmandu, Nepal",
+    thumbnails: [
+      { src: "/tours/nepal-horizons/thumb-1.webp", alt: "Boudhanath Stupa square with prayer flags and street life, Kathmandu" },
+      { src: "/tours/nepal-horizons/thumb-2.webp", alt: "Ancient temple rooftops with birds, Kathmandu Durbar Square" },
+      { src: "/tours/nepal-horizons/thumb-3.webp", alt: "River winding through lush jungle in Chitwan National Park" },
+      { src: "/tours/nepal-horizons/thumb-4.webp", alt: "Pashupatinath temple complex panorama, Kathmandu" },
+    ],
   },
   header: {
     title: "9 Days | Nepal Horizons",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,6 +14,7 @@ import "swiper/css/thumbs";
 
 export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const mainSwiperRef = useRef<SwiperType | null>(null);
   const slides = [
     { src: gallery.hero, alt: gallery.heroAlt },
     ...gallery.thumbnails,
@@ -24,6 +25,7 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
       <div className="group relative">
         <Swiper
           modules={[Navigation, Thumbs, Keyboard, A11y]}
+          onSwiper={(swiper) => { mainSwiperRef.current = swiper; }}
           thumbs={{
             swiper:
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
@@ -78,12 +80,12 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
             768: { slidesPerView: 6 },
           }}
           watchSlidesProgress
-          slideToClickedSlide
           className="tg-thumbs mt-4 overflow-hidden!"
         >
           {slides.map((slide, i) => (
             <SwiperSlide
               key={i}
+              onClick={() => mainSwiperRef.current?.slideToLoop(i)}
               className="h-auto! cursor-pointer overflow-hidden rounded-md opacity-60 transition-opacity [&.swiper-slide-thumb-active]:opacity-100"
             >
               <div className="relative aspect-4/3 w-full bg-light-grey">

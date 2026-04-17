@@ -97,7 +97,14 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
   ref,
 ) {
   return (
-    <li ref={ref} className="py-6">
+    <motion.li
+      ref={ref}
+      className="py-6"
+      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
       <button
         type="button"
         onClick={onClick}
@@ -119,7 +126,7 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
         <ChevronDown
           aria-hidden
           strokeWidth={2}
-          className={`size-5 shrink-0 text-midnight transition-transform duration-300 ${
+          className={`size-5 shrink-0 text-midnight transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -129,12 +136,13 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
         {open && (
           <motion.div
             key="content"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0, y: -6 }}
+            animate={{ height: "auto", opacity: 1, y: 0 }}
+            exit={{ height: 0, opacity: 0, y: -6 }}
             transition={{
-              height: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
-              opacity: { duration: 0.25, ease: "easeOut" },
+              height: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+              opacity: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+              y: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
             }}
             className="overflow-hidden"
           >
@@ -148,13 +156,20 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
               </p>
               {day.image && (
                 <div className="relative aspect-16/10 overflow-hidden rounded-md bg-light-grey md:row-span-2">
-                  <Image
-                    src={day.image}
-                    alt={day.imageAlt ?? day.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 348px"
-                    className="object-cover"
-                  />
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={{ scale: 1.12 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  >
+                    <Image
+                      src={day.image}
+                      alt={day.imageAlt ?? day.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 348px"
+                      className="object-cover"
+                    />
+                  </motion.div>
                 </div>
               )}
               {day.details.length > 0 && (
@@ -180,6 +195,6 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </motion.li>
   );
 });
