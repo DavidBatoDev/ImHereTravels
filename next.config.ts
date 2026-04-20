@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { getAllTourSlugs } from "./data/tours";
 
 const nextConfig: NextConfig = {
   images: {
@@ -24,6 +25,13 @@ const nextConfig: NextConfig = {
         pathname: "/imheretravels.com/**",
       },
     ],
+  },
+  async redirects() {
+    return getAllTourSlugs().map((slug) => ({
+      source: `/${slug}`,
+      destination: `/tours/${slug}`,
+      permanent: true,
+    }));
   },
 };
 

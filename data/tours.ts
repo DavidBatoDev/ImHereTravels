@@ -23,6 +23,7 @@ import { argentinasWonders } from "./argentinas-wonders";
 import { brazilsTreasures } from "./brazils-treasures";
 import { bhutanQuest } from "./bhutan-quest";
 import { chinaDiscovery } from "./china-discovery";
+import { danielleErinTanzaniaExploration } from "./danielleerintanzania";
 import { indiaDiscoveryTour } from "./india-discovery-tour";
 import { indiaHoliFestivalTour } from "./india-holi-festival-tour";
 import { japanAdventure } from "./japan-adventure";
@@ -50,6 +51,7 @@ const ALL_TOURS: Tour[] = [
   japanAdventure,
   japanAdventureWithSkiing,
   tanzaniaExploration,
+  danielleErinTanzaniaExploration,
   newZealandExpedition,
   argentinasWonders,
   brazilsTreasures,

@@ -164,7 +164,7 @@ export default function ReservationConfirmedPage() {
                 </h1>
                 <p className="max-w-xl font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
                   Thank you — a receipt has been sent to your inbox. To confirm
-                  your payment, please send the receipt to the email on the side.
+                  your payment, please send the receipt to the email on the side  .
                 </p>
               </div>
 
