@@ -4,6 +4,7 @@ import Footer from "@/app/components/global/Footer";
 import ShareButton from "./_components/ShareButton";
 import { getAllTourSlugs, getTourBySlug } from "@/data/tours";
 import type { Tour } from "@/types/tour";
+import AutoFitText from "./_components/AutoFitText";
 import Breadcrumbs from "./_components/Breadcrumbs";
 import TourGallery from "./_components/TourGallery";
 import TourHeader from "./_components/TourHeader";
@@ -128,9 +129,12 @@ export default async function TourDetailPage({ params }: { params: Params }) {
             <div className="min-w-0">
               <Reveal y={16}>
                 <div className="mt-2 flex items-start justify-between gap-4 md:mt-4">
-                  <h1 className="font-display text-h2-mobile md:text-h2-desktop text-midnight">
+                  <AutoFitText
+                    as="h1"
+                    className="font-display text-h2-mobile md:text-h2-desktop text-midnight"
+                  >
                     {tour.name}
-                  </h1>
+                  </AutoFitText>
                   <div className="shrink-0 pt-3 md:pt-4">
                     <ShareButton title={tour.header.title} />
                   </div>

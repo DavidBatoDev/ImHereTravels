@@ -1,4 +1,5 @@
 import type { Tour } from "@/types/tour";
+import AutoFitText from "./AutoFitText";
 import Icon from "./Icon";
 
 // Rotating palette for location tags — green → orange → yellow → purple,
@@ -14,9 +15,12 @@ const TAG_PALETTE = [
 export default function TourHeader({ header }: { header: Tour["header"] }) {
   return (
     <header className="w-full">
-      <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+      <AutoFitText
+        as="h2"
+        className="font-sans text-h3-mobile md:text-h3-desktop text-midnight"
+      >
         {header.title}
-      </h2>
+      </AutoFitText>
       <ul className="mt-6 flex flex-wrap gap-2">
         {header.tags.map((tag, i) => (
           <li

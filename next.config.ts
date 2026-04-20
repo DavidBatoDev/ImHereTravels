@@ -3,6 +3,7 @@ import { getAllTourSlugs } from "./data/tours";
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",

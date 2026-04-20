@@ -28,6 +28,10 @@ const navItems = [
       { label: "Philippines Sunset", href: "/tours/philippine-sunset" },
       { label: "Sri Lanka Wander", href: "/tours/sri-langka-wander-tour" },
       { label: "Tanzania Exploration", href: "/tours/tanzania-exploration" },
+      {
+        label: "Tanzania Exploration (Danielle & Erin)",
+        href: "/tours/danielleerintanzania",
+      },
       { label: "Vietnam Expedition", href: "/tours/vietnam-expedition" },
     ],
   },
