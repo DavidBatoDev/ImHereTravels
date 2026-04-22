@@ -49,7 +49,7 @@ export const vietnamExpedition: Tour = {
     {
       icon: "days",
       label: "Tour Dates",
-      values: ["TBA"],
+      values: ["Aug 5, 2026"],
     },
     {
       icon: "days",
@@ -428,7 +428,7 @@ export const vietnamExpedition: Tour = {
     routeLabel: "Hanoi → Ninh Binh → Hue → Hoi An → Da Nang",
     priceFromLabel: "From",
     priceCurrency: "GBP",
-    priceAmount: "£1,200",
+    priceAmount: "£1,099",
     depositAmount: "£200",
     ctaLabel: "Reserve Now",
     ctaHref:
@@ -439,7 +439,7 @@ export const vietnamExpedition: Tour = {
     duration: "11 Days",
     description:
       "Hanoi, Ninh Binh, Bai Tu Long Bay, Hue, Hoi An and Da Nang — culture, cruises, jeep tours and lantern-lit ancient streets.",
-    price: "GBP £1,200",
+    price: "GBP £1,099",
     image:
       "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341305320_vietnam-header-4.webp?alt=media&token=be502580-7b8c-47ce-98c3-ce9c250af05e",
     imageAlt: "Vietnam North to South Expedition",

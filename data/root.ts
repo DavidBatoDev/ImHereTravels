@@ -49,7 +49,7 @@ export const tours = [
     duration: "11 Day Tour",
     description:
       "Journey north to south through Vietnam's rich culture — Hanoi, Halong Bay, Hoi An, and Ho Chi Minh City.",
-    price: "GBP £1,200",
+    price: "GBP £1,099",
     image:
       "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341305320_vietnam-header-4.webp?alt=media&token=be502580-7b8c-47ec-98c3-ce9c250af05e",
     href: "/tours/vietnam-expedition",
