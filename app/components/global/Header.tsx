@@ -56,9 +56,15 @@ const navItems = [
     ],
   },
   { label: "About Us", href: "/about-us" },
-  { label: "Pre departure info", href: "/pre-departure" },
-  { label: "Travel Info", href: "/travel-information" },
-  { label: "Travel Safety", href: "/travel-safety" },
+  {
+    label: "Travel Info",
+    href: "/travel-information",
+    dropdown: [
+      { label: "Pre departure info", href: "/pre-departure" },
+      { label: "Travel Info", href: "/travel-information" },
+      { label: "Travel Safety", href: "/travel-safety" },
+    ],
+  },
 ];
 
 function ChevronDown({ className = "" }: { className?: string }) {
