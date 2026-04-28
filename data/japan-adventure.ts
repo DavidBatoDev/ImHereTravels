@@ -1,38 +1,38 @@
-﻿/**
- * Japan Adventure — 10-day Tokyo-to-Sapporo journey.
- *
- * Originally generated from data/json/tourPackages-04142026.json; hand-
- * enriched with itinerary, accommodations, and FAQs sourced from the
- * live imheretravels.com Japan Adventure page.
- */
 import type { Tour } from "@/types/tour";
 
 export const japanAdventure: Tour = {
   slug: "japan-adventure",
   name: "Japan Adventure",
   meta: {
-    title: "Japan Adventure — 10 Day Tokyo to Sapporo Tour",
+    title: "Japan Adventure — 10 Day Tokyo to Kyoto Tour",
     description:
-      "Join the 10-day Japan Adventure: Tokyo city tour, bullet train to Kyoto, tea ceremony, and Sapporo's snowy charm. Optional skiing. GBP £2,150.",
+      "Join the 10-day Japan Summer Adventure: Tokyo city tour, bullet train to Kyoto, traditional tea ceremony, and the scenic Atami coast. GBP £1,899.",
   },
   gallery: {
-    hero: "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
-    heroAlt: "Japan Adventure — Tokyo, Kyoto, Sapporo",
-    thumbnails: [],
+    hero: "/tours/japan-adventure/japan-header-6.webp",
+    heroAlt: "Japan Adventure — Tokyo, Atami, Kyoto",
+    thumbnails: [
+      { src: "/tours/japan-adventure/japan-header-1.webp", alt: "Japan coastal scenery" },
+      { src: "/tours/japan-adventure/japan-header-2.webp", alt: "Akihabara Tokyo" },
+      { src: "/tours/japan-adventure/japan-header-3.webp", alt: "Tokyo skyline with Mt. Fuji" },
+      { src: "/tours/japan-adventure/japan-header-4.webp", alt: "Cherry blossoms Japan" },
+      { src: "/tours/japan-adventure/japan-header-5.webp", alt: "Fushimi Inari torii gates, Kyoto" },
+      { src: "/tours/japan-adventure/japan-header-7.webp", alt: "Fushimi Inari torii corridor" },
+    ],
   },
   header: {
-    title: "10 Days | Japan Adventure",
+    title: "10 Days | Japan Summer Adventure",
     tags: [
       { label: "Tokyo", icon: "location" },
+      { label: "Atami", icon: "location" },
       { label: "Kyoto", icon: "location" },
-      { label: "Sapporo", icon: "location" },
     ],
     description:
       "Experience the perfect blend of tradition and innovation on this unforgettable journey through Japan. We start off in Tokyo, the vibrant capital where modern skyscrapers meet historic temples. Enjoy a guided city tour featuring iconic sights like the Meiji Shrine and Shibuya Crossing. After a few days in Tokyo, we will ride the world-renowned bullet train to Kyoto, Japan's cultural heart. Explore ancient temples, serene gardens, and the famous Gion district, home to traditional tea houses and geisha culture. The final stop on the tour will be Sapporo. Discover its laid-back charm, local cuisine, and unique seasonal beauty during a scenic city tour. This tour offers the best of Japan's dynamic cities, rich heritage, and stunning landscapes.",
   },
   keyFacts: [
     { icon: "days", label: "Tour Dates", values: ["To be announced"] },
-    { icon: "route", label: "Route", values: ["Tokyo → Kyoto → Sapporo"] },
+    { icon: "route", label: "Route", values: ["Tokyo → Atami → Kyoto"] },
     { icon: "days", label: "Days", values: ["10 Days and 9 Nights"] },
     { icon: "people", label: "Group Size", values: ["Maximum 20 people"] },
   ],
@@ -42,7 +42,7 @@ export const japanAdventure: Tour = {
       {
         icon: "transport",
         label: "Transport",
-        value: "Private vehicle, All sightseeing transfers",
+        value: "Private vehicle - All sightseeing transfers",
       },
       {
         icon: "accommodation",
@@ -53,10 +53,9 @@ export const japanAdventure: Tour = {
         icon: "activities",
         label: "Activities",
         value:
-          "Meet & Greet at Tokyo international airport, City Tour, Tea Ceremony, Bullet Train, Optional: Skiing (all gear and equipment included)",
+          "Meet & Greet at Tokyo international airport, City Tour, Tea Ceremony, Bullet Train",
       },
       { icon: "meals", label: "Meals", value: "9 Breakfasts" },
-      { icon: "team", label: "Team", value: "Trip Manager + Local Guides" },
       {
         icon: "plus",
         label: "Others",
@@ -87,18 +86,11 @@ export const japanAdventure: Tour = {
           "Hop aboard the infamous bullet train and make your way to Kyoto",
       },
       {
-        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-3.webp",
+        image: "/images/wp-content/uploads/2025/10/japan-day-6.webp",
         imageAlt: "Traditional tea ceremony in Kyoto",
         title: "Tea Ceremony in Kyoto",
         subtitle:
-          "Experience the traditional tea ceremony and, if you're keen, try making some tea sweets",
-      },
-      {
-        image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-4.webp",
-        imageAlt: "Skiing in Sapporo",
-        title: "Skiing in Sapporo (optional)",
-        subtitle:
-          "Extend your winter adventure with a trip to a nearby ski resort",
+          "Experience the traditional tea ceremony and, if you're keen, try making some tea sweets.",
       },
     ],
   },
@@ -113,17 +105,18 @@ export const japanAdventure: Tour = {
         description:
           "A driver will wait for you upon arrival at the airport and transfer you and your fellow travelers to your accommodation in downtown Tokyo. Use the rest of your day for your own first exploration of the city.",
         image: "/images/wp-content/uploads/2025/10/japan-day-1.webp",
-        imageAlt: "Tokyo arrival",
+        imageAlt: "Welcome to Tokyo",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "Sunshine City Prince Hotel (or similar)",
+            value: "Moxy Tokyo Kinshicho",
           },
+          { icon: "location", label: "Location", value: "Tokyo" },
           {
             icon: "activities",
-            label: "Activity",
-            value: "Meet & greet at the airport and Check in",
+            label: "Activities",
+            value: "Meet & greet at the airport, Check in",
           },
         ],
       },
@@ -132,15 +125,16 @@ export const japanAdventure: Tour = {
         title: "Tokyo City Tour",
         description:
           "Explore Japan's dynamic capital like a local! Hop on Tokyo's world-renowned public transport system and visit must-see neighborhoods and landmarks. Recommended stops: Akihabara (anime, gaming, tech), Ueno, Asakusa with its famous Sensoji Temple and Nakamise Shopping Street, Shibuya and the famous scramble crossing, Harajuku's fashion district and the nearby Meiji-jingu shrine, and Shinjuku — where we recommend getting a bird's-eye view of the city from the Tokyo Metropolitan Government Building's observation deck. Finish the day with a meal in a typical Japanese izakaya and try some local specialties.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-2.webp",
-        imageAlt: "Tokyo Shibuya scramble",
+        image: "/tours/japan-adventure/japan-day-2.webp",
+        imageAlt: "Tokyo City Tour",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "Sunshine City Prince Hotel (or similar)",
+            value: "Moxy Tokyo Kinshicho",
           },
-          { icon: "activities", label: "Activity", value: "City Tour" },
+          { icon: "location", label: "Location", value: "Tokyo" },
+          { icon: "activities", label: "Activities", value: "City Tour" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
@@ -148,130 +142,144 @@ export const japanAdventure: Tour = {
         dayNumber: 3,
         title: "Tokyo Free Day",
         description:
-          "Explore other areas of Tokyo and the surrounding area at your own pace or relax at the hotel — the day is yours. Recommended day trips include Kamakura and Enoshima by the coast, or for something more traditional, Kawagoe in nearby Saitama prefecture. Otherwise, indulge in fun activities such as a visit to the teamLabs digital art museum or go shopping in one of the countless malls.",
+          "Explore other areas of Tokyo and the surrounding area at your own pace or relax at the hotel — the day is yours. Recommended day trips include Kamakura and Enoshima by the coast, or for something more traditional, Kawagoe in nearby Saitama prefecture. Otherwise, indulge in fun activities such as a visit to the teamLab's digital art museum or go shopping in one of the countless malls.",
         image: "/images/wp-content/uploads/2025/10/japan-day-3.webp",
         imageAlt: "Tokyo free day",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "Sunshine City Prince Hotel (or similar)",
+            value: "Moxy Tokyo Kinshicho",
           },
-          { icon: "activities", label: "Activity", value: "Free day" },
+          { icon: "location", label: "Location", value: "Tokyo" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
       {
         dayNumber: 4,
-        title: "Tokyo to Kyoto",
+        title: "Tokyo > Kamakura/Enoshima > Atami",
         description:
-          "Today after breakfast we will hop aboard the famous bullet train (shinkansen) from Tokyo to the old capital of Kyoto. The rest of the day is free for you to explore on your own. We recommend checking out Yasaka Shrine and the Higashiyama area, or a trip to Fushimi Inari Taisha.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-4.webp",
-        imageAlt: "Shinkansen bullet train to Kyoto",
+          "Start your journey in Tokyo and travel to the scenic shores of Enoshima and the historic charm of Kamakura. Capture the iconic \"Slam Dunk\" photo spot and enjoy the relaxed coastal atmosphere before exploring Kamakura's cultural highlights, including Tsurugaoka Hachimangu Shrine and the impressive Great Buddha at Kotoku-in. This well-paced day blends seaside views with timeless heritage, offering a perfect balance of relaxation and discovery.",
+        image: "/tours/japan-adventure/Enoshima.png",
+        imageAlt: "Enoshima coastal scenery",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "S-Peria Hotel (or similar)",
+            value: "Prince Smart Inn",
           },
-          { icon: "activities", label: "Activity", value: "Bullet Train" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          { icon: "location", label: "Location", value: "Atami" },
+          {
+            icon: "activities",
+            label: "Activities",
+            value: "Kamakura/Enoshima Day Tour",
+          },
+          { icon: "meals", label: "Meals", value: "Breakfast (Grab and Go)" },
         ],
       },
       {
         dayNumber: 5,
-        title: "Kyoto City Tour",
+        title: "Izu Day Tour",
         description:
-          "Step into Japan's ancient capital and immerse yourself in serene temples, historical streets, and unforgettable scenic beauty — all in comfort with a chartered bus for the day. Stops include Kinkakuji, Arashiyama with its bamboo grove and picturesque river, Nishiki Market (Kyoto's Kitchen — ideal for lunch), Kiyomizudera, and Gion. Afterwards rest up and prepare for dinner and possibly a few drinks.",
+          "After a quick breakfast, set off from the hotel to explore the natural beauty and cultural charm of Izu. Visit the peaceful Moroguchi Shrine, wander through the historic streets of Shuzenji Onsen Town, and take in the dramatic coastal views along the Jogasaki Coast. This relaxing yet scenic journey blends tradition and nature, offering a refreshing escape from the city.",
         image: "/images/wp-content/uploads/2025/10/japan-day-5.webp",
-        imageAlt: "Kyoto Kinkakuji and Gion",
+        imageAlt: "Izu Day Tour",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "S-Peria Hotel (or similar)",
+            value: "Prince Smart Inn",
           },
-          { icon: "activities", label: "Activity", value: "Kyoto City Tour" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          { icon: "location", label: "Location", value: "Izu - Atami" },
+          { icon: "activities", label: "Activities", value: "Day Tour" },
+          { icon: "meals", label: "Meals", value: "Breakfast (Grab and Go)" },
         ],
       },
       {
         dayNumber: 6,
-        title: "Tea Ceremony",
+        title: "Atami Free Day",
         description:
-          "Today we will dive into some of Japan's rich culture as we experience a traditional Japanese tea ceremony and try your hand at tea sweets making under the guidance of a local teacher. The rest of the day is yours at leisure.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-6.webp",
-        imageAlt: "Japanese tea ceremony",
+          "Enjoy a relaxing free day in Atami at your pace. Unwind in soothing hot springs, stroll along the scenic coastline, or explore charming local streets and cafés. Whether you choose to relax or discover hidden gems, the day is yours to enjoy.",
+        image: "/images/wp-content/uploads/2025/10/japan-day-7.webp",
+        imageAlt: "Atami free day",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "S-Peria Hotel (or similar)",
+            value: "Prince Smart Inn",
           },
-          { icon: "activities", label: "Activity", value: "Tea Ceremony" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
+          { icon: "location", label: "Location", value: "Atami" },
+          { icon: "activities", label: "Activities", value: "Free Day" },
+          { icon: "meals", label: "Meals", value: "Breakfast (Grab and Go)" },
         ],
       },
       {
         dayNumber: 7,
-        title: "Kyoto to Sapporo",
+        title: "Atami to Kyoto",
         description:
-          "You will transfer from Kyoto to one of Osaka's airports and then fly to Japan's northernmost prefecture and island of Hokkaido. After arriving in the regional capital of Sapporo the rest of the day is at leisure — go out exploring or just relax at the hotel, it's entirely up to you.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-7.webp",
-        imageAlt: "Travel to Sapporo",
+          "Today after breakfast we will hop aboard the famous bullet train (shinkansen). Before check-in, we will immerse ourselves in Japan's rich culture by participating in a traditional Japanese tea ceremony and learning to make tea sweets under the guidance of a local teacher. The rest of the day is yours at leisure.",
+        image: "/images/wp-content/uploads/2025/10/japan-day-6.webp",
+        imageAlt: "Tea ceremony in Kyoto",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "New Otani Inn (or similar)",
+            value: "S-Peria Hotel",
           },
-          { icon: "activities", label: "Activity", value: "Travel to Sapporo" },
+          { icon: "location", label: "Location", value: "Kyoto" },
+          { icon: "activities", label: "Activities", value: "Tea Ceremony" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
       {
         dayNumber: 8,
-        title: "Sapporo City Tour",
+        title: "Kyoto City Tour",
         description:
-          "Enjoy the freedom of exploring Hokkaido's snowy capital at your own pace. Sapporo is a charming city with a cozy winter atmosphere, ideal for foodies, culture lovers, and snow seekers alike. Stops include Sapporo Clock Tower, Nijo Market, Sapporo's TV Tower and Odori Park, Ramen Yokocho, the Sapporo Beer Museum or Shiroi Koibito Park, and Tanukikoji Shopping Street. Then rest up and prepare for dinner.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-8.webp",
-        imageAlt: "Sapporo snowy streets",
+          "Step into Japan's ancient capital and immerse yourself in serene temples, historical streets, and unforgettable scenic beauty — all in comfort with a chartered bus for the day. Stops include Kinkakuji, Arashiyama with its bamboo grove and picturesque river, Nishiki Market (Kyoto's Kitchen — ideal for lunch), Kiyomizudera, and Gion. Afterwards rest up and prepare for dinner and possibly a few drinks.",
+        image: "/tours/japan-adventure/japan-day-8.webp",
+        imageAlt: "Kyoto City Tour",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "New Otani Inn (or similar)",
+            value: "S-Peria Hotel",
           },
-          { icon: "activities", label: "Activity", value: "Sapporo City Tour" },
+          { icon: "location", label: "Location", value: "Kyoto" },
+          { icon: "activities", label: "Activities", value: "City Tour" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
       {
         dayNumber: 9,
-        title: "Ski Day (Optional)",
+        title: "Kyoto Free Day",
         description:
-          "Extend your winter adventure with a trip to a nearby ski resort! Perfect for skiing, snowboarding, or simply soaking in snowy mountain views with a cup of hot cocoa. Otherwise this day is at leisure. We recommend a day trip to nearby Otaru, a historic port town, for those less interested in hitting the slopes. If you have onward travels, our local tour guide can assist you with airport transfers.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-9-1.webp",
-        imageAlt: "Skiing in Hokkaido",
+          "Enjoy a free day in Kyoto to explore the city at your pace. Wander through historic streets, visit iconic temples and shrines, or relax in traditional tea houses and gardens. From cultural landmarks to hidden corners, Kyoto offers endless discoveries. Make the day your own and experience the timeless beauty of Japan's ancient capital.",
+        image: "/tours/japan-adventure/japan-day-9.webp",
+        imageAlt: "Kyoto free day",
         details: [
           {
             icon: "accommodation",
             label: "Accommodation",
-            value: "New Otani Inn (or similar)",
+            value: "S-Peria Hotel",
           },
-          { icon: "activities", label: "Activity", value: "Ski (Optional)" },
+          { icon: "location", label: "Location", value: "Kyoto" },
+          { icon: "activities", label: "Activities", value: "Free Day" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
       {
         dayNumber: 10,
-        title: "Until Next Time",
+        title: "Check Out, Until Next Time!",
         description:
           "Enjoy your last breakfast with a view before heading to the airport. You're leaving Japan but trust us, part of your heart will stay behind.",
-        image: "/images/wp-content/uploads/2025/10/japan-day-10.webp",
-        imageAlt: "Sapporo departure",
         details: [
-          { icon: "activities", label: "Activity", value: "Check Out" },
+          {
+            icon: "accommodation",
+            label: "Accommodation",
+            value: "S-Peria Hotel (checkout)",
+          },
+          { icon: "location", label: "Location", value: "Kyoto" },
+          { icon: "activities", label: "Activities", value: "Check out" },
           { icon: "meals", label: "Meals", value: "Breakfast" },
         ],
       },
@@ -281,25 +289,23 @@ export const japanAdventure: Tour = {
     heading: "Where we stay",
     items: [
       {
-        image:
-          "/images/wp-content/uploads/2026/02/sunshine-city-prince-hotel-accommodation.webp",
-        imageAlt: "Sunshine City Prince Hotel",
-        name: "Sunshine City Prince Hotel (or similar)",
-        nights: "3 nights in Hotel",
+        image: "/tours/japan-adventure/Moxy.png",
+        imageAlt: "Moxy Tokyo Kinshicho",
+        name: "Moxy Tokyo Kinshicho",
+        nights: "3 nights (Days 1–3)",
+      },
+      {
+        image: "/tours/japan-adventure/Prince_Inn.png",
+        imageAlt: "Prince Smart Inn",
+        name: "Prince Smart Inn",
+        nights: "3 nights (Days 4–6)",
       },
       {
         image:
           "/images/wp-content/uploads/2025/10/s-peria-hotel-accommodation.webp",
         imageAlt: "S-Peria Hotel",
-        name: "S-Peria Hotel (or similar)",
-        nights: "3 nights in Hotel",
-      },
-      {
-        image:
-          "/images/wp-content/uploads/2026/02/new-otani-inn-sapporo-accommodation.webp",
-        imageAlt: "New Otani Inn Sapporo",
-        name: "New Otani Inn Sapporo (or similar)",
-        nights: "3 nights in Hotel",
+        name: "S-Peria Hotel",
+        nights: "3 nights (Days 7–9, checkout Day 10)",
       },
     ],
   },
@@ -308,7 +314,7 @@ export const japanAdventure: Tour = {
     items: [
       {
         question: "Where does the trip start & finish?",
-        answer: "The trip begins in Tokyo and ends in Sapporo.",
+        answer: "The trip begins in Tokyo and ends in Kyoto.",
       },
       {
         question: "Which airport do I need to fly into?",
@@ -322,16 +328,16 @@ export const japanAdventure: Tour = {
       {
         question: "Do you have an age limit for tours?",
         answer:
-          "Our tours cater to adventurous travelers aged 18–45, with most guests between 21–35 years old. It's perfect for people from diverse backgrounds to share travel experiences.",
+          "Tours cater to adventurous travelers aged 18–45, with most guests between 21–35 years old. It's perfect for people from diverse backgrounds to share travel experiences.",
       },
       {
         question: "What is the local currency?",
         answer:
-          "The local currency is Japanese Yen (JPY). We advise collecting cash from the airport ATMs; ATMs are also available along the way.",
+          "Japanese Yen (JPY). Advised to collect cash from airport ATMs; ATMs also available along the way.",
       },
       {
         question: "Which airport do I fly out from?",
-        answer: "New Chitose Airport (CTS), Sapporo.",
+        answer: "Osaka International Airport (Itami Airport - ITM).",
       },
     ],
   },
@@ -385,16 +391,20 @@ export const japanAdventure: Tour = {
       },
     ],
   },
+  community: {
+    heading: "With @Imheretravels",
+    images: Array.from({ length: 10 }).map((_, i) => ({
+      src: `/tours/philippine-sunrise/community-${i + 1}.jpg`,
+      alt: `Traveler photo ${i + 1}`,
+      href: "https://www.instagram.com/imheretravels",
+    })),
+  },
   booking: {
     durationLabel: "10 Day Tour",
-    routeLabel: "Tokyo - Sapporo",
+    routeLabel: "Tokyo - Kyoto",
     priceFromLabel: "From",
     priceCurrency: "GBP",
-    priceAmount: "£2,150",
-    priceCategories: [
-      { label: "Standard", amount: "£2150", badge: "yellow" },
-      { label: "With Skiing", amount: "£2370", badge: "green" },
-    ],
+    priceAmount: "£1,899",
     depositAmount: "£300",
     ctaLabel: "Reserve Now",
     ctaHref:
@@ -404,12 +414,11 @@ export const japanAdventure: Tour = {
   listingCard: {
     duration: "10 Days and 9 Nights",
     description:
-      "Tokyo's neon streets, the shinkansen to Kyoto, a traditional tea ceremony, and Sapporo's snowy charm — with optional skiing.",
-    price: "GBP £2,150",
+      "Tokyo's neon streets, the scenic Atami coast, the shinkansen to Kyoto, and a traditional tea ceremony — the perfect blend of tradition and innovation.",
+    price: "GBP £1,899",
     image: "/images/wp-content/uploads/2025/10/japan-trip-highlight-1.webp",
     imageAlt: "Japan Adventure",
   },
 };
 
 export default japanAdventure;
-
