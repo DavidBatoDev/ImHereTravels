@@ -9,9 +9,16 @@ export const japanAdventureWinter: Tour = {
       "Experience the perfect blend of tradition and innovation on this unforgettable 10-day journey through Japan. From Tokyo to Nagano to Kyoto to Osaka, discover Japan's dynamic cities, rich heritage, and stunning winter landscapes.",
   },
   gallery: {
-    hero: "/tours/japan-adventure/japan-header-4.webp",
+    hero: "/tours/japan-adventure-winter/japan-header-4.webp",
     heroAlt: "Japan Adventure (Winter)",
-    thumbnails: [],
+    thumbnails: [
+      { src: "/tours/japan-adventure-winter/japan-header-1.webp", alt: "Japan Adventure (Winter)" },
+      { src: "/tours/japan-adventure-winter/japan-header-2.webp", alt: "Japan Adventure (Winter)" },
+      { src: "/tours/japan-adventure-winter/japan-header-3.webp", alt: "Japan Adventure (Winter)" },
+      { src: "/tours/japan-adventure-winter/japan-header-5.webp", alt: "Japan Adventure (Winter)" },
+      { src: "/tours/japan-adventure-winter/japan-header-6.webp", alt: "Japan Adventure (Winter)" },
+      { src: "/tours/japan-adventure-winter/japan-header-7.webp", alt: "Japan Adventure (Winter)" },
+    ],
   },
   header: {
     title: "10 Days | Japan Winter Adventure",
@@ -65,21 +72,21 @@ export const japanAdventureWinter: Tour = {
     heading: "Trip Highlights",
     items: [
       {
-        image: "/tours/japan-adventure/japan-trip-highlight-1.webp",
+        image: "/tours/japan-adventure-winter/japan-trip-highlight-1.webp",
         imageAlt: "Tokyo City Tour",
         title: "Tokyo City Tour",
         subtitle:
           "Explore Tokyo and immerse yourself in the various popular landmarks the capital has to offer",
       },
       {
-        image: "/tours/japan-adventure/japan-trip-highlight-2.webp",
+        image: "/tours/japan-adventure-winter/japan-trip-highlight-2.webp",
         imageAlt: "Famous Bullet Train",
         title: "Famous Bullet Train",
         subtitle:
           "Hop aboard the infamous bullet train and make your way to Kyoto",
       },
       {
-        image: "/tours/japan-adventure/japan-day-6.webp",
+        image: "/tours/japan-adventure-winter/japan-trip-highlight-3.webp",
         imageAlt: "Tea Ceremony in Kyoto",
         title: "Tea Ceremony in Kyoto",
         subtitle:
@@ -97,7 +104,7 @@ export const japanAdventureWinter: Tour = {
         title: "Welcome to Tokyo",
         description:
           "A driver will wait for you upon arrival at the airport and transfer you and your fellow travelers to your accommodation in downtown Tokyo. Use the rest of your day for your own first exploration of the city.",
-        image: "/tours/japan-adventure/japan-day-1.webp",
+        image: "/tours/japan-adventure-winter/japan-day-1.webp",
         imageAlt: "Welcome to Tokyo",
         details: [
           {
@@ -118,7 +125,7 @@ export const japanAdventureWinter: Tour = {
         title: "Tokyo City Tour",
         description:
           "Explore Japan's dynamic capital like a local! Hop on Tokyo's world-renowned public transport system and visit must-see neighborhoods and landmarks. Recommended stops: Akihabara (anime, gaming, tech), Ueno, Asakusa with its famous Sensoji Temple and Nakamise Shopping Street, Shibuya and the famous scramble crossing, Harajuku's fashion district and the nearby Meiji-jingu shrine, and Shinjuku — where we recommend getting a bird's-eye view of the city from the Tokyo Metropolitan Government Building's observation deck. Finish the day with a meal in a typical Japanese izakaya and try some local specialties.",
-        image: "/tours/japan-adventure/japan-day-1.webp",
+        image: "/tours/japan-adventure-winter/japan-day-2.webp",
         imageAlt: "Tokyo City Tour",
         details: [
           {
@@ -136,7 +143,7 @@ export const japanAdventureWinter: Tour = {
         title: "Tokyo Free Day",
         description:
           "Explore other areas of Tokyo and the surrounding area at your own pace or relax at the hotel — the day is yours. Recommended day trips include Kamakura and Enoshima by the coast, or for something more traditional, Kawagoe in nearby Saitama prefecture. Otherwise, indulge in fun activities such as a visit to the teamLab's digital art museum or go shopping in one of the countless malls.",
-        image: "/tours/japan-adventure/japan-day-3.webp",
+        image: "/tours/japan-adventure-winter/japan-day-3.webp",
         imageAlt: "Tokyo Free Day",
         details: [
           {
@@ -154,7 +161,7 @@ export const japanAdventureWinter: Tour = {
         title: "Tokyo to Nagano",
         description:
           "Start your journey in Tokyo and enjoy a scenic journey to Nagano. Upon arrival and hotel check-in, set out for a brief but enriching visit to the historic Zenkoji Temple, one of Japan's most important and revered Buddhist sites. Take a leisurely stroll along Nakamise Street, where charming shops and local treats offer a delightful glimpse into traditional culture.",
-        image: "/tours/japan-adventure/japan-header-7.webp",
+        image: "/tours/japan-adventure-winter/japan-day-4.webp",
         imageAlt: "Tokyo to Nagano",
         details: [
           {
@@ -176,7 +183,7 @@ export const japanAdventureWinter: Tour = {
         title: "Nagano (Skiing Optional)",
         description:
           "Enjoy a free day in Nagano to explore at your own pace. For those seeking adventure, take advantage of the optional skiing experience and hit the slopes surrounded by the region's stunning alpine scenery.",
-        image: "/tours/japan-adventure/japan-day-7.webp",
+        image: "/tours/japan-adventure-winter/japan-day-5.webp",
         imageAlt: "Nagano (Skiing Optional)",
         details: [
           {
@@ -194,7 +201,7 @@ export const japanAdventureWinter: Tour = {
         title: "Nagano to Kyoto",
         description:
           "Today after breakfast we will hop aboard the famous bullet train (shinkansen). Before check-in, we will immerse ourselves in Japan's rich culture by participating in a traditional Japanese tea ceremony and learning to make tea sweets under the guidance of a local teacher. The rest of the day is yours at leisure.",
-        image: "/tours/japan-adventure/japan-day-6.webp",
+        image: "/tours/japan-adventure-winter/japan-day-6.webp",
         imageAlt: "Nagano to Kyoto",
         details: [
           {
@@ -212,7 +219,7 @@ export const japanAdventureWinter: Tour = {
         title: "Kyoto City Tour",
         description:
           "Step into Japan's ancient capital and immerse yourself in serene temples, historical streets, and unforgettable scenic beauty — all in comfort with a chartered bus for the day. Stops include Kinkakuji, Arashiyama with its bamboo grove and picturesque river, Nishiki Market (Kyoto's Kitchen — ideal for lunch), Kiyomizudera, and Gion. Afterwards rest up and prepare for dinner and possibly a few drinks.",
-        image: "/tours/japan-adventure/japan-day-2.webp",
+        image: "/tours/japan-adventure-winter/japan-day-7.webp",
         imageAlt: "Kyoto City Tour",
         details: [
           {
@@ -230,7 +237,7 @@ export const japanAdventureWinter: Tour = {
         title: "Kyoto Free Day",
         description:
           "Enjoy a free day in Kyoto to explore the city at your pace. Wander through historic streets, visit iconic temples and shrines, or relax in traditional tea houses and gardens. From cultural landmarks to hidden corners, Kyoto offers endless discoveries. Make the day your own and experience the timeless beauty of Japan's ancient capital.",
-        image: "/tours/japan-adventure/japan-header-2.webp",
+        image: "/tours/japan-adventure-winter/japan-header-2.webp",
         imageAlt: "Kyoto Free Day",
         details: [
           {
@@ -248,7 +255,7 @@ export const japanAdventureWinter: Tour = {
         title: "Kyoto to Osaka",
         description:
           "Depart from your Kyoto hotel and travel towards Osaka, with enriching stops along the way. Visit the iconic Fushimi Inari Taisha, then continue to Nara to explore Nara Park and the magnificent Todai-ji Temple. After this cultural side trip, arrive at your Osaka hotel, with the late afternoon free to relax or explore.",
-        image: "/tours/japan-adventure/japan-day-9.webp",
+        image: "/tours/japan-adventure-winter/japan-day-9.webp",
         imageAlt: "Kyoto to Osaka",
         details: [
           {
@@ -283,25 +290,25 @@ export const japanAdventureWinter: Tour = {
     heading: "Where We Stay",
     items: [
       {
-        image: "/tours/japan-adventure/Moxy.png",
+        image: "/tours/japan-adventure-winter/Moxy.png",
         imageAlt: "Moxy Tokyo Kinshicho",
         name: "Moxy Tokyo Kinshicho",
         nights: "3 nights (Days 1–3)",
       },
       {
-        image: "",
+        image: "/tours/japan-adventure-winter/Dormy-Inn.png",
         imageAlt: "Dormy Inn Nagano",
         name: "Dormy Inn Nagano",
         nights: "2 nights (Days 4–5)",
       },
       {
-        image: "/tours/japan-adventure/s-peria-hotel-accommodation.webp",
+        image: "/tours/japan-adventure-winter/S-Peria.webp",
         imageAlt: "S-Peria Hotel",
         name: "S-Peria Hotel",
         nights: "3 nights (Days 6–8)",
       },
       {
-        image: "",
+        image: "/tours/japan-adventure-winter/Sarasa.png",
         imageAlt: "Sarasa Hotel Namba",
         name: "Sarasa Hotel Namba",
         nights: "1 night (Day 9, checkout Day 10)",
@@ -405,16 +412,16 @@ export const japanAdventureWinter: Tour = {
   community: {
     heading: "With @Imheretravels",
     images: [
-      "/tours/japan-adventure/japan-header-1.webp",
-      "/tours/japan-adventure/japan-header-3.webp",
-      "/tours/japan-adventure/japan-header-5.webp",
-      "/tours/japan-adventure/japan-header-6.webp",
-      "/tours/japan-adventure/japan-day-2.webp",
-      "/tours/japan-adventure/japan-day-3.webp",
-      "/tours/japan-adventure/japan-day-5.webp",
-      "/tours/japan-adventure/japan-day-7.webp",
-      "/tours/japan-adventure/japan-day-8.webp",
-      "/tours/japan-adventure/japan-trip-highlight-2.webp",
+      "/tours/japan-adventure-winter/japan-header-1.webp",
+      "/tours/japan-adventure-winter/japan-header-3.webp",
+      "/tours/japan-adventure-winter/japan-header-5.webp",
+      "/tours/japan-adventure-winter/japan-header-6.webp",
+      "/tours/japan-adventure-winter/japan-day-2.webp",
+      "/tours/japan-adventure-winter/japan-day-3.webp",
+      "/tours/japan-adventure-winter/japan-day-5.webp",
+      "/tours/japan-adventure-winter/japan-day-7.webp",
+      "/tours/japan-adventure-winter/japan-day-8.webp",
+      "/tours/japan-adventure-winter/japan-trip-highlight-2.webp",
     ].map((src, i) => ({
       src,
       alt: `Japan winter travel photo ${i + 1}`,
@@ -426,7 +433,7 @@ export const japanAdventureWinter: Tour = {
     description:
       "Welcome to Japan. Experience the perfect blend of tradition and innovation on this unforgettable journey through Japan. We start off in Tokyo, the vibrant capital where modern skyscrapers meet historic temples.",
     price: "GBP £1,999",
-    image: "/tours/japan-adventure/japan-header-4.webp",
+    image: "/tours/japan-adventure-winter/japan-header-4.webp",
     imageAlt: "Japan Adventure (Winter)",
   },
 };

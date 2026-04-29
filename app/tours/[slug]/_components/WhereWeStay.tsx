@@ -63,6 +63,7 @@ export default function WhereWeStay({
                         src={imageSrc}
                         alt={a.imageAlt}
                         fill
+                        unoptimized
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
                       />
