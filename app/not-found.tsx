@@ -38,11 +38,11 @@ export default function NotFound() {
         <section className="relative isolate overflow-hidden bg-light-grey">
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-24 -left-24 size-[20rem] rounded-full bg-light-red/20 blur-3xl"
+            className="pointer-events-none absolute -top-24 -left-24 size-80 rounded-full bg-light-red/20 blur-3xl"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-24 -right-16 size-[24rem] rounded-full bg-sunglow-yellow/30 blur-3xl"
+            className="pointer-events-none absolute -bottom-24 -right-16 size-96 rounded-full bg-sunglow-yellow/30 blur-3xl"
           />
 
           <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-8 text-center md:gap-8 md:px-8 md:py-16">

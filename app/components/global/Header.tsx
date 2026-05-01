@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const navItems = [
   {
@@ -54,6 +55,15 @@ const navItems = [
       { label: "New Zealand", href: "/all-destinations/new-zealand" },
       { label: "Argentina", href: "/all-destinations/argentina" },
       { label: "Brazil", href: "/all-destinations/brazil" },
+    ],
+  },
+  {
+    label: "Resident Hosts",
+    href: "/resident-hosts",
+    noLink: true,
+    dropdown: [
+      { label: "Travel with Dev", href: "/resident-hosts/dev" },
+      { label: "Travel with Jess", href: "/resident-hosts/jess" },
     ],
   },
   { label: "About Us", href: "/about-us" },
@@ -125,6 +135,11 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { scrollY } = useScroll();
+  const pathname = usePathname();
+
+  const isParentActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
+  const isChildActive = (href: string) => pathname === href;
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -179,13 +194,22 @@ export default function Header() {
           {navItems.map((item) =>
             item.dropdown ? (
               <div key={item.href} className="group relative">
-                <Link
-                  href={item.href}
-                  className="flex items-center gap-1 font-body text-b4-desktop text-midnight transition-colors hover:text-crimson-red group-hover:text-crimson-red"
-                >
-                  {item.label}
-                  <ChevronDown />
-                </Link>
+                {item.noLink ? (
+                  <span
+                    className={`flex cursor-default items-center gap-1 font-body text-b4-desktop transition-colors group-hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
+                  >
+                    {item.label}
+                    <ChevronDown />
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
+                  >
+                    {item.label}
+                    <ChevronDown />
+                  </Link>
+                )}
 
                 <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
                   <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">
@@ -193,7 +217,7 @@ export default function Header() {
                       <li key={child.label}>
                         <Link
                           href={child.href}
-                          className="block px-4 py-2.5 font-body text-b4-desktop text-midnight transition-colors hover:bg-light-grey hover:text-crimson-red"
+                          className={`block px-4 py-2.5 font-body text-b4-desktop transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-midnight"}`}
                         >
                           {child.label}
                         </Link>
@@ -206,7 +230,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-body text-b4-desktop text-midnight transition-colors hover:text-crimson-red"
+                className={`font-body text-b4-desktop transition-colors hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
               >
                 {item.label}
               </Link>
@@ -256,7 +280,7 @@ export default function Header() {
                         <Link
                           href={item.href}
                           onClick={closeMenu}
-                          className="flex-1 py-4 font-body text-b2-mobile text-midnight transition-colors hover:text-crimson-red"
+                          className={`flex-1 py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
                         >
                           {item.label}
                         </Link>
@@ -294,7 +318,7 @@ export default function Header() {
                                 <Link
                                   href={child.href}
                                   onClick={closeMenu}
-                                  className="block rounded-sm px-3 py-2 font-body text-b4-mobile text-dark-gray transition-colors hover:bg-light-grey hover:text-crimson-red"
+                                  className={`block rounded-sm px-3 py-2 font-body text-b4-mobile transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-dark-gray"}`}
                                 >
                                   {child.label}
                                 </Link>
@@ -309,7 +333,7 @@ export default function Header() {
                       <Link
                         href={item.href}
                         onClick={closeMenu}
-                        className="block py-4 font-body text-b2-mobile text-midnight transition-colors hover:text-crimson-red"
+                        className={`block py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
                       >
                         {item.label}
                       </Link>

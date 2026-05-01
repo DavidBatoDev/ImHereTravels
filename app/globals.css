@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+  /* offset anchor targets so sticky header doesn't cover them */
+  scroll-padding-top: 5rem;
+}
+
 /* ---------- Brand fonts (self-hosted) ---------- */
 
 /* HK Grotesk — primary sans (headings, subheads, standfirst) */

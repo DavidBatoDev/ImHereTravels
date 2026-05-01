@@ -71,7 +71,7 @@ export const indiaHoliFestivalTour: Tour = {
     {
       icon: "days",
       label: "Tour Dates",
-      values: ["TBA"],
+      values: ["March 19–31, 2027"],
     },
     {
       icon: "days",
