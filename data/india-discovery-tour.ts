@@ -498,7 +498,7 @@ export const indiaDiscoveryTour: Tour = {
     routeLabel: "New Delhi to Agra",
     priceFromLabel: "From",
     priceCurrency: "GBP",
-    priceAmount: "£1,099",
+    priceAmount: "£1,199",
     depositAmount: "£200",
     ctaLabel: "Reserve Now",
     ctaHref:
@@ -509,7 +509,7 @@ export const indiaDiscoveryTour: Tour = {
     duration: "13 Days and 12 Nights",
     description:
       "The Taj Mahal, Mehrangarh Fort, Lake Pichola cruise, Amer Fort, and a canter safari through Ranthambhore National Park.",
-    price: "GBP £1,099",
+    price: "GBP £1,199",
     image:
       "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341302125_india-header-1.webp?alt=media&token=3f969113-15f2-4d4e-bc0c-0f5e8ac5043e",
     imageAlt: "India Discovery Tour",
@@ -517,4 +517,3 @@ export const indiaDiscoveryTour: Tour = {
 };
 
 export default indiaDiscoveryTour;
-

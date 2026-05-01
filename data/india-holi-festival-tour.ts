@@ -249,7 +249,7 @@ export const indiaHoliFestivalTour: Tour = {
     routeLabel: "India",
     priceFromLabel: "From",
     priceCurrency: "GBP",
-    priceAmount: "£1,099",
+    priceAmount: "£1,199",
     depositAmount: "£200",
     ctaLabel: "Reserve Now",
     ctaHref:
@@ -260,11 +260,10 @@ export const indiaHoliFestivalTour: Tour = {
     duration: "13 Days and 12 Nights",
     description:
       "It’s time to start exploring India. This tour is perfect for those first time travellers that have always wanted to explore the wonders of India but don’t want ",
-    price: "GBP £1,099",
+    price: "GBP £1,199",
     image: "/images/wp-content/uploads/2025/01/india-header-2.webp",
     imageAlt: "India Holi Festival Tour",
   },
 };
 
 export default indiaHoliFestivalTour;
-
