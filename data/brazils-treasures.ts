@@ -18,7 +18,40 @@ export const brazilsTreasures: Tour = {
   gallery: {
     hero: "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341307739_brazil-header-4.webp?alt=media&token=811f0f81-f1ba-4267-9da5-69c568c29335",
     heroAlt: "Brazil's Treasures — Rio skyline and Amazon rainforest",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-1.webp",
+        alt: "Arrival in Manaus",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-2.webp",
+        alt: "Grand Amazon River experience",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-4.webp",
+        alt: "Transfer to Paraty",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-5.webp",
+        alt: "Island hopping in Paraty",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-8.webp",
+        alt: "City icons of Rio de Janeiro",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-9.webp",
+        alt: "Favela jeep tour",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-10.webp",
+        alt: "Helicopter ride over Rio",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/07/brazil-day-11.webp",
+        alt: "Sambadrome Carnival night",
+      },
+    ],
   },
   header: {
     title: "12 Days | Brazil's Treasures",

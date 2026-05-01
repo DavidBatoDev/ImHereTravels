@@ -22,7 +22,40 @@ export const sriLangkaWanderTour: Tour = {
   gallery: {
     hero: "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341313258_srilanka-header-22.webp?alt=media&token=a9755c83-5fac-4284-87dd-9325e1b24727",
     heroAlt: "Sri Lanka Wander Tour",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-1.webp",
+        alt: "Arrival in Negombo",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-3.webp",
+        alt: "Dambulla Rock Temple",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-4.webp",
+        alt: "Sigiriya and cycling tour",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-5.webp",
+        alt: "Matale Spice Gardens and Kandy",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-6.webp",
+        alt: "Train ride from Nuwara Eliya to Ella",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-7.webp",
+        alt: "Exploring Ella",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-10.webp",
+        alt: "Galle city tour",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/08/srilanka-day-11.webp",
+        alt: "Madu Ganga river experience",
+      },
+    ],
   },
   header: {
     title: "12 Days | Sri Lanka Wander Tour",

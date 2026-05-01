@@ -18,7 +18,36 @@ export const bhutanQuest: Tour = {
   gallery: {
     hero: "/images/wp-content/uploads/2025/08/bhutan-header-1.webp",
     heroAlt: "Bhutan Quest — Himalayan landscapes",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-1.webp",
+        alt: "Arrival in Bhutan",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-2.webp",
+        alt: "Whitewater rafting in Bhutan",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-3.webp",
+        alt: "Gangteng Monastery",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-4.webp",
+        alt: "Thimphu city tour",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-5.webp",
+        alt: "National Museum and Paro Dzong",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-day-6.webp",
+        alt: "Tiger's Nest Temple hike",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/bhutan-triphighlight-12.webp",
+        alt: "Bhutan Himalayan landscape",
+      },
+    ],
   },
   header: {
     title: "7 Days | Bhutan Quest",

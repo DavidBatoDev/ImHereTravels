@@ -22,7 +22,40 @@ export const indiaHoliFestivalTour: Tour = {
   gallery: {
     hero: "/images/wp-content/uploads/2025/01/india-header-2.webp",
     heroAlt: "India Holi Festival Tour",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-2.webp",
+        alt: "Sightseeing Old and New Delhi",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-3.webp",
+        alt: "Arrival in Jodhpur, the Blue City",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-5.webp",
+        alt: "Marble halls of the Ranakpur Jain Temples",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-triphighlight-3.webp",
+        alt: "Sunset cruise on Lake Pichola, Udaipur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-7.webp",
+        alt: "Ranthambore National Park",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-header-7.webp",
+        alt: "Canter safari in Ranthambore",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-9.webp",
+        alt: "Pink City of Jaipur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-triphighlight-1.webp",
+        alt: "Taj Mahal at sunrise",
+      },
+    ],
   },
   header: {
     title: "13 Days | India Holi Festival Tour",

@@ -22,7 +22,36 @@ export const tanzaniaExploration: Tour = {
   gallery: {
     hero: "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
     heroAlt: "Tanzania Exploration",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-1.webp",
+        alt: "Meet & greet welcome dinner",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-3.webp",
+        alt: "Kilimanjaro day hike",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-4.webp",
+        alt: "Tarangire National Park",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-5.webp",
+        alt: "Early morning game drive safari",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-6.webp",
+        alt: "Travel to Zanzibar",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-8.webp",
+        alt: "Blue Lagoon Zanzibar and sunset cruise",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/tanzania-day-9.webp",
+        alt: "Mnemba and Changuu Islands",
+      },
+    ],
   },
   header: {
     title: "10 Days | Tanzania Exploration",

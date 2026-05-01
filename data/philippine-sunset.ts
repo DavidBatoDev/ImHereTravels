@@ -22,7 +22,40 @@ export const philippineSunset: Tour = {
   gallery: {
     hero: "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341317907_philippinessunset-day-11.webp?alt=media&token=d3c35f6b-4503-438e-9cd4-c6d6848d0e8f",
     heroAlt: "Philippines Sunset",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-1.webp",
+        alt: "Welcome to Manila",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-2.webp",
+        alt: "Manila historical tour",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-3.webp",
+        alt: "Flight to Port Barton",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-4.webp",
+        alt: "Island hopping and snorkeling",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-5.webp",
+        alt: "Journey to El Nido",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-7.webp",
+        alt: "Relaxation at Nacpan Beach",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-day-9.webp",
+        alt: "Shipwreck snorkel and cultural experience",
+      },
+      {
+        src: "/images/wp-content/uploads/2024/05/philippinessunset-triphighlight-1.webp",
+        alt: "El Nido lagoons",
+      },
+    ],
   },
   header: {
     title: "11 Days | Philippines Sunset Getaway",

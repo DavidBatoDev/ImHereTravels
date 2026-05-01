@@ -18,7 +18,40 @@ export const indiaDiscoveryTour: Tour = {
   gallery: {
     hero: "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341302125_india-header-1.webp?alt=media&token=3f969113-15f2-4d4e-bc0c-0f5e8ac5043e",
     heroAlt: "India Discovery Tour — Taj Mahal and Rajasthan",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-2.webp",
+        alt: "Sightseeing Old and New Delhi",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-3.webp",
+        alt: "Arrival in Jodhpur, the Blue City",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-5.webp",
+        alt: "Travel to Udaipur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-triphighlight-3.webp",
+        alt: "Sunset cruise on Lake Pichola, Udaipur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-7.webp",
+        alt: "Travel to Sawai Madhopur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-header-7.webp",
+        alt: "Canter safari in Ranthambore",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-day-10.webp",
+        alt: "Pink City of Jaipur",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/01/india-triphighlight-1.webp",
+        alt: "Taj Mahal at sunrise",
+      },
+    ],
   },
   header: {
     title: "13 Days | India Discovery Tour",

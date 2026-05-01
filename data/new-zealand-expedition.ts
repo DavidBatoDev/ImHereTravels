@@ -18,7 +18,40 @@ export const newZealandExpedition: Tour = {
   gallery: {
     hero: "/images/wp-content/uploads/2025/02/new-zealand-day-11.webp",
     heroAlt: "New Zealand Expedition — alpine peaks and coastal wonders",
-    thumbnails: [],
+    thumbnails: [
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-1.webp",
+        alt: "Auckland skyline",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-5.webp",
+        alt: "Hot pools and high thrills in Rotorua",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-6.webp",
+        alt: "Capital vibes in Wellington",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-9.webp",
+        alt: "Into the Alps to Franz Josef",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-10.webp",
+        alt: "Franz Josef glacier day",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-12.webp",
+        alt: "Adventure mode in Queenstown",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/02/new-zealand-day-13.webp",
+        alt: "Milford Sound",
+      },
+      {
+        src: "/images/wp-content/uploads/2025/08/new-zealand-trip-highlight-4.webp",
+        alt: "New Zealand alpine landscape",
+      },
+    ],
   },
   header: {
     title: "15 Days | New Zealand Expedition",
