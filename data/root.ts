@@ -20,7 +20,7 @@ export const tours = [
     duration: "11 Day Tour",
     description:
       "Experience thrilling canyoneering, mesmerizing marine life, surfing, and stunning sunsets!",
-    price: "GBP £1200",
+    price: "GBP £1199",
     image:
       "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341320242_philippinessunrise-header-1-3.webp?alt=media&token=176752d3-cd01-486b-b97b-d397a869db93",
     href: "/tours/philippine-sunrise",
@@ -30,7 +30,7 @@ export const tours = [
     duration: "11 Day Tour",
     description:
       "Escape to the islands, and immerse in rich culture, with island-hopping and unforgettable stunning sunsets!",
-    price: "GBP £1200",
+    price: "GBP £1199",
     image:
       "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341317907_philippinessunset-day-11.webp?alt=media&token=d3c35f6b-4503-438e-9cd4-c6d6848d0e8f",
     href: "/tours/philippine-sunset",
@@ -40,7 +40,7 @@ export const tours = [
     duration: "10 Day Tour",
     description:
       "Explore ancient history and modern marvels — from the Forbidden City and Great Wall to the Shanghai skyline.",
-    price: "GBP £1,200",
+    price: "GBP £1,199",
     image: "/tours/china-discovery/hero-1.webp",
     href: "/tours/china-discovery",
   },
