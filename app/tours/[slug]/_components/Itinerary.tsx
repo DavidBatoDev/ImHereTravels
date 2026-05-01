@@ -166,6 +166,7 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
                       src={day.image}
                       alt={day.imageAlt ?? day.title}
                       fill
+                      unoptimized
                       sizes="(max-width: 768px) 100vw, 348px"
                       className="object-cover"
                     />

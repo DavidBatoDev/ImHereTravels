@@ -202,9 +202,9 @@ const ALL_DESTINATIONS: Destination[] = [
     heroImageAlt: "Cherry blossoms and temples in Japan",
     description: [
       "Japan is a country of extraordinary contrasts — ancient temples and futuristic skylines, tranquil tea ceremonies and high-speed bullet trains, world-class street food and Michelin-starred restaurants. It is a destination that consistently surprises and delights.",
-      "I'm Here Travels offers two Japan adventures: a classic 10-day journey from Tokyo to Sapporo, and a winter edition that adds world-class powder skiing in Hokkaido to the cultural highlights.",
+      "I'm Here Travels offers two Japan adventures: a classic 10-day summer journey from Tokyo to Kyoto, and a winter edition that takes you through Tokyo, Nagano, Kyoto, and Osaka with optional skiing in Nagano.",
     ],
-    tourSlugs: ["japan-adventure", "japan-adventure-with-skiing"],
+    tourSlugs: ["japan-adventure", "japan-adventure-winter"],
   },
 
   /* ——— India ——————————————————————————————————————————————————————————— */

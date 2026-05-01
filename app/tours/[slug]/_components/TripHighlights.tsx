@@ -59,6 +59,7 @@ export default function TripHighlights({
                     src={h.image}
                     alt={h.imageAlt}
                     fill
+                    unoptimized
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />

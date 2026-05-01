@@ -44,6 +44,7 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
                   src={slide.src}
                   alt={slide.alt}
                   fill
+                  unoptimized
                   priority={i === 0}
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
                   className="object-cover"
@@ -93,6 +94,7 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
                   src={slide.src}
                   alt=""
                   fill
+                  unoptimized
                   sizes="(max-width: 768px) 33vw, 200px"
                   className="object-cover"
                 />

@@ -51,29 +51,36 @@ export default function WhereWeStay({
           breakpoints={{ 768: { slidesPerView: 2 } }}
           className="overflow-hidden!"
         >
-          {section.items.map((a, i) => (
-            <SwiperSlide key={`${a.name}-${i}`}>
-              <div className="flex flex-col gap-4">
-                <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-light-grey">
-                  <Image
-                    src={a.image}
-                    alt={a.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
+          {section.items.map((a, i) => {
+            const imageSrc = a.image.trim();
+
+            return (
+              <SwiperSlide key={`${a.name}-${i}`}>
+                <div className="flex flex-col gap-4">
+                  <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-light-grey">
+                    {imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt={a.imageAlt}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <div>
+                    <h3 className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
+                      {a.name}
+                    </h3>
+                    <p className="mt-1 font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
+                      {a.nights}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
-                    {a.name}
-                  </h3>
-                  <p className="mt-1 font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
-                    {a.nights}
-                  </p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     </section>

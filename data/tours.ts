@@ -27,7 +27,7 @@ import { danielleErinTanzaniaExploration } from "./danielleerintanzania";
 import { indiaDiscoveryTour } from "./india-discovery-tour";
 import { indiaHoliFestivalTour } from "./india-holi-festival-tour";
 import { japanAdventure } from "./japan-adventure";
-import { japanAdventureWithSkiing } from "./japan-adventure-with-skiing";
+import { japanAdventureWinter } from "./japan-adventure-winter";
 import { maldivesBucketlist } from "./maldives-bucketlist";
 import { nepalHorizons } from "./nepal-horizons";
 import { newZealandExpedition } from "./new-zealand-expedition";
@@ -49,7 +49,7 @@ const ALL_TOURS: Tour[] = [
   vietnamExpedition,
   chinaDiscovery,
   japanAdventure,
-  japanAdventureWithSkiing,
+  japanAdventureWinter,
   tanzaniaExploration,
   danielleErinTanzaniaExploration,
   newZealandExpedition,
