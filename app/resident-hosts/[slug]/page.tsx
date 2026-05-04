@@ -6,6 +6,7 @@ import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import { getHostBySlug, getAllHostSlugs, type Host } from "@/data/hosts";
 import WhyTravelInteractive from "./_components/WhyTravelInteractive";
+import TripMomentsGallery from "./_components/TripMomentsGallery";
 
 /* -------------------------------------------------------------------------- */
 /* Static generation                                                            */
@@ -138,22 +139,72 @@ function ComingSoonSection({ host }: { host: Host }) {
   );
 }
 
+function InstagramIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" strokeWidth="2" />
+      <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="2" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
 function IntroSection({ host }: { host: Host }) {
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-12 text-center md:px-8 md:py-16">
-      <Reveal>
-        <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
-          {host.pageTitle}
-        </h2>
-      </Reveal>
-      <div className="mt-6 flex flex-col gap-4">
-        {host.intro.map((para, i) => (
-          <Reveal key={i} delay={i * 80}>
-            <p className="font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
-              {para}
+    <section className="mx-auto w-full max-w-5xl px-4 py-12 md:px-8 md:py-16">
+      <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[220px_1fr] md:gap-20">
+
+        {/* Profile column */}
+        <Reveal>
+          <div className="flex flex-col items-center gap-3 text-center">
+            {host.profileImage ? (
+              <div className="relative h-64 w-64 overflow-hidden rounded-full ring-4 ring-white shadow-medium">
+                <Image
+                  src={host.profileImage}
+                  alt={host.displayName}
+                  fill
+                  sizes="256px"
+                  className="object-cover object-top"
+                />
+              </div>
+            ) : (
+              <div className="h-44 w-44 rounded-full bg-grey/20" />
+            )}
+            <p className="font-sans text-h6-mobile md:text-h6-desktop text-midnight font-bold">
+              {host.displayName}
             </p>
+            {host.instagram && (
+              <a
+                href={`https://instagram.com/${host.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 font-body text-b4-desktop text-dark-gray hover:text-crimson-red transition-colors"
+              >
+                <InstagramIcon />
+                {host.instagram}
+              </a>
+            )}
+          </div>
+        </Reveal>
+
+        {/* Content column */}
+        <div>
+          <Reveal>
+            <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+              {host.pageTitle}
+            </h2>
           </Reveal>
-        ))}
+          <div className="mt-5 flex flex-col gap-4">
+            {host.intro.map((para, i) => (
+              <Reveal key={i} delay={i * 80}>
+                <p className="font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
+                  {para}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -252,37 +303,7 @@ function GallerySection({ host }: { host: Host }) {
           Real Moments from Our Trips
         </h2>
 
-        {host.galleryImages.length === 0 ? (
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <li
-                key={i}
-                className="relative aspect-square overflow-hidden rounded-md bg-grey/20 flex items-center justify-center"
-              >
-                <span className="font-body text-b4-desktop text-grey text-center px-2">
-                  Photos<br />coming soon
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-3">
-            {host.galleryImages.map((img, i) => (
-              <li
-                key={i}
-                className="relative aspect-square overflow-hidden rounded-md bg-light-grey"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 33vw"
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+        <TripMomentsGallery />
       </div>
     </section>
   );
