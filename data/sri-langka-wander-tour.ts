@@ -92,7 +92,7 @@ export const sriLangkaWanderTour: Tour = {
     {
       icon: "days",
       label: "Tour Dates",
-      values: ["April 21, 2026 (Almost Sold Out)"],
+      values: [],
     },
     {
       icon: "days",

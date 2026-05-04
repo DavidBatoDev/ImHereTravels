@@ -16,6 +16,8 @@ export type HostTrip = {
   dates: string;
   /** If set, the trip card links to /tours/[tourSlug] */
   tourSlug?: string;
+  image?: string;
+  imageAlt?: string;
 };
 
 export type Host = {
@@ -33,6 +35,8 @@ export type Host = {
   howItWorks: string[];
   /** Empty until host provides real photos — gallery renders placeholders */
   galleryImages: { src: string; alt: string }[];
+  /** 3 images for a split-panel hero (left → right). Overrides single heroImage when present. */
+  heroImages?: string[];
   /** When true the page shows a "Coming Soon" screen instead of full content */
   comingSoon?: boolean;
 };
@@ -48,6 +52,11 @@ const ALL_HOSTS: Host[] = [
     pageTitle: "Travel with Dev",
     heroImage: null,
     heroImageAlt: "Dev's group travel adventures",
+    heroImages: [
+      "/images/wp-content/uploads/2025/01/india-header-2.webp",
+      "/tours/philippine-sunrise/Sunrise_1.jpg",
+      "/images/wp-content/uploads/2025/07/brazil-trip-highlight-1.webp",
+    ],
     meta: {
       title: "Travel with Dev | I'm Here Travels",
       description:
@@ -64,14 +73,20 @@ const ALL_HOSTS: Host[] = [
         name: "India Holi Tour 2027",
         dates: "March 19–31, 2027",
         tourSlug: "india-holi-festival-tour",
+        image: "/images/wp-content/uploads/2025/01/india-header-2.webp",
+        imageAlt: "India Holi Festival",
       },
       {
         name: "PH Sunrise & Sunset",
         dates: "TBA",
+        image: "/tours/philippine-sunrise/hero-1.jpg",
+        imageAlt: "Philippines Sunrise & Sunset",
       },
       {
         name: "Brazil",
         dates: "TBA",
+        image: "/images/wp-content/uploads/2025/07/brazil-trip-highlight-1.webp",
+        imageAlt: "Brazil's Treasures",
       },
     ],
     whyTravel: [
@@ -87,7 +102,14 @@ const ALL_HOSTS: Host[] = [
       "Pay in installments up to 4 times",
       "Travel and meet your community",
     ],
-    galleryImages: [],
+    galleryImages: [
+      { src: "/images/wp-content/uploads/2025/01/india-triphighlight-1.webp", alt: "India Holi Festival" },
+      { src: "/images/wp-content/uploads/2025/01/india-day-5.webp", alt: "India Holi Festival" },
+      { src: "/tours/philippine-sunrise/community-1.jpg", alt: "Philippines Sunrise" },
+      { src: "/tours/philippine-sunrise/community-3.jpg", alt: "Philippines Sunrise" },
+      { src: "/images/wp-content/uploads/2025/07/brazil-trip-highlight-2.webp", alt: "Brazil's Treasures" },
+      { src: "/images/wp-content/uploads/2025/07/brazil-day-3.webp", alt: "Brazil's Treasures" },
+    ],
   },
   {
     slug: "jess",

@@ -60,7 +60,6 @@ const navItems = [
   {
     label: "Resident Hosts",
     href: "/resident-hosts",
-    noLink: true,
     dropdown: [
       { label: "Travel with Dev", href: "/resident-hosts/dev" },
       { label: "Travel with Jess", href: "/resident-hosts/jess" },
@@ -194,22 +193,13 @@ export default function Header() {
           {navItems.map((item) =>
             item.dropdown ? (
               <div key={item.href} className="group relative">
-                {item.noLink ? (
-                  <span
-                    className={`flex cursor-default items-center gap-1 font-body text-b4-desktop transition-colors group-hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-                  >
-                    {item.label}
-                    <ChevronDown />
-                  </span>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-                  >
-                    {item.label}
-                    <ChevronDown />
-                  </Link>
-                )}
+                <Link
+                  href={item.href}
+                  className={`flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item.href) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
+                >
+                  {item.label}
+                  <ChevronDown />
+                </Link>
 
                 <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
                   <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">

@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import { getHostBySlug, getAllHostSlugs, type Host } from "@/data/hosts";
+import WhyTravelInteractive from "./_components/WhyTravelInteractive";
 
 /* -------------------------------------------------------------------------- */
 /* Static generation                                                            */
@@ -59,23 +60,38 @@ function CheckIcon() {
 /* -------------------------------------------------------------------------- */
 
 function HeroSection({ host }: { host: Host }) {
+  const hasTriPanel = host.heroImages && host.heroImages.length === 3;
+
   return (
     <section className="relative h-65 w-full overflow-hidden md:h-90">
-      {host.heroImage ? (
-        <>
-          <Image
-            src={host.heroImage}
-            alt={host.heroImageAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/30" />
-        </>
+      {hasTriPanel ? (
+        <div className="absolute inset-0 grid grid-cols-3">
+          {host.heroImages!.map((src, i) => (
+            <div key={i} className="relative h-full w-full overflow-hidden">
+              <Image
+                src={src}
+                alt={host.heroImageAlt}
+                fill
+                priority={i === 0}
+                sizes="33vw"
+                className="object-cover object-center"
+              />
+            </div>
+          ))}
+        </div>
+      ) : host.heroImage ? (
+        <Image
+          src={host.heroImage}
+          alt={host.heroImageAlt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
       ) : (
         <div className="absolute inset-0 bg-crimson-red" />
       )}
+      <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
         <Reveal y={20}>
           <h1 className="font-display text-h1-mobile text-white md:text-h1-desktop">
@@ -156,19 +172,32 @@ function UpcomingTripsSection({ host }: { host: Host }) {
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {host.upcomingTrips.map((trip, i) => {
             const inner = (
-              <div className="flex flex-1 flex-col p-5 md:p-6">
-                <h3 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight group-hover:text-crimson-red">
-                  {trip.name}
-                </h3>
-                <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-crimson-red">
-                  {trip.dates}
-                </span>
-                {trip.tourSlug && (
-                  <p className="mt-auto pt-5 font-body text-b4-desktop text-dark-gray group-hover:text-crimson-red">
-                    View tour details →
-                  </p>
+              <>
+                {trip.image && (
+                  <div className="relative h-44 w-full overflow-hidden">
+                    <Image
+                      src={trip.image}
+                      alt={trip.imageAlt ?? trip.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
                 )}
-              </div>
+                <div className="flex flex-1 flex-col p-5 md:p-6">
+                  <h3 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight group-hover:text-crimson-red">
+                    {trip.name}
+                  </h3>
+                  <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-crimson-red">
+                    {trip.dates}
+                  </span>
+                  {trip.tourSlug && (
+                    <p className="mt-auto pt-5 font-body text-b4-desktop text-dark-gray group-hover:text-crimson-red">
+                      View tour details →
+                    </p>
+                  )}
+                </div>
+              </>
             );
 
             return (
@@ -198,26 +227,17 @@ function WhyTravelSection({ host }: { host: Host }) {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">
       <div className="mx-auto overflow-hidden rounded-lg bg-white shadow-small" style={{ maxWidth: "1200px" }}>
-        <div className="grid grid-cols-1 gap-8 p-8 md:grid-cols-2 md:gap-12 md:p-12">
+        <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 md:gap-8 md:p-8">
           <div className="flex flex-col justify-center">
             <Reveal>
-              <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+              <h2 className="font-sans text-h4-mobile md:text-h4-desktop text-midnight">
                 Why Travel With Us
               </h2>
             </Reveal>
           </div>
-          <ul className="flex flex-col gap-4">
-            {host.whyTravel.map((point, i) => (
-              <Reveal as="li" key={i} delay={i * 60}>
-                <div className="flex items-start gap-3">
-                  <CheckIcon />
-                  <span className="font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
-                    {point}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
+          <Reveal delay={120}>
+            <WhyTravelInteractive points={host.whyTravel} />
+          </Reveal>
         </div>
       </div>
     </section>
@@ -246,7 +266,7 @@ function GallerySection({ host }: { host: Host }) {
             ))}
           </ul>
         ) : (
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-3">
             {host.galleryImages.map((img, i) => (
               <li
                 key={i}
@@ -256,7 +276,7 @@ function GallerySection({ host }: { host: Host }) {
                   src={img.src}
                   alt={img.alt}
                   fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 33vw"
                   className="object-cover transition-transform duration-500 hover:scale-105"
                 />
               </li>

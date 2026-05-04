@@ -153,7 +153,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
                 </Reveal>
                 {tour.keyFacts.length > 0 && (
                   <Reveal y={20} delay={60}>
-                    <KeyFacts items={tour.keyFacts} />
+                    <KeyFacts items={tour.keyFacts} tourSlug={tour.slug} />
                   </Reveal>
                 )}
                 {tour.whatsIncluded?.heading && (

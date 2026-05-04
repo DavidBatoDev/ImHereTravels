@@ -15,7 +15,7 @@ export default function Faqs({
         {section.heading}
       </h2>
       <div className="mt-4">
-        <FaqAccordion items={items} />
+        <FaqAccordion items={items} scrollActive />
       </div>
     </section>
   );

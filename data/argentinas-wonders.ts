@@ -35,22 +35,13 @@ export const argentinasWonders: Tour = {
   header: {
     title: "11 days | Argentina's Wonders",
     tags: [
-      {
-        label: "Argentina",
-        icon: "location",
-      },
-      {
-        label: "Buenos Aires",
-        icon: "location",
-      },
-      {
-        label: "Patagonia",
-        icon: "location",
-      },
-      {
-        label: "Iguazu",
-        icon: "location",
-      },
+      { label: "Argentina", icon: "location" },
+      { label: "Patagonia", icon: "location" },
+      { label: "Buenos Aires", icon: "location" },
+      { label: "Chalten", icon: "location" },
+      { label: "Calafate", icon: "location" },
+      { label: "Iguazu", icon: "location" },
+      { label: "Jujuy & Salta", icon: "location" },
     ],
     description:
       "Discover the vibrant culture and breathtaking landscapes of Argentina on an epic 11-day adventure. Begin in Buenos Aires, where the energy of tango and rich local cuisine will sweep you off your feet. Then, journey to Patagonia's stunning wilderness, where you'll trek through mountains and walk on ancient glaciers. Continue to the awe-inspiring Iguazu Falls, where thrilling jungle adventures await. This tour offers a perfect blend of excitement and cultural immersion, showcasing the best of Argentina in one unforgettable trip.",
@@ -59,17 +50,22 @@ export const argentinasWonders: Tour = {
     {
       icon: "days",
       label: "Duration",
-      values: ["11 days"],
+      values: ["10 Nights and 11 Days"],
     },
     {
       icon: "route",
-      label: "Location",
-      values: ["Argentina"],
+      label: "Destination",
+      values: ["Buenos Aires - Patagonia El Chalten - Iguazu"],
     },
     {
       icon: "people",
       label: "Group Size",
-      values: ["Maximum 12 people"],
+      values: ["Maximum 20 people"],
+    },
+    {
+      icon: "days",
+      label: "Tour Dates",
+      values: [],
     },
   ],
   tripHighlights: {
@@ -104,6 +100,53 @@ export const argentinasWonders: Tour = {
       },
     ],
   },
+  whatsIncluded: {
+    heading: "What's Included?",
+    items: [
+      {
+        icon: "meals",
+        label: "Meals",
+        value: ["8 breakfasts", "1 lunch"],
+      },
+      {
+        icon: "transport",
+        label: "Transport",
+        value: ["Van", "Plane", "Bicycle"],
+      },
+      {
+        icon: "activities",
+        label: "Activities",
+        value: [
+          "Trekking",
+          "Bicycling",
+          "Wine Tasting",
+          "Tango",
+          "Chasing Waterfalls",
+          "Minitrekking at Perito Moreno Glacier",
+        ],
+      },
+      {
+        icon: "plus",
+        label: "Add-on Activities",
+        value: ["Tango Lessons", "Trekking in Laguna de los 3"],
+      },
+      {
+        icon: "accommodation",
+        label: "Stay",
+        value: ["Hotel (10 nights)"],
+      },
+      {
+        icon: "team",
+        label: "Others",
+        value: [
+          "24/7 customer experience assistance",
+          "Airport and domestic transfer assistance",
+          "Transfer to El Chalten, in the way: trekking in the petrified forest",
+          "Tour Guide",
+        ],
+      },
+    ],
+  },
   itinerary: {
     heading: "Itinerary",
     downloadLabel: "Download Itinerary",
@@ -112,20 +155,16 @@ export const argentinasWonders: Tour = {
     days: [
       {
         dayNumber: 1,
-        title: "Meet & Greet at the airport",
+        title: "Hola, Buenos Aires!",
         description:
-          "Upon arrival at Buenos Aires International Airport, our dedicated staff will warmly welcome the group, displaying prominent signs and logos representing your company.\n\nConveniently situated just 40 minutes away from the city's central area and most hotels, the airport ensures easy access for travelers.\nCheck in and dinner",
+          "Land at Ezeiza International Airport (EZE) and enjoy a warm welcome from our team with big signs and smiles. A private 45-minute transfer takes you to your hotel. Spend the afternoon exploring this vibrant city at your own pace—think cobblestone streets, outdoor cafes, and the aroma of Argentine beef. Tonight, bond with your crew over a welcome dinner featuring steak and Malbec!",
         image: "/tours/argentinas-wonders/argentina-day-1.webp",
         imageAlt: "Meet & Greet at Buenos Aires International Airport",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Savoy (or similar)" },
+          { icon: "accommodation", label: "Accommodation", value: "Merit San Telmo (Standard Room with Breakfast)" },
           { icon: "location", label: "Location", value: "Buenos Aires" },
-          { icon: "meals", label: "Meals", value: "N/A" },
-          {
-            icon: "activities",
-            label: "Activities",
-            value: "• Meet & greet at the airport\n• Check in and dinner at leisure",
-          },
+          { icon: "meals", label: "Meals", value: "1x Dinner" },
+          { icon: "activities", label: "Activities", value: "• Meet & Greet at the airport\n• Afternoon at leisure\n• Welcome Dinner" },
         ],
       },
       {
@@ -136,10 +175,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-2.webp",
         imageAlt: "Flight from Buenos Aires to El Calafate, Patagonia",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Poicenot (or similar)" },
-          { icon: "location", label: "Location", value: "Calafate" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Transfer to El Chalten\n• Rest of the day at leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Vertical Lodge (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "El Chaltén" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Flight to El Calafate\n• Transfer to El Chaltén" },
         ],
       },
       {
@@ -150,10 +189,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-3.webp",
         imageAlt: "Trekking trails in El Chaltén, Patagonia",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Calafate Parque (or similar)" },
-          { icon: "location", label: "Location", value: "Laguna de los 3, Calafate" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Chalten at leisure\n• Transfer back to Calafate\n• Check in and dinner at leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Hosteria Tierra Tehuelche (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "El Chaltén to El Calafate" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Day at leisure in El Chaltén\n• Transfer to El Calafate" },
         ],
       },
       {
@@ -164,38 +203,38 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-4.webp",
         imageAlt: "Trekking on Perito Moreno Glacier, Patagonia",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Calafate Parque (or similar)" },
-          { icon: "location", label: "Location", value: "Calafate" },
-          { icon: "meals", label: "Meals", value: "Breakfast, Lunch" },
-          { icon: "activities", label: "Activities", value: "• Minitrekking at Perito Moreno Glacier\n• Dinner at leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Hosteria Tierra Tehuelche (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "El Calafate" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Full-Day Minitrekking at Perito Moreno Glacier" },
         ],
       },
       {
         dayNumber: 5,
         title: "Buenos Aires Redux",
         description:
-          "Post-breakfast, a private transfer takes you to El Calafate Airport for your 3-hour flight back to Buenos Aires (AEP). A 30-minute ride lands you at your hotel. This afternoon, hop on a bike for a 3.5-4 hour private tour through Recoleta and Palermo—pedal through parks, past mansions, and into BA’s chic vibe.",
+          "Post-breakfast, a private transfer takes you to El Calafate Airport for your 3-hour flight back to Buenos Aires (AEP). A 30-minute ride lands you at your hotel. This afternoon, hop on a bike for a 3.5–4 hour private tour through Recoleta and Palermo—pedal through parks, past mansions, and into BA’s chic vibe.",
         image: "/tours/argentinas-wonders/argentina-day-5.webp",
         imageAlt: "Biking through Recoleta and Palermo, Buenos Aires",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Savoy (or similar)" },
-          { icon: "location", label: "Location", value: "Calafate; Buenos Aires" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Flight back Calafate / Buenos Aires\n• Discover Buenos Aires\n• Check in and dinner at the hotel" },
+          { icon: "accommodation", label: "Accommodation", value: "Merit San Telmo (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "Buenos Aires" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Flight to Buenos Aires\n• Half-Day Recoleta & Palermo Bike Tour" },
         ],
       },
       {
         dayNumber: 6,
-        title: "Private navigation at El Tigre",
+        title: "Buenos Aires Highlights",
         description:
-          "After breakfast, dive into a full-day private city tour (7 hours). Hit Plaza de Mayo, stroll San Telmo and La Boca, and visit Recoleta Cemetery with a bilingual guide. Tonight, head out on your own for a tango show with dinner, savor Malbec and let the music sweep you away!",
+          "After breakfast, dive into a full-day private city tour (7 hours). Hit Plaza de Mayo, stroll San Telmo and La Boca, and visit Recoleta Cemetery with a bilingual guide. Tonight, head out on your own for a tango show with dinner—savor Malbec and let the music sweep you away!",
         image: "/tours/argentinas-wonders/argentina-day-6.webp",
-        imageAlt: "Private navigation at El Tigre, Buenos Aires",
+        imageAlt: "Buenos Aires city tour — Plaza de Mayo and La Boca",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Savoy (or similar)" },
-          { icon: "location", label: "Location", value: "El Tigre - Delta" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Private Navigation at El Tigre - Delta\n• Dinner at Leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Merit San Telmo (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "Buenos Aires" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast, 1x Dinner" },
+          { icon: "activities", label: "Activities", value: "• Full-Day Buenos Aires City Tour\n• Half-Day Dinner & Tango Show" },
         ],
       },
       {
@@ -206,10 +245,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-7.webp",
         imageAlt: "Free day exploring Buenos Aires",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "Hotel Savoy (or similar)" },
+          { icon: "accommodation", label: "Accommodation", value: "Merit San Telmo (Standard Room with Breakfast)" },
           { icon: "location", label: "Location", value: "Buenos Aires" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Biking tour – Palermo area\n• La Ventana Tango Show with Wine Tasting" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Day at leisure in Buenos Aires" },
         ],
       },
       {
@@ -220,10 +259,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-8.webp",
         imageAlt: "Arrival in Puerto Iguazú jungle gateway",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "La Aldea de la Selva (or similar)" },
-          { icon: "location", label: "Location", value: "Iguazu" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Flight from Buenos Aires to Iguazu\n• Check in and dinner at leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Jardin de Iguazu (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "Puerto Iguazú" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Flight to Puerto Iguazú\n• Transfer to hotel" },
         ],
       },
       {
@@ -234,10 +273,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-9.webp",
         imageAlt: "Iguazú Falls Argentine side — Devil’s Throat",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "La Aldea de la Selva (or similar)" },
-          { icon: "location", label: "Location", value: "Iguazu" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Full day at Iguazu Falls with private guide (Argentinian side)\n• Dinner at leisure" },
+          { icon: "accommodation", label: "Accommodation", value: "Jardin de Iguazu (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "Puerto Iguazú" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Full-Day Iguazú Falls (Argentine Side)\n• Great Adventure Boat Trip" },
         ],
       },
       {
@@ -248,10 +287,10 @@ export const argentinasWonders: Tour = {
         image: "/tours/argentinas-wonders/argentina-day-10.webp",
         imageAlt: "Iguazú Falls panoramic view from the Brazilian side",
         details: [
-          { icon: "accommodation", label: "Accommodation", value: "La Aldea de la Selva (or similar)" },
-          { icon: "location", label: "Location", value: "" },
-          { icon: "meals", label: "Meals", value: "Breakfast" },
-          { icon: "activities", label: "Activities", value: "• Full day at Iguazu Falls with private guide (Brazilian side)\n• Dinner at leisure\n• Optional: Experience Argentina in one night with a tasting menu of ten traditional dishes, paired wines, empanada-making, and a mate class." },
+          { icon: "accommodation", label: "Accommodation", value: "Jardin de Iguazu (Standard Room with Breakfast)" },
+          { icon: "location", label: "Location", value: "Foz de Iguazú" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Half-Day Iguazú Falls (Brazilian Side)" },
         ],
       },
       {
@@ -261,8 +300,95 @@ export const argentinasWonders: Tour = {
           "Enjoy breakfast, then spend your last day at leisure in Puerto Iguazú. Soak up the jungle vibes, then make your own way to the airport (IGR). You’re leaving with epic memories and a camera full of wonders!",
         image: "/tours/argentinas-wonders/argentina-day-11.webp",
         imageAlt: "Farewell day in Puerto Iguazú, Argentina",
-        details: [],
+        details: [
+          { icon: "accommodation", label: "Accommodation", value: "None (Departure Day)" },
+          { icon: "location", label: "Location", value: "Puerto Iguazú" },
+          { icon: "meals", label: "Meals", value: "1x Breakfast" },
+          { icon: "activities", label: "Activities", value: "• Day at leisure\n• Departure" },
+        ],
       },
+    ],
+  },
+  whereWeStay: {
+    heading: "Where We Stay",
+    items: [
+      {
+        image: "/tours/argentinas-wonders/merit-santelmo-accommodation.webp",
+        imageAlt: "Merit San Telmo",
+        name: "Merit San Telmo",
+        nights: "4 nights in hotel",
+      },
+      {
+        image: "/tours/argentinas-wonders/verticalodge-accommodation.webp",
+        imageAlt: "Hostería Vertical Lodge",
+        name: "Hostería Vertical Lodge",
+        nights: "1 night in hotel",
+      },
+      {
+        image: "/tours/argentinas-wonders/tierratehuelche-accommodation.webp",
+        imageAlt: "Hosteria Tierra Tehuelche",
+        name: "Hosteria Tierra Tehuelche",
+        nights: "2 nights in hotel",
+      },
+      {
+        image: "/tours/argentinas-wonders/jardiniguazu-accommodation.webp",
+        imageAlt: "Jardin de Iguazu",
+        name: "Jardin de Iguazu",
+        nights: "3 nights in hotel",
+      },
+    ],
+  },
+  faqs: {
+    heading: "Frequently Asked Questions",
+    items: [
+      {
+        question: "Where does the trip start & finish?",
+        answer:
+          "Start Point: Buenos Aires (Day 1 — Arrival and Welcome Dinner)\nEnd Point: Puerto Iguazú (Day 11 — Departure)",
+      },
+      {
+        question: "Which airport do I need to fly into?",
+        answer:
+          "Fly into Ezeiza International Airport (EZE) in Buenos Aires to start.",
+      },
+      {
+        question: "What should I wear?",
+        answer:
+          "It's February — summer in Argentina! Pack for variety:\n• Buenos Aires (20°C–30°C / 68°F–86°F): Light layers, comfy shoes, semi-formal for tango night.\n• El Chaltén & El Calafate (5°C–15°C / 41°F–59°F): Warm layers, waterproof jacket, trekking shoes for glacier fun.\n• Puerto Iguazú (25°C–35°C / 77°F–95°F): Breathable clothes, quick-dry gear for the boat trip, sunscreen.\n• Essentials: Sunglasses, hat, small backpack.",
+      },
+      {
+        question: "Do you have an age limit for tours?",
+        answer:
+          "Most activities suit adventurers 18–45 (typical guests 21–35). Minitrekking is for ages 8–65 only, with health restrictions (no exceptions).",
+      },
+      {
+        question: "What is the local currency?",
+        answer:
+          "In Buenos Aires and Calafate, the currency is Argentine Pesos (ARS), though US dollars are widely accepted. In Brazil, the currency is the Real (R$). Iguazu Falls straddles both countries, so you'll use pesos on the Argentine side and reais on the Brazilian side. Credit cards are accepted in most destinations throughout your trip.",
+      },
+      {
+        question: "Which airport do I fly out from?",
+        answer:
+          "Aeropuerto Internacional Cataratas del Iguazú (IGR). From here, you have three options:\n1. Fly to Rio de Janeiro and continue with the Brazil program.\n2. Return to Buenos Aires and take your flight home from there.\n3. Explore direct flight options between Iguazú and your home destination.",
+      },
+      {
+        question: "Optional Trip — Rio Carnival",
+        answer:
+          "The actual Carnival Parades run from February 28th to March 5th. For those interested in attending, we can assist with accommodations and parade tickets:\n\n• Double Sharing: GBP 1,200\n• Triple Sharing: GBP 1,100\n\nIncludes: 4 nights with breakfast at Regency Park Hotel, transfer between Hotel and Sambadrome, ticket for one night at the Carnival Parade (grandstand sector 5).\n\nAdd-on parade nights:\n• 2nd parade night ticket + transfer: GBP 150\n• 3 parade nights tickets + transfers: GBP 275",
+      },
+    ],
+  },
+  community: {
+    heading: "With @imheretravels",
+    images: [
+      { src: "/tours/argentinas-wonders/argentina-header-1.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-2.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-3.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-4.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-5.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-6.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-7.webp", alt: "Argentina's Wonders", href: "https://www.instagram.com/imheretravels" },
+      { src: "/tours/argentinas-wonders/argentina-header-8.webp", alt: "Laguna de los Tres, Patagonia", href: "https://www.instagram.com/imheretravels" },
     ],
   },
   thingsToKnow: {

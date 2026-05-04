@@ -28,11 +28,14 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return getAllTourSlugs().map((slug) => ({
-      source: `/${slug}`,
-      destination: `/tours/${slug}`,
-      permanent: true,
-    }));
+    return [
+      { source: "/dev", destination: "/resident-hosts/dev", permanent: true },
+      ...getAllTourSlugs().map((slug) => ({
+        source: `/${slug}`,
+        destination: `/tours/${slug}`,
+        permanent: true,
+      })),
+    ];
   },
 };
 

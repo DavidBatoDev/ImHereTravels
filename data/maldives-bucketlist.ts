@@ -51,6 +51,11 @@ export const maldivesBucketlist: Tour = {
       label: "Group Size",
       values: ["Maximum 12 people"],
     },
+    {
+      icon: "days",
+      label: "Tour Dates",
+      values: [],
+    },
   ],
   tripHighlights: {
     heading: "Trip Highlights",

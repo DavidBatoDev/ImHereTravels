@@ -1,13 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Item = { q: string; a: string };
 
 type FaqAccordionProps = {
   items: Item[];
   defaultOpen?: number | null;
+  scrollActive?: boolean;
 };
 
 function ChevronDown() {
@@ -24,15 +25,53 @@ function ChevronDown() {
   );
 }
 
-export default function FaqAccordion({ items, defaultOpen = 0 }: FaqAccordionProps) {
+export default function FaqAccordion({
+  items,
+  defaultOpen = 0,
+  scrollActive = false,
+}: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(defaultOpen);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (!scrollActive || items.length === 0) return;
+
+    const TRIGGER_RATIO = 0.3;
+
+    function onScroll() {
+      const triggerY = window.innerHeight * TRIGGER_RATIO;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      rowRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const { top } = el.getBoundingClientRect();
+        const dist = Math.abs(top - triggerY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      });
+
+      setOpenIndex(bestIdx);
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [items.length, scrollActive]);
 
   return (
     <dl>
       {items.map((item, i) => {
         const isOpen = openIndex === i;
         return (
-          <div key={i}>
+          <div
+            key={i}
+            ref={(el) => {
+              rowRefs.current[i] = el;
+            }}
+          >
             <div className="py-2">
               <button
                 type="button"
@@ -68,7 +107,7 @@ export default function FaqAccordion({ items, defaultOpen = 0 }: FaqAccordionPro
                       animate={{ y: 0 }}
                       exit={{ y: -6 }}
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="pt-2 pb-4 font-body text-b2-mobile text-midnight md:text-b2-desktop"
+                      className="pt-2 pb-4 whitespace-pre-line font-body text-b2-mobile text-midnight md:text-b2-desktop"
                     >
                       {item.a}
                     </motion.p>
