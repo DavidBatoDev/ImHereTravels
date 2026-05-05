@@ -3,8 +3,7 @@
 /* -------------------------------------------------------------------------- */
 
 export const whyUsHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/68900032-2673-48dd-b555-e551b1424cb8",
+  image: "/figma/dest-philippines-sunrise.jpg",
   title: "Be here with us",
   cta: { label: "View Tours", href: "/tours" },
 };
@@ -43,8 +42,7 @@ export const whyUsReviews = [
       "It was very well organized, a good busy pace. The guides were very competent and took care of everyone and were well informed and articulate.",
     author: "Konstantin",
     tour: "Siargao Island Adventure",
-    avatar:
-      "https://www.figma.com/api/mcp/asset/046e9db5-8b3f-42da-856f-5c5398587980",
+    avatar: "/figma/avatar-manuel.png",
   },
   {
     stars: 5,
@@ -53,8 +51,7 @@ export const whyUsReviews = [
       "An incredible experience from start to finish. The team made everything seamless and the destinations were absolutely breathtaking.",
     author: "Maria",
     tour: "Philippines Sunset Tour",
-    avatar:
-      "https://www.figma.com/api/mcp/asset/046e9db5-8b3f-42da-856f-5c5398587980",
+    avatar: "/figma/avatar-bella.png",
   },
   {
     stars: 5,
@@ -63,8 +60,7 @@ export const whyUsReviews = [
       "Best travel experience I've ever had. Small group vibes, amazing guides, and destinations I never would have found on my own.",
     author: "James",
     tour: "Maldives Bucketlist",
-    avatar:
-      "https://www.figma.com/api/mcp/asset/046e9db5-8b3f-42da-856f-5c5398587980",
+    avatar: "/figma/avatar-flynn.png",
   },
 ];
 
@@ -125,8 +121,7 @@ export const whyUsInstagram = {
 export const whyUsNewsletter = {
   heading: "Join our community",
   body: "Stay up to date on the latest news, deals and tours when you sign up.",
-  image:
-    "https://www.figma.com/api/mcp/asset/d5472fc4-b276-403f-9a28-68a6bd1ca411",
+  image: "/figma/join-community.jpg",
   inputPlaceholder: "Enter your email",
   button: "Submit",
   privacyLabel: "By submitting you agree with our",

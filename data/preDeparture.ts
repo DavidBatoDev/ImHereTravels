@@ -13,8 +13,7 @@ export const preDepartureMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const preDepartureHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/e10b75f0-07d5-41af-bb9f-2e5f08c82688",
+  image: "/figma/join-community.jpg",
   title: "Pre-departure Information",
 };
 
@@ -49,8 +48,7 @@ export const preDepartureSections = [
     number: "01",
     heading: "Review Entry Requirements and Restrictions Advice",
     body: "Please review and check entry requirements and restrictions for both your outbound and return trips. Don't forget to grab the source links by using the tool below, powered by Sherpa.",
-    sherpaImage:
-      "https://www.figma.com/api/mcp/asset/63aef31f-9e6b-48e5-a205-35c9c3a2ff37",
+    sherpaImage: "/figma/dest-philippines-sunrise.jpg",
   },
   {
     id: "03",

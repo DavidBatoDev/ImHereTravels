@@ -13,8 +13,7 @@ export const faqsMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const faqsHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/bf297d9e-2935-4431-88b6-992a90930bb8",
+  image: "/figma/join-community.jpg",
   title: "Frequently Asked Questions",
 };
 

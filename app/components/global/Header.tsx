@@ -70,9 +70,11 @@ const navItems = [
     label: "Travel Info",
     href: "/travel-information",
     dropdown: [
-      { label: "Pre departure info", href: "/pre-departure" },
-      { label: "Travel Info", href: "/travel-information" },
+      { label: "Pre-departure Info", href: "/pre-departure" },
       { label: "Travel Safety", href: "/travel-safety" },
+      { label: "FAQs", href: "/faqs" },
+      { label: "Contact Us", href: "/contact-us" },
+      { label: "Terms & Conditions", href: "/terms-and-conditions" },
     ],
   },
 ];

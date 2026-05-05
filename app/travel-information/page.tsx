@@ -22,7 +22,7 @@ function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-top"
       />
       <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 flex items-center justify-center px-6 text-center">
@@ -45,8 +45,9 @@ function CardsSection() {
       {/* Cards grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {travelInfoCards.map((card) => (
-          <div
+          <Link
             key={card.id}
+            href={card.linkHref}
             className="group flex flex-col overflow-hidden rounded-lg bg-white shadow-xsmall transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-medium active:-translate-y-1 active:shadow-medium"
           >
             {/* Image */}
@@ -71,15 +72,12 @@ function CardsSection() {
                 </p>
               </div>
               <div className="pt-4">
-                <Link
-                  href={card.linkHref}
-                  className="font-body text-b2-mobile text-midnight underline transition-colors duration-200 hover:text-crimson-red group-hover:text-crimson-red group-active:text-crimson-red md:text-b2-desktop"
-                >
+                <span className="font-body text-b2-mobile text-midnight underline transition-colors duration-200 group-hover:text-crimson-red group-active:text-crimson-red md:text-b2-desktop">
                   {card.linkLabel}
-                </Link>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

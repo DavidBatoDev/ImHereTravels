@@ -13,8 +13,7 @@ export const personalizedToursMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const personalizedToursHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/6b7ef215-120b-4a94-a76b-c6487505b36e",
+  image: "/figma/dest-philippines-sunset.jpg",
   title: "Personalized Tour",
 };
 

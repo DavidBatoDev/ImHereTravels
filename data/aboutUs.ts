@@ -3,8 +3,7 @@
 /* -------------------------------------------------------------------------- */
 
 export const aboutHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/3d7bb065-b974-453b-8942-448b0b3eaa0d",
+  image: "/about/hero.jpg",
   title: "About our community",
 };
 
@@ -24,8 +23,7 @@ export const aboutIntro = [
 export const aboutMission = {
   title: "Our Mission",
   body: "Our mission is to create unique, fun, and unforgettable travel experiences. Working with local communities, we aim to leave a trail of meaningful connections and a positive impact wherever we go.",
-  image:
-    "https://www.figma.com/api/mcp/asset/0c696073-b0f2-434a-aa8a-7dbd4cd8bf37",
+  image: "/about/mission.jpg",
   imageAlt: "Local community travel experience",
 };
 
@@ -36,8 +34,7 @@ export const aboutMission = {
 export const aboutVision = {
   title: "Our Vision",
   body: "We envision a vibrant, inclusive, and responsible travel community. A world where travel is not only for new experiences but also a positive impact for the places and people it touches.",
-  image:
-    "https://www.figma.com/api/mcp/asset/cecf2109-fb59-4ae4-a9fd-0d3cc1487a4c",
+  image: "/about/vision.jpg",
   imageAlt: "Vibrant travel community",
 };
 
@@ -48,8 +45,7 @@ export const aboutVision = {
 export const aboutPurpose = {
   title: "Our Purpose",
   body: "We connect people with places and create a positive impact together here for the community.",
-  image:
-    "https://www.figma.com/api/mcp/asset/fc90f7f2-bcc5-47c6-8d80-57c24c313361",
+  image: "/about/purpose.jpg",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -60,22 +56,19 @@ export const team = [
   {
     name: "Amer Asum",
     role: "Founder",
-    image:
-      "https://www.figma.com/api/mcp/asset/7d7e77e9-cae6-4f31-91b2-71a9f123c590",
+    image: "/about/amer.jpg",
     bio: "Driven by his passion for travel and with over 8 years of experience in the travel industry, he started I'm Here Travels in January 2023. He's committed to providing top-notch customer service and is always looking for ways to make the experience even better.",
   },
   {
     name: "Shawn Vincent",
     role: "Co-Founder",
-    image:
-      "https://www.figma.com/api/mcp/asset/a3255b6c-f8d7-47c6-9b3f-e8524e4cde79",
+    image: "/about/shawn.jpg",
     bio: "With over 8 years of experience in the finance industry with major companies. He brings a wealth of knowledge and business acumen to the company. He combines his financial expertise and passion for travel to create a unique and sustainable travel experience.",
   },
   {
     name: "Kristoffer Lagura",
     role: "Marketing Director",
-    image:
-      "https://www.figma.com/api/mcp/asset/7b0ff7d9-1139-4423-af90-66ef5c614165",
+    image: "/about/kristoffer.jpg",
     bio: "A role he has held since its inception, Kristoffer brings to the table a wealth of knowledge, ideas, and strategies. With over 8 years of experience in the hospitality and sales and marketing, he is all about creating a unique and memorable experience for all travellers.",
   },
 ];
@@ -118,7 +111,7 @@ export const stickers = {
     src: "/Stickers/Print/PNG/Flag-Outline/Print_Flag_Outline_Red.png",
     size: 250,
     wrapperClass:
-      "pointer-events-none absolute -right-0 -bottom-2 hidden rotate-10 lg:block",
+      "pointer-events-none absolute right-8 bottom-8 hidden rotate-10 lg:block",
   },
 };
 

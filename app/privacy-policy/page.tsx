@@ -83,38 +83,39 @@ function ContentSection() {
 
 function NewsletterSection() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 pb-16 md:px-8 md:pb-24">
-      <div className="overflow-hidden rounded-lg bg-white">
-        <div className="flex flex-col md:flex-row">
-          <div className="flex flex-col gap-8 px-8 py-12 md:flex-1 md:pl-16 md:pr-20 md:py-12">
-            <div className="flex flex-col gap-4">
-              <h2 className="font-display text-h2-mobile text-midnight md:text-h2-desktop">
-                {whyUsNewsletter.heading}
-              </h2>
-              <p className="font-body text-b2-mobile text-midnight md:text-b2-desktop">
-                {whyUsNewsletter.body}
-              </p>
-            </div>
-            <form className="flex flex-col gap-4">
+    <section className="mx-auto w-full max-w-7xl px-4 pb-16 md:px-8 md:pb-24">
+      <div
+        className="overflow-hidden rounded-lg bg-white shadow-small"
+        style={{ maxWidth: "100%", height: "640px" }}
+      >
+        <div className="flex h-full flex-col md:flex-row">
+          <div className="flex flex-col justify-center gap-4 p-8 md:w-1/2 md:shrink-0 md:p-12">
+            <h2 className="font-sans text-h3-mobile text-midnight md:text-h3-desktop">
+              {whyUsNewsletter.heading}
+            </h2>
+            <p className="font-body text-b4-mobile text-dark-gray md:text-b4-desktop">
+              {whyUsNewsletter.body}
+            </p>
+            <form className="mt-2 flex flex-col gap-3">
               <input
                 type="email"
                 placeholder={whyUsNewsletter.inputPlaceholder}
-                className="w-full rounded-sm border border-grey/40 px-4 py-3 font-body text-b2-mobile text-midnight outline-none placeholder:text-grey focus:border-midnight md:text-b2-desktop"
+                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
               />
-              <p className="font-body text-b4-desktop text-dark-gray">
+              <p className="font-body text-b4-desktop text-grey">
                 {whyUsNewsletter.privacyLabel}{" "}
-                <span className="underline">{whyUsNewsletter.privacyLink}</span>
+                <span className="underline hover:text-crimson-red">{whyUsNewsletter.privacyLink}</span>
                 .
               </p>
               <button
                 type="submit"
-                className="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-10 py-3 font-body font-bold text-b2-mobile text-white transition-colors hover:bg-light-red md:text-b2-desktop"
+                className="mt-1 inline-flex w-fit items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
               >
                 {whyUsNewsletter.button}
               </button>
             </form>
           </div>
-          <div className="relative h-64 md:h-auto md:flex-1">
+          <div className="relative flex-1">
             <Image
               src={whyUsNewsletter.image}
               alt="Travel experience"

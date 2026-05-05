@@ -13,7 +13,7 @@ export const travelSafetyMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const travelSafetyHero = {
-  image: "https://www.figma.com/api/mcp/asset/628ce3cd-be40-49f8-9286-0bedbac80003",
+  image: "/figma/join-community.jpg",
   title: "Travel Safety",
 };
 

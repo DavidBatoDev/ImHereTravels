@@ -13,8 +13,7 @@ export const privacyMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const privacyHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/31556009-8ffb-4e7f-9e47-d87e6945a135",
+  image: "/figma/join-community.jpg",
   title: "Privacy Policy",
 };
 

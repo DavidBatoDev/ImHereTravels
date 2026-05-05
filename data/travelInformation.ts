@@ -13,8 +13,7 @@ export const travelInfoMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const travelInfoHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/7fdeff55-b188-40bf-bf97-83e55fcab1ce",
+  image: "/figma/hero-siargao.png",
   title: "Travel Information",
 };
 
@@ -31,16 +30,8 @@ export const travelInfoIntro =
 
 export const travelInfoCards = [
   {
-    id: "visa",
-    image: "https://www.figma.com/api/mcp/asset/ec4ea8b9-b983-41a9-9071-7eb34165660f",
-    title: "Travel/Visa Requirements",
-    body: "Need the latest info on visa and travel document requirements? Look no further! Our guide has you covered with all the up-to-date info you need.",
-    linkLabel: "Learn more",
-    linkHref: "/travel-requirements",
-  },
-  {
     id: "pre-departure",
-    image: "https://www.figma.com/api/mcp/asset/388c035e-e00d-49b4-99e3-594e74d3587b",
+    image: "/figma/dest-japan-adventure.jpg",
     title: "Pre-departure Info",
     body: "Be prepared before you leave for your trip. All of the info below as it's designed to help you have a smooth travel experience.",
     linkLabel: "Learn more",
@@ -48,7 +39,7 @@ export const travelInfoCards = [
   },
   {
     id: "safety",
-    image: "https://www.figma.com/api/mcp/asset/663b361b-cc4d-4f5f-91c1-afb1b2343d82",
+    image: "/about/purpose.jpg",
     title: "Travel Safety",
     body: "Keeping you safe and having a blast on our travels is a must! Some easy ways you can boost your own personal safety while you're out exploring.",
     linkLabel: "Learn more",
@@ -56,7 +47,7 @@ export const travelInfoCards = [
   },
   {
     id: "faqs",
-    image: "https://www.figma.com/api/mcp/asset/ec4ea8b9-b983-41a9-9071-7eb34165660f",
+    image: "/about/mission.jpg",
     title: "FAQs",
     body: "What does travel with I'm Here Travels look like? Find out the answers to all your travel-related questions here and book with confidence.",
     linkLabel: "Learn more",
@@ -64,7 +55,7 @@ export const travelInfoCards = [
   },
   {
     id: "contact",
-    image: "https://www.figma.com/api/mcp/asset/8034f5a6-5d11-495e-9b04-1e0461ba92ff",
+    image: "/figma/join-community.jpg",
     title: "Contact Us",
     body: "Have any questions? Our team is ready to assist you with any concerns you may have.",
     linkLabel: "Contact us",
@@ -72,7 +63,7 @@ export const travelInfoCards = [
   },
   {
     id: "terms",
-    image: "https://www.figma.com/api/mcp/asset/ec4ea8b9-b983-41a9-9071-7eb34165660f",
+    image: "/figma/dest-maldives.png",
     title: "Terms & Conditions",
     body: "Be prepared before you leave for your trip. All of the info below as it's designed to help you have a smooth travel experience.",
     linkLabel: "Learn more",

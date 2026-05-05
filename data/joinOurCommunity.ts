@@ -13,8 +13,7 @@ export const joinMetadata = {
 /* -------------------------------------------------------------------------- */
 
 export const joinHero = {
-  image:
-    "https://www.figma.com/api/mcp/asset/addc7004-4f2a-49d9-8c71-522c50906616",
+  image: "/figma/join-community.jpg",
   title: "Join our community",
 };
 
