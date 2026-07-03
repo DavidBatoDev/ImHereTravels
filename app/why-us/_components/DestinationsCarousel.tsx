@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard, A11y } from "swiper/modules";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -63,10 +63,11 @@ export default function DestinationsCarousel({
               href={dest.href}
               className="group relative block h-80 overflow-hidden rounded-lg"
             >
-              <Image
+              <ImageWithSkeleton
                 src={dest.image}
                 alt={dest.name}
                 fill
+                rounded="lg"
                 sizes="(max-width: 768px) 80vw, 25vw"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   contactMetadata,
   contactHero,
@@ -106,7 +106,7 @@ const hoverClass: Record<keyof typeof iconMap, string> = {
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={contactHero.image}
         alt=""
         fill

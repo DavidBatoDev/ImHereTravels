@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 
 import "swiper/css";
@@ -59,11 +59,12 @@ export default function WhereWeStay({
                 <div className="flex flex-col gap-4">
                   <div className="relative aspect-4/3 w-full overflow-hidden rounded-lg bg-light-grey">
                     {imageSrc ? (
-                      <Image
+                      <ImageWithSkeleton
                         src={imageSrc}
                         alt={a.imageAlt}
                         fill
                         unoptimized
+                        rounded="lg"
                         sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
                       />

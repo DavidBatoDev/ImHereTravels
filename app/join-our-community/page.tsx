@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import { joinMetadata, joinHero, joinForm } from "@/data/joinOurCommunity";
 
 export const metadata: Metadata = joinMetadata;
@@ -11,7 +11,7 @@ export const metadata: Metadata = joinMetadata;
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={joinHero.image}
         alt=""
         fill

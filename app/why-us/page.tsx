@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import { features, destinations } from "@/data/root";
 import DestinationsCarousel from "./_components/DestinationsCarousel";
 import {
@@ -114,7 +115,7 @@ function InstagramIcon() {
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={whyUsHero.image}
         alt=""
         fill
@@ -231,10 +232,11 @@ function ReviewsSection() {
             </p>
             <div className="mt-2 flex items-center gap-4 border-t border-light-grey pt-4">
               <div className="relative size-14 shrink-0 overflow-hidden rounded-full">
-                <Image
+                <ImageWithSkeleton
                   src={r.avatar}
                   alt={r.author}
                   fill
+                  rounded="full"
                   sizes="56px"
                   className="object-cover"
                 />
@@ -276,10 +278,11 @@ function InstagramSection() {
             aria-label={img.alt}
             className="group relative aspect-square overflow-hidden rounded-lg"
           >
-            <Image
+            <ImageWithSkeleton
               src={img.src}
               alt={img.alt}
               fill
+              rounded="lg"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
@@ -353,7 +356,7 @@ function NewsletterSection() {
           </div>
           {/* Image — flex-1 so it fills exactly the remaining half */}
           <div className="relative flex-1">
-            <Image
+            <ImageWithSkeleton
               src={whyUsNewsletter.image}
               alt="Travel experience"
               fill

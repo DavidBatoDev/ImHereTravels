@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import FaqAccordion from "@/app/faqs/_components/FaqAccordion";
 import HighlightsSection from "./_components/HighlightsSection";
 import ReviewsSection from "./_components/ReviewsSection";
@@ -162,7 +163,7 @@ export default async function DestinationPage({
       <main className="flex-1">
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="relative h-65 w-full overflow-hidden md:h-90">
-          <Image
+          <ImageWithSkeleton
             src={destination.heroImage}
             alt={destination.heroImageAlt}
             fill
@@ -262,7 +263,7 @@ export default async function DestinationPage({
                       className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
                     >
                       <div className="relative aspect-4/3 w-full overflow-hidden">
-                        <Image
+                        <ImageWithSkeleton
                           src={tour.listingCard.image}
                           alt={tour.listingCard.imageAlt}
                           fill
@@ -342,10 +343,11 @@ export default async function DestinationPage({
                     aria-label={img.alt}
                     className="group block h-full w-full"
                   >
-                    <Image
+                    <ImageWithSkeleton
                       src={img.src}
                       alt={img.alt}
                       fill
+                      rounded="md"
                       sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
@@ -442,7 +444,7 @@ export default async function DestinationPage({
                 </form>
               </div>
               <div className="relative h-full w-full">
-                <Image
+                <ImageWithSkeleton
                   src="/figma/join-community.jpg"
                   alt="Travelers enjoying a tropical destination"
                   fill

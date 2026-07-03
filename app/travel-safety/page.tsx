@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   travelSafetyMetadata,
   travelSafetyHero,
@@ -19,7 +19,7 @@ export const metadata: Metadata = travelSafetyMetadata;
 function Hero() {
   return (
     <section className="relative h-65 w-full overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={travelSafetyHero.image}
         alt="Travel Safety"
         fill

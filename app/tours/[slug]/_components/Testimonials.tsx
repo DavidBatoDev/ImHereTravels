@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { TourReview } from "@/types/tour";
 
 const HEADING = "What people say about us";
@@ -92,10 +92,11 @@ export default function Testimonials({ reviews }: { reviews?: TourReview[] }) {
             <div className="mt-auto flex items-center gap-4 pt-2">
               {t.avatar ? (
                 <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-light-grey">
-                  <Image
+                  <ImageWithSkeleton
                     src={t.avatar}
                     alt=""
                     fill
+                    rounded="full"
                     sizes="56px"
                     className="object-cover"
                   />

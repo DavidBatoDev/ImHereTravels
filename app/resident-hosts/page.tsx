@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import { getAllHosts } from "@/lib/resident-hosts-firestore";
 
 export const revalidate = 3600;
@@ -60,7 +60,7 @@ export default async function ResidentHostsPage() {
                   >
                     <div className="relative aspect-4/3 w-full overflow-hidden">
                       {cardImage ? (
-                        <Image
+                        <ImageWithSkeleton
                           src={cardImage}
                           alt={host.heroImageAlt}
                           fill

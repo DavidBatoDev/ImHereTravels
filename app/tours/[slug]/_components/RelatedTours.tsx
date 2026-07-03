@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 
 export default function RelatedTours({
@@ -23,7 +24,7 @@ export default function RelatedTours({
               className="flex h-full flex-col"
             >
               <div className="relative aspect-4/3 w-full bg-light-grey">
-                <Image
+                <ImageWithSkeleton
                   src={t.image}
                   alt={t.imageAlt}
                   fill

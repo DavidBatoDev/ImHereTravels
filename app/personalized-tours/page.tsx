@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   personalizedToursMetadata,
   personalizedToursHero,
@@ -39,7 +39,7 @@ const personalizedToursJsonLd = {
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={personalizedToursHero.image}
         alt=""
         fill

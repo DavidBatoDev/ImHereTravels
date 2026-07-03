@@ -4,6 +4,7 @@ import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import HeroTitle from "@/app/components/global/HeroTitle";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   aboutHero,
   aboutIntro,
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={aboutHero.image}
         alt=""
         fill
@@ -115,7 +116,7 @@ function MissionSection() {
           <Reveal y={40} delay={80} className="relative aspect-3/4 w-full md:order-last md:aspect-auto md:h-140 md:w-120 md:flex-none lg:w-150">
             {/* Clipped image */}
             <div className="absolute inset-0 overflow-hidden rounded-lg">
-              <Image
+              <ImageWithSkeleton
                 src={aboutMission.image}
                 alt={aboutMission.imageAlt}
                 fill
@@ -148,7 +149,7 @@ function VisionSection() {
         <Reveal y={40} delay={80} className="relative aspect-3/4 w-full md:aspect-auto md:h-140 md:w-120 md:flex-none lg:w-150">
           {/* Clipped image */}
           <div className="absolute inset-0 overflow-hidden rounded-lg">
-            <Image
+            <ImageWithSkeleton
               src={aboutVision.image}
               alt={aboutVision.imageAlt}
               fill
@@ -192,7 +193,7 @@ function PurposeSection() {
     <section className="relative h-100 md:h-150 lg:h-180">
       {/* Background — clipped to section bounds */}
       <div className="absolute inset-0 overflow-hidden">
-        <Image
+        <ImageWithSkeleton
           src={aboutPurpose.image}
           alt=""
           fill
@@ -246,10 +247,11 @@ function TeamSection() {
             <div className="flex flex-col gap-6 rounded-lg bg-white p-8 md:p-10">
               <div className="flex flex-col items-center gap-4">
                 <div className="relative size-35 shrink-0 overflow-hidden rounded-full md:size-45">
-                  <Image
+                  <ImageWithSkeleton
                     src={member.image}
                     alt={member.name}
                     fill
+                    rounded="full"
                     sizes="180px"
                     className="object-cover"
                   />

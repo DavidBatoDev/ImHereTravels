@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Keyboard, A11y, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper/types";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 
 import "swiper/css";
@@ -38,7 +38,7 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
           {slides.map((slide, i) => (
             <SwiperSlide key={i}>
               <div className="relative aspect-video w-full bg-light-grey">
-                <Image
+                <ImageWithSkeleton
                   src={slide.src}
                   alt={slide.alt}
                   fill
@@ -88,7 +88,7 @@ export default function TourGallery({ gallery }: { gallery: Tour["gallery"] }) {
               className="h-auto! cursor-pointer overflow-hidden rounded-md opacity-60 transition-opacity [&.swiper-slide-thumb-active]:opacity-100"
             >
               <div className="relative aspect-4/3 w-full bg-light-grey">
-                <Image
+                <ImageWithSkeleton
                   src={slide.src}
                   alt=""
                   fill

@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { DestinationHighlight } from "@/data/destinations";
 
 import "swiper/css";
@@ -68,7 +68,7 @@ export default function HighlightsSection({
           <SwiperSlide key={i} style={{ width: "282px", flexShrink: 0 }}>
             <div className="flex w-full flex-col overflow-hidden rounded-lg bg-white shadow-small" style={{ height: "420px" }}>
               <div className="relative shrink-0 overflow-hidden" style={{ height: "260px" }}>
-                <Image
+                <ImageWithSkeleton
                   src={item.image}
                   alt={item.imageAlt}
                   fill

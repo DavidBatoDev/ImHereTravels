@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import FaqAccordion from "./_components/FaqAccordion";
 import { faqsHero, faqCategories, faqsCta, faqsMetadata } from "@/data/faqs";
 
@@ -27,7 +27,7 @@ const faqJsonLd = {
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={faqsHero.image}
         alt=""
         fill

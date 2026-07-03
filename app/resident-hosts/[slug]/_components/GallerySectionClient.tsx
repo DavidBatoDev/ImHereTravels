@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import { type GalleryMediaItem } from "@/data/travelWithDev";
 import TripMomentsGallery from "./TripMomentsGallery";
 
@@ -135,10 +136,11 @@ export default function GallerySectionClient({ slides }: { slides: GalleryMediaI
                     </svg>
                   </>
                 ) : (
-                  <Image
+                  <ImageWithSkeleton
                     src={item.src!}
                     alt={item.alt ?? "Trip moment"}
                     fill
+                    rounded="md"
                     sizes="(max-width: 1280px) 33vw, 400px"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />

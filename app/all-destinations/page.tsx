@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import { getAllDestinations } from "@/data/destinations";
 import { getAllTours } from "@/lib/tours-firestore";
 
@@ -60,7 +61,7 @@ export default async function AllDestinationsPage() {
                   className="group flex flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
                 >
                   <div className="relative aspect-[4/3] w-full overflow-hidden">
-                    <Image
+                    <ImageWithSkeleton
                       src={dest.heroImage}
                       alt={dest.heroImageAlt}
                       fill
@@ -110,7 +111,7 @@ export default async function AllDestinationsPage() {
                     className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
                   >
                     <div className="relative aspect-[4/3] w-full overflow-hidden">
-                      <Image
+                      <ImageWithSkeleton
                         src={tour.listingCard.image}
                         alt={tour.listingCard.imageAlt}
                         fill

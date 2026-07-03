@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Host } from "@/data/hosts";
 import { getHostBySlug, getAllHostSlugs } from "@/lib/resident-hosts-firestore";
 import { getActiveTourSlugById } from "@/lib/tours-firestore";
@@ -68,7 +69,7 @@ function HeroSection({ host }: { host: Host }) {
         <div className="absolute inset-0 grid grid-cols-3">
           {host.heroImages!.map((src, i) => (
             <div key={i} className="relative h-full w-full overflow-hidden">
-              <Image
+              <ImageWithSkeleton
                 src={src}
                 alt={host.heroImageAlt}
                 fill
@@ -80,7 +81,7 @@ function HeroSection({ host }: { host: Host }) {
           ))}
         </div>
       ) : host.heroImage ? (
-        <Image
+        <ImageWithSkeleton
           src={host.heroImage}
           alt={host.heroImageAlt}
           fill
@@ -167,10 +168,11 @@ function IntroSection({ host }: { host: Host }) {
           <Reveal>
             <div className="flex flex-col items-center gap-3 text-center">
               <div className="relative h-64 w-64 overflow-hidden rounded-full ring-4 ring-white shadow-medium">
-                <Image
+                <ImageWithSkeleton
                   src={host.profileImage}
                   alt={host.displayName}
                   fill
+                  rounded="full"
                   sizes="256px"
                   className="object-cover object-top"
                 />
@@ -239,7 +241,7 @@ function UpcomingTripsSection({ host, trips }: { host: Host; trips: Host["upcomi
                 {/* Image */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   {trip.image ? (
-                    <Image
+                    <ImageWithSkeleton
                       src={trip.image}
                       alt={trip.imageAlt ?? trip.name}
                       fill
@@ -441,7 +443,7 @@ function NewsletterSection() {
             </form>
           </div>
           <div className="relative h-full w-full">
-            <Image
+            <ImageWithSkeleton
               src="/figma/join-community.jpg"
               alt="Travelers enjoying a destination together"
               fill

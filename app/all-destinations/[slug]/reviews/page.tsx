@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   getDestinationBySlug,
   getAllDestinationSlugs,
@@ -68,12 +69,14 @@ function ReviewCard({ review }: { review: DestinationReview }) {
       </p>
       <div className="flex items-center gap-3 pt-2">
         {review.avatar ? (
-          <Image
+          <ImageWithSkeleton
             src={review.avatar}
             alt={review.author}
             width={44}
             height={44}
-            className="size-11 shrink-0 rounded-full object-cover"
+            rounded="full"
+            containerClassName="size-11 shrink-0"
+            className="size-11 object-cover"
           />
         ) : (
           <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-light-grey font-sans text-h6-desktop text-midnight">
@@ -209,7 +212,7 @@ export default async function DestinationReviewsPage({
                       className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium"
                     >
                       <div className="relative aspect-4/3 w-full overflow-hidden">
-                        <Image
+                        <ImageWithSkeleton
                           src={tour.listingCard.image}
                           alt={tour.listingCard.imageAlt}
                           fill

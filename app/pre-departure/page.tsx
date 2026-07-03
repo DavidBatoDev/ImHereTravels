@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import PreDepartureWidget from "@/app/components/PreDepartureWidget";
 import {
   preDepartureMetadata,
@@ -21,7 +21,7 @@ export const metadata: Metadata = preDepartureMetadata;
 function Hero() {
   return (
     <section className="relative h-65 w-full overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={preDepartureHero.image}
         alt="Pre-departure Information"
         fill

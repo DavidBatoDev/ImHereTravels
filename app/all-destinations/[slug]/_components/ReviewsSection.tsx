@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { DestinationReview } from "@/data/destinations";
 
 import "swiper/css";
@@ -91,12 +91,14 @@ export default function ReviewsSection({
               </p>
               <div className="flex items-center gap-3 pt-2">
                 {review.avatar ? (
-                  <Image
+                  <ImageWithSkeleton
                     src={review.avatar}
                     alt={review.author}
                     width={44}
                     height={44}
-                    className="size-11 shrink-0 rounded-full object-cover"
+                    rounded="full"
+                    containerClassName="size-11 shrink-0"
+                    className="size-11 object-cover"
                   />
                 ) : (
                   <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-light-grey font-sans text-h6-desktop text-midnight">

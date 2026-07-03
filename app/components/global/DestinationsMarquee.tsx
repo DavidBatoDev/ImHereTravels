@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 
 import "swiper/css";
 
@@ -54,10 +54,11 @@ export default function DestinationsMarquee({
             href={dest.href}
             className="group relative block aspect-square w-full overflow-hidden rounded-md"
           >
-            <Image
+            <ImageWithSkeleton
               src={dest.image}
               alt={dest.name}
               fill
+              rounded="md"
               sizes="(max-width: 640px) 80vw, (max-width: 1024px) 30vw, 22vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />

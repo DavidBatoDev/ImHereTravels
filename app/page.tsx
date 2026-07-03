@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 
 const BASE_URL = "https://www.imheretravels.com";
 
@@ -65,7 +66,7 @@ function Hero() {
     <section className="relative w-full">
       <div className="relative overflow-hidden">
         <div className="relative h-[55vh] w-full md:h-[60vh]">
-          <Image
+          <ImageWithSkeleton
             src={hero.image}
             alt={hero.imageAlt}
             fill
@@ -165,12 +166,14 @@ function Testimonials() {
               {t.quote}
             </p>
             <div className="mt-auto flex items-center gap-4 pt-2">
-              <Image
+              <ImageWithSkeleton
                 src={t.avatar}
                 alt={t.author}
                 width={56}
                 height={56}
-                className="size-14 shrink-0 rounded-full object-cover"
+                rounded="full"
+                containerClassName="size-14 shrink-0"
+                className="size-14 object-cover"
               />
               <div>
                 <p className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
@@ -282,7 +285,7 @@ function JoinCommunity() {
             </form>
           </div>
           <div className="relative h-full w-full">
-            <Image
+            <ImageWithSkeleton
               src="/figma/join-community.jpg"
               alt="Travelers enjoying a tropical beach"
               fill

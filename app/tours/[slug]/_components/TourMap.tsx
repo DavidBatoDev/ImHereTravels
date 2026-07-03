@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 
 // Google blocks framing of normal /maps/place share URLs; only /maps/embed or the
@@ -41,7 +41,7 @@ export default function TourMap({ section }: { section: NonNullable<Tour["map"]>
             allowFullScreen
           />
         ) : (
-          <Image
+          <ImageWithSkeleton
             src={section.image}
             alt={section.imageAlt}
             fill

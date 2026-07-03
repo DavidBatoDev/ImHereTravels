@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 
 import "swiper/css";
 
@@ -80,7 +81,7 @@ export default function NewToursCarousel({ tours }: { tours: TourCard[] }) {
               className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
             >
               <div className="relative aspect-4/3 w-full overflow-hidden">
-                <Image
+                <ImageWithSkeleton
                   src={tour.image}
                   alt={tour.title}
                   fill

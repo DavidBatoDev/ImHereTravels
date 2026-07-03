@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   termsMetadata,
   termsHero,
@@ -17,7 +17,7 @@ export const metadata: Metadata = termsMetadata;
 function Hero() {
   return (
     <section className="relative h-72 overflow-hidden md:h-[360px]">
-      <Image
+      <ImageWithSkeleton
         src={termsHero.image}
         alt=""
         fill
@@ -116,7 +116,7 @@ function NewsletterSection() {
           </div>
           {/* Image */}
           <div className="relative flex-1">
-            <Image
+            <ImageWithSkeleton
               src={whyUsNewsletter.image}
               alt="Travel experience"
               fill

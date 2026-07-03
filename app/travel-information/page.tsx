@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import {
   travelInfoMetadata,
   travelInfoHero,
@@ -16,7 +16,7 @@ export const metadata: Metadata = travelInfoMetadata;
 function Hero() {
   return (
     <section className="relative h-65 overflow-hidden md:h-90">
-      <Image
+      <ImageWithSkeleton
         src={travelInfoHero.image}
         alt=""
         fill
@@ -52,7 +52,7 @@ function CardsSection() {
           >
             {/* Image */}
             <div className="relative h-70 w-full shrink-0 overflow-hidden">
-              <Image
+              <ImageWithSkeleton
                 src={card.image}
                 alt=""
                 fill

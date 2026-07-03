@@ -1,9 +1,9 @@
 "use client";
 
 import { forwardRef, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour, TourDay } from "@/types/tour";
 import Icon from "./Icon";
 
@@ -152,7 +152,7 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
                   >
-                    <Image
+                    <ImageWithSkeleton
                       src={day.image}
                       alt={day.imageAlt ?? day.title}
                       fill

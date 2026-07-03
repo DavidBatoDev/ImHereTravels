@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 
 import "swiper/css";
@@ -125,7 +126,7 @@ export default function RecentlyViewedTours({
                   className="group block overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium"
                 >
                   <div className="relative aspect-4/3 w-full overflow-hidden">
-                    <Image
+                    <ImageWithSkeleton
                       src={tour.listingCard.image}
                       alt={tour.listingCard.imageAlt}
                       fill

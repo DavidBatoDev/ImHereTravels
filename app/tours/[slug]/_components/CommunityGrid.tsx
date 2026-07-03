@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import type { Tour } from "@/types/tour";
 import Icon from "./Icon";
 
@@ -57,7 +57,7 @@ export default function CommunityGrid({
               aria-label={img.alt}
               className="group relative block h-full w-full"
             >
-              <Image
+              <ImageWithSkeleton
                 src={img.src}
                 alt={img.alt}
                 fill
