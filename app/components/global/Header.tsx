@@ -34,6 +34,7 @@ const STATIC_NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: "About Us", href: "/about-us" },
+  { label: "Reviews", href: "/reviews" },
   {
     label: "Travel Info",
     href: "/travel-information",

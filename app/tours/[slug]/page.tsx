@@ -5,7 +5,9 @@ import ShareButton from "./_components/ShareButton";
 export const revalidate = 3600; // Re-fetch from Firestore at most once per hour
 
 import { getAllTourSlugs, getTourBySlug, getHostedTourSlugs, getCurrentSlugForPreviousSlug } from "@/lib/tours-firestore";
+import { getReviewsForTour, getAggregateForTour } from "@/lib/reviews-firestore";
 import type { Tour } from "@/types/tour";
+import type { PublicReview, ReviewAggregate } from "@/types/review";
 import AutoFitText from "./_components/AutoFitText";
 import Breadcrumbs from "./_components/Breadcrumbs";
 import TourGallery from "./_components/TourGallery";
@@ -65,10 +67,53 @@ export async function generateMetadata({
   };
 }
 
-function buildTourJsonLd(tour: Tour) {
+function buildTourJsonLd(
+  tour: Tour,
+  reviews: PublicReview[],
+  aggregate: ReviewAggregate,
+) {
   const durationFact = tour.keyFacts.find((f) => f.label === "Duration");
   const routeFact = tour.keyFacts.find((f) => f.label === "Route");
   const groupFact = tour.keyFacts.find((f) => f.label === "Group Size");
+
+  // Only surface rating/review markup when we have real reviews — Google flags
+  // empty or fabricated ratings.
+  const aggregateRating =
+    aggregate.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: aggregate.average,
+            reviewCount: aggregate.count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {};
+
+  // Strip markdown to a plain-text snippet for the review body in structured data.
+  const toPlain = (md: string) =>
+    md.replace(/[*_`#>\-]/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\s+/g, " ").trim();
+
+  const reviewLd =
+    reviews.length > 0
+      ? {
+          review: reviews.slice(0, 10).map((r) => ({
+            "@type": "Review",
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: r.rating,
+              bestRating: 5,
+              worstRating: 1,
+            },
+            author: { "@type": "Person", name: r.reviewerFirstName },
+            reviewBody: toPlain(r.bodyMarkdown).slice(0, 400),
+            ...(r.createdAt
+              ? { datePublished: new Date(r.createdAt).toISOString().split("T")[0] }
+              : {}),
+          })),
+        }
+      : {};
 
   return {
     "@context": "https://schema.org",
@@ -91,6 +136,8 @@ function buildTourJsonLd(tour: Tour) {
           ? tour.gallery.hero
           : `${BASE_URL}${tour.gallery.hero}`,
         provider: { "@id": `${BASE_URL}/#organization` },
+        ...aggregateRating,
+        ...reviewLd,
         ...(durationFact ? { duration: durationFact.values[0] } : {}),
         ...(routeFact ? { itinerary: { "@type": "ItemList", name: routeFact.values[0] } } : {}),
         ...(groupFact ? { maximumAttendeeCapacity: parseInt(groupFact.values[0]) || undefined } : {}),
@@ -132,6 +179,14 @@ export default async function TourDetailPage({ params }: { params: Params }) {
 
   const hostedSlugs = new Set(await getHostedTourSlugs());
 
+  // Reviews now come from the dedicated `tourReviews` collection (not the legacy
+  // embedded `details.reviews[]`), so user-submitted + admin reviews share one
+  // moderated source.
+  const [reviews, aggregate] = await Promise.all([
+    getReviewsForTour(tour.slug),
+    getAggregateForTour(tour.slug),
+  ]);
+
   const instagramHref = "https://www.instagram.com/imheretravels";
   const fallbackCommunityImages = tour.gallery.thumbnails
     .map((thumb) => ({ src: thumb.src, alt: thumb.alt, href: instagramHref }))
@@ -146,7 +201,9 @@ export default async function TourDetailPage({ params }: { params: Params }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildTourJsonLd(tour)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildTourJsonLd(tour, reviews, aggregate)),
+        }}
       />
       <main className="flex-1">
         <TourViewRecorder slug={tour.slug} />
@@ -285,7 +342,12 @@ export default async function TourDetailPage({ params }: { params: Params }) {
         </div>
 
         <Reveal y={24}>
-          <Testimonials reviews={tour.reviews} />
+          <Testimonials
+            reviews={reviews}
+            aggregate={aggregate}
+            tourSlug={tour.slug}
+            tourName={tour.name}
+          />
         </Reveal>
         {tour.relatedTours?.heading && (
           <Reveal y={24}>
