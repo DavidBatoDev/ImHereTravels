@@ -181,6 +181,10 @@ export interface Tour {
   // Per-tour reviews (admin-edited). When absent/empty, the tour page falls
   // back to generic placeholder testimonials.
   reviews?: TourReview[];
+  // TourRadar per-tour "Tour Reviews" widget embed (from the Operator Dashboard).
+  // When set, the tour page renders a "Reviews on TourRadar" section.
+  tourRadarWidgetId?: string;
+  tourRadarWidgetUrl?: string;
   booking: TourBookingCard;
   relatedTours?: { heading: string; items: TourRelated[] };
   community?: { heading: string; images: TourCommunityImage[] };

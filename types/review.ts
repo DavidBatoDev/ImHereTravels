@@ -8,7 +8,15 @@
  */
 
 export type ReviewStatus = "published" | "hidden" | "pending";
-export type ReviewSource = "user" | "admin";
+export type ReviewSource = "user" | "admin" | "google" | "tourradar";
+
+/** External (federated) sources — shown as cards but excluded from the average + JSON-LD. */
+export const EXTERNAL_REVIEW_SOURCES = ["google", "tourradar"] as const;
+
+/** True for federated reviews (Google/TourRadar) that must not count toward ratings. */
+export function isExternalSource(source?: ReviewSource): boolean {
+  return source === "google" || source === "tourradar";
+}
 
 /**
  * Full Firestore document shape for `tourReviews/{id}`.
@@ -42,6 +50,17 @@ export interface ReviewDoc {
   bookingId?: string; // PRIVATE — never exposed
   bookingCode?: string; // PRIVATE — never exposed
 
+  // External-source provenance (present when source === "google"). Federated
+  // reviews arrive with no tour association: tourId/tourSlug/tourName stay ""
+  // until an admin assigns a tour (or marks the review hub-only).
+  externalId?: string; // dedup key = external review id / content hash
+  externalSource?: "google" | "tourradar"; // provider discriminator
+  externalUpdatedAt?: number; // epoch ms, Google updateTime — detects edits on re-sync
+  externalReply?: string; // owner reply (reviewReply.comment), display-only
+  reviewerFullName?: string; // Google displayName as-received (before first-name split)
+  assigned?: boolean; // admin has triaged (assigned a tour OR marked hub-only)
+  deletedOnGoogleAt?: number; // epoch ms — flagged when absent from a later sync
+
   createdAt: number; // epoch ms
   updatedAt: number; // epoch ms
   displayDate?: string; // legacy free-text date from migrated rows
@@ -62,6 +81,8 @@ export interface PublicReview {
   verified: boolean;
   createdAt: number;
   displayDate?: string;
+  source?: ReviewSource; // lets the card badge external reviews (e.g. "via Google")
+  externalReply?: string; // owner reply, shown as "Response from the owner"
 }
 
 /** Aggregate rating for a tour (drives the star summary + AggregateRating JSON-LD). */

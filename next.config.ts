@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
         hostname: "i0.wp.com",
         pathname: "/imheretravels.com/**",
       },
+      {
+        // Google reviewer avatars (Business Profile API profilePhotoUrl) are
+        // served from lh3/lh4/lh5.googleusercontent.com — hotlinked, not re-hosted.
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
     ],
   },
   async redirects() {

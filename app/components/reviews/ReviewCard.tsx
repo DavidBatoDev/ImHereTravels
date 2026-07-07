@@ -27,11 +27,24 @@ export default function ReviewCard({
   showTour?: boolean;
 }) {
   const date = formatDate(review);
+  const sourceLabel =
+    review.source === "google"
+      ? "via Google"
+      : review.source === "tourradar"
+        ? "via TourRadar"
+        : null;
   return (
     <li className="flex flex-col gap-5 rounded-lg bg-white p-8 shadow-small md:p-10">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <Stars count={review.rating} />
-        {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
+        <div className="flex items-center gap-2">
+          {sourceLabel && (
+            <span className="whitespace-nowrap rounded-full bg-light-grey px-2.5 py-1 font-body text-b4-desktop text-dark-gray">
+              {sourceLabel}
+            </span>
+          )}
+          {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
+        </div>
       </div>
 
       {review.title && (
@@ -41,6 +54,17 @@ export default function ReviewCard({
       )}
 
       <Markdown>{review.bodyMarkdown}</Markdown>
+
+      {review.externalReply && (
+        <div className="rounded-md border-l-2 border-light-grey bg-light-grey/40 py-2 pl-4">
+          <p className="font-body text-b4-desktop font-bold text-midnight">
+            Response from the owner
+          </p>
+          <p className="mt-1 font-body text-b4-desktop text-dark-gray">
+            {review.externalReply}
+          </p>
+        </div>
+      )}
 
       {review.photos && review.photos.length > 0 && (
         <ReviewPhotos photos={review.photos} authorAlt={review.reviewerFirstName} />

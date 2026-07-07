@@ -1,8 +1,15 @@
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ReviewCard from "@/app/components/reviews/ReviewCard";
+import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import { getAllPublishedReviews } from "@/lib/reviews-firestore";
+import { isExternalSource } from "@/types/review";
 import type { PublicReview } from "@/types/review";
+
+// Company-level TourRadar "Operator Reviews" widget (from the Widget Center).
+// Set to the iframe src URL (or full embed snippet) to show it on the hub.
+const TOURRADAR_OPERATOR_WIDGET_URL =
+  process.env.NEXT_PUBLIC_TOURRADAR_OPERATOR_WIDGET_URL;
 
 export const revalidate = 3600;
 
@@ -78,7 +85,9 @@ export default async function ReviewsHubPage({
 
   const activeTour = tour && tourMap.has(tour) ? tour : undefined;
   const reviews = activeTour ? all.filter((r) => r.tourSlug === activeTour) : all;
-  const stats = overall(all);
+  // The headline stat says "verified reviews" — keep it first-party only (Google/
+  // TourRadar reviews still render as cards below, they just don't move the number).
+  const stats = overall(all.filter((r) => !isExternalSource(r.source)));
 
   const pill = (active: boolean) =>
     [
@@ -92,7 +101,9 @@ export default async function ReviewsHubPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildHubJsonLd(all)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildHubJsonLd(all.filter((r) => !isExternalSource(r.source)))),
+        }}
       />
       <main className="flex-1">
         <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 md:px-8 md:pb-24 md:pt-10">
@@ -148,6 +159,12 @@ export default async function ReviewsHubPage({
             </ul>
           )}
         </section>
+        {!activeTour && TOURRADAR_OPERATOR_WIDGET_URL && (
+          <TourRadarWidget
+            widgetUrl={TOURRADAR_OPERATOR_WIDGET_URL}
+            variant="operator"
+          />
+        )}
       </main>
       <Footer />
     </>

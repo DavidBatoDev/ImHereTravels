@@ -423,6 +423,8 @@ function toTour(raw: RawDoc): Tour {
     thingsToKnow,
     tips,
     reviews,
+    tourRadarWidgetId: raw.tourRadarWidgetId || undefined,
+    tourRadarWidgetUrl: raw.tourRadarWidgetUrl || undefined,
     booking,
     listingCard: {
       duration: raw.duration ? toTitleCase(raw.duration) : "",

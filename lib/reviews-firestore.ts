@@ -16,6 +16,7 @@
 import { cache } from "react";
 import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase-admin";
+import { isExternalSource } from "@/types/review";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
 
 const REVIEWS_COLLECTION = "tourReviews";
@@ -46,6 +47,8 @@ function toPublicReview(id: string, raw: RawDoc): PublicReview {
     verified: raw.verified === true,
     createdAt: toMillis(raw.createdAt),
     displayDate: raw.displayDate || undefined,
+    source: raw.source ?? "user",
+    externalReply: raw.externalReply || undefined,
   };
 }
 
@@ -67,10 +70,19 @@ export const getReviewsForTour = cache(
   },
 );
 
-/** Aggregate rating (avg + count) for a tour, from its published reviews. */
+/**
+ * Aggregate rating (avg + count) for a tour, from its published reviews.
+ *
+ * First-party only: federated (Google / TourRadar) reviews still render as cards
+ * but are excluded from the "verified reviews" number and from the
+ * AggregateRating JSON-LD (Google's structured-data policy forbids third-party
+ * reviews in your own markup).
+ */
 export const getAggregateForTour = cache(
   async (tourSlug: string): Promise<ReviewAggregate> => {
-    const reviews = await getReviewsForTour(tourSlug);
+    const reviews = (await getReviewsForTour(tourSlug)).filter(
+      (r) => !isExternalSource(r.source),
+    );
     if (reviews.length === 0) return { average: 0, count: 0 };
     const sum = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
     return {

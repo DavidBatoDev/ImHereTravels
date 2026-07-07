@@ -7,6 +7,7 @@ export const revalidate = 3600; // Re-fetch from Firestore at most once per hour
 import { getAllTourSlugs, getTourBySlug, getHostedTourSlugs, getCurrentSlugForPreviousSlug } from "@/lib/tours-firestore";
 import { getReviewsForTour, getAggregateForTour } from "@/lib/reviews-firestore";
 import type { Tour } from "@/types/tour";
+import { isExternalSource } from "@/types/review";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
 import AutoFitText from "./_components/AutoFitText";
 import Breadcrumbs from "./_components/Breadcrumbs";
@@ -22,6 +23,7 @@ import Faqs from "./_components/Faqs";
 import ThingsToKnow from "./_components/ThingsToKnow";
 import Tips from "./_components/Tips";
 import Testimonials from "./_components/Testimonials";
+import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import RelatedTours from "./_components/RelatedTours";
 import CommunityGrid from "./_components/CommunityGrid";
 import BookingCard from "./_components/BookingCard";
@@ -95,10 +97,15 @@ function buildTourJsonLd(
   const toPlain = (md: string) =>
     md.replace(/[*_`#>\-]/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\s+/g, " ").trim();
 
+  // Google's structured-data policy forbids putting third-party (Google/TourRadar)
+  // reviews into your own Review/AggregateRating markup — keep the JSON-LD
+  // first-party only. (`aggregate` is already first-party-only in reviews-firestore.ts.)
+  const firstPartyReviews = reviews.filter((r) => !isExternalSource(r.source));
+
   const reviewLd =
-    reviews.length > 0
+    firstPartyReviews.length > 0
       ? {
-          review: reviews.slice(0, 10).map((r) => ({
+          review: firstPartyReviews.slice(0, 10).map((r) => ({
             "@type": "Review",
             reviewRating: {
               "@type": "Rating",
@@ -127,7 +134,11 @@ function buildTourJsonLd(
         ],
       },
       {
-        "@type": "TouristTrip",
+        // Google's review/AggregateRating rich result only recognizes a fixed
+        // allowlist of types (Product, LocalBusiness, Book, Event, ...) —
+        // "TouristTrip" alone is not on it. Multi-typing as Product too keeps
+        // every Trip-specific property while making the review markup eligible.
+        "@type": ["TouristTrip", "Product"],
         "@id": `${BASE_URL}/tours/${tour.slug}`,
         name: tour.meta.title,
         description: tour.meta.description,
@@ -349,6 +360,15 @@ export default async function TourDetailPage({ params }: { params: Params }) {
             tourName={tour.name}
           />
         </Reveal>
+        {(tour.tourRadarWidgetUrl || tour.tourRadarWidgetId) && (
+          <Reveal y={24}>
+            <TourRadarWidget
+              widgetId={tour.tourRadarWidgetId}
+              widgetUrl={tour.tourRadarWidgetUrl}
+              variant="tour"
+            />
+          </Reveal>
+        )}
         {tour.relatedTours?.heading && (
           <Reveal y={24}>
             <RelatedTours section={tour.relatedTours} />
