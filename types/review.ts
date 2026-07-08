@@ -18,6 +18,12 @@ export function isExternalSource(source?: ReviewSource): boolean {
   return source === "google" || source === "tourradar";
 }
 
+/** A traveler-uploaded review video (played inline; `poster` is a still frame). */
+export interface ReviewVideo {
+  src: string; // mp4 URL
+  poster?: string; // still-frame image URL shown before playback
+}
+
 /**
  * Full Firestore document shape for `tourReviews/{id}`.
  *
@@ -42,6 +48,7 @@ export interface ReviewDoc {
   reviewerLocation?: string;
   reviewerAvatar?: string; // uploaded photo URL; empty → initial-avatar fallback
   photos?: string[]; // uploaded trip-photo URLs
+  videos?: ReviewVideo[]; // uploaded trip videos (e.g. TourRadar "moments")
 
   status: ReviewStatus;
   source: ReviewSource;
@@ -78,6 +85,7 @@ export interface PublicReview {
   reviewerLocation?: string;
   reviewerAvatar?: string;
   photos?: string[];
+  videos?: ReviewVideo[];
   verified: boolean;
   createdAt: number;
   displayDate?: string;

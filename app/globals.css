@@ -320,3 +320,47 @@ body {
   }
 }
 
+/* Newly-revealed review text: a soft highlighter flash that fades out, drawing
+   the eye to the full content when a review opens in its focus modal.
+   Used by ReviewCard (variant="modal") via app/components/reviews/ReviewCard.tsx. */
+@keyframes review-highlight {
+  0%,
+  55% { background-color: var(--color-light-yellow); }
+  100% { background-color: transparent; }
+}
+
+.review-reveal-highlight :is(p, li) {
+  border-radius: 6px;
+  margin-inline: -0.375rem;
+  padding-inline: 0.375rem;
+  animation: review-highlight 1.8s ease-out 0.2s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-reveal-highlight :is(p, li) {
+    animation: none;
+  }
+}
+
+/* Hover-preview popover for review media (app/components/reviews/ReviewPhotos.tsx):
+   a quick fade-in plus a gentle continuous float so it reads as a live preview. */
+@keyframes hover-preview-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes hover-float {
+  0%,
+  100% { transform: translateY(0); }
+  50%  { transform: translateY(-7px); }
+}
+.hover-preview-card {
+  animation:
+    hover-preview-in 0.18s ease-out both,
+    hover-float 3.2s ease-in-out 0.18s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-preview-card {
+    animation: hover-preview-in 0.18s ease-out both;
+  }
+}
+

@@ -44,6 +44,7 @@ function toPublicReview(id: string, raw: RawDoc): PublicReview {
     reviewerLocation: raw.reviewerLocation || undefined,
     reviewerAvatar: raw.reviewerAvatar || undefined,
     photos: Array.isArray(raw.photos) && raw.photos.length ? raw.photos : undefined,
+    videos: Array.isArray(raw.videos) && raw.videos.length ? raw.videos : undefined,
     verified: raw.verified === true,
     createdAt: toMillis(raw.createdAt),
     displayDate: raw.displayDate || undefined,

@@ -1,10 +1,38 @@
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ReviewCard from "@/app/components/reviews/ReviewCard";
+import ReviewsFilterBar from "@/app/components/reviews/ReviewsFilterBar";
+import {
+  SORT_OPTIONS,
+  type SortValue,
+  type TourOption,
+} from "@/app/components/reviews/reviews-filter";
 import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import { getAllPublishedReviews } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
 import type { PublicReview } from "@/types/review";
+
+const hasMedia = (r: PublicReview) =>
+  (r.photos?.length ?? 0) + (r.videos?.length ?? 0) > 0;
+
+/** Sort a review list per the selected sort option (input is newest-first). */
+function sortReviews(list: PublicReview[], sort: SortValue): PublicReview[] {
+  const copy = [...list];
+  switch (sort) {
+    case "oldest":
+      return copy.sort((a, b) => a.createdAt - b.createdAt);
+    case "media":
+      return copy.sort(
+        (a, b) => Number(hasMedia(b)) - Number(hasMedia(a)) || b.createdAt - a.createdAt,
+      );
+    case "longest":
+      return copy.sort(
+        (a, b) => (b.bodyMarkdown?.length ?? 0) - (a.bodyMarkdown?.length ?? 0),
+      );
+    default:
+      return copy.sort((a, b) => b.createdAt - a.createdAt);
+  }
+}
 
 // Company-level TourRadar "Operator Reviews" widget (from the Widget Center).
 // Set to the iframe src URL (or full embed snippet) to show it on the hub.
@@ -67,35 +95,29 @@ function buildHubJsonLd(reviews: PublicReview[]) {
 export default async function ReviewsHubPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tour?: string }>;
+  searchParams: Promise<{ tour?: string; sort?: string }>;
 }) {
-  const { tour } = await searchParams;
+  const { tour, sort } = await searchParams;
   const all = await getAllPublishedReviews();
 
-  // Unique tours present in the review set (for filter pills).
-  const tourMap = new Map<string, string>();
+  // Unique tours present in the review set, with per-tour counts (for the filter).
+  const tourMap = new Map<string, TourOption>();
   for (const r of all) {
-    if (r.tourSlug && r.tourName && !tourMap.has(r.tourSlug)) {
-      tourMap.set(r.tourSlug, r.tourName);
-    }
+    if (!r.tourSlug || !r.tourName) continue;
+    const existing = tourMap.get(r.tourSlug);
+    if (existing) existing.count += 1;
+    else tourMap.set(r.tourSlug, { slug: r.tourSlug, name: r.tourName, count: 1 });
   }
-  const tours = Array.from(tourMap, ([slug, name]) => ({ slug, name })).sort((a, b) =>
-    a.name.localeCompare(b.name),
-  );
+  const tours = Array.from(tourMap.values()).sort((a, b) => a.name.localeCompare(b.name));
 
   const activeTour = tour && tourMap.has(tour) ? tour : undefined;
-  const reviews = activeTour ? all.filter((r) => r.tourSlug === activeTour) : all;
-  // The headline stat says "verified reviews" — keep it first-party only (Google/
-  // TourRadar reviews still render as cards below, they just don't move the number).
-  const stats = overall(all.filter((r) => !isExternalSource(r.source)));
+  const activeSort: SortValue =
+    (SORT_OPTIONS.find((s) => s.value === sort)?.value as SortValue) ?? "recent";
 
-  const pill = (active: boolean) =>
-    [
-      "rounded-full px-4 py-2 font-body text-b4-desktop transition-colors",
-      active
-        ? "bg-crimson-red text-white"
-        : "border border-light-grey text-dark-gray hover:bg-light-grey",
-    ].join(" ");
+  const filtered = activeTour ? all.filter((r) => r.tourSlug === activeTour) : all;
+  const reviews = sortReviews(filtered, activeSort);
+  // Headline count is ALL reviews shown (TourRadar + verified bookers combined).
+  const stats = overall(filtered);
 
   return (
     <>
@@ -121,21 +143,19 @@ export default async function ReviewsHubPage({
                 ★
               </span>
               <span className="text-grey">
-                · {stats.count} verified review{stats.count === 1 ? "" : "s"}
+                · {stats.count} review{stats.count === 1 ? "" : "s"}
               </span>
             </p>
           )}
 
           {tours.length > 1 && (
-            <div className="mt-8 flex flex-wrap gap-2">
-              <Link href="/reviews" className={pill(!activeTour)}>
-                All tours
-              </Link>
-              {tours.map((t) => (
-                <Link key={t.slug} href={`/reviews?tour=${t.slug}`} className={pill(activeTour === t.slug)}>
-                  {t.name}
-                </Link>
-              ))}
+            <div className="mt-8">
+              <ReviewsFilterBar
+                tours={tours}
+                totalCount={all.length}
+                activeTour={activeTour}
+                activeSort={activeSort}
+              />
             </div>
           )}
 
