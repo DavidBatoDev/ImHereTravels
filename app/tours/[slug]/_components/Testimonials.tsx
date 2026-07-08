@@ -1,4 +1,6 @@
 import ReviewCard from "@/app/components/reviews/ReviewCard";
+import TourReviewsSection from "@/app/components/reviews/TourReviewsSection";
+import { buildKeywordChips, matchThemes } from "@/app/components/reviews/review-keywords";
 import WriteReviewButton from "./WriteReviewButton";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
 
@@ -62,10 +64,21 @@ export default function Testimonials({
   tourName: string;
 }) {
   const hasReal = !!reviews && reviews.length > 0;
-  const items = hasReal ? reviews! : PLACEHOLDERS;
+
+  // Interest-keyword chips are mined from the tour's own reviews so a visitor can
+  // filter to what they care about in place (see TourReviewsSection). Cards are
+  // rendered here on the server and handed to the client section as nodes.
+  const chips = hasReal ? buildKeywordChips(reviews!) : [];
+  const keywordItems = hasReal
+    ? reviews!.map((review) => ({
+        id: review.id,
+        themeKeys: matchThemes(review),
+        node: <ReviewCard review={review} />,
+      }))
+    : [];
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">
+    <section id="reviews" className="mx-auto w-full max-w-7xl scroll-mt-24 px-4 py-10 md:px-8 md:py-14">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
@@ -86,11 +99,20 @@ export default function Testimonials({
         <WriteReviewButton tourSlug={tourSlug} tourName={tourName} />
       </div>
 
-      <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))}
-      </ul>
+      {hasReal ? (
+        <TourReviewsSection
+          chips={chips}
+          items={keywordItems}
+          totalCount={reviews!.length}
+        />
+      ) : (
+        // No real reviews yet — show the generic placeholder testimonials.
+        <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {PLACEHOLDERS.map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))}
+        </ul>
+      )}
     </section>
   );
 }

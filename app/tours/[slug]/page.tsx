@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Footer from "@/app/components/global/Footer";
 import ShareButton from "./_components/ShareButton";
+import ReviewsLink from "./_components/ReviewsLink";
 export const revalidate = 3600; // Re-fetch from Firestore at most once per hour
 
 import { getAllTourSlugs, getTourBySlug, getHostedTourSlugs, getCurrentSlugForPreviousSlug } from "@/lib/tours-firestore";
-import { getReviewsForTour, getAggregateForTour } from "@/lib/reviews-firestore";
+import {
+  getReviewsForTour,
+  getAggregateForTour,
+  computeReviewAggregate,
+} from "@/lib/reviews-firestore";
 import type { Tour } from "@/types/tour";
 import { isExternalSource } from "@/types/review";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
@@ -28,6 +33,7 @@ import RelatedTours from "./_components/RelatedTours";
 import CommunityGrid from "./_components/CommunityGrid";
 import BookingCard from "./_components/BookingCard";
 import TourViewRecorder from "./_components/TourViewRecorder";
+import ReviewsAnchorScroll from "./_components/ReviewsAnchorScroll";
 import Reveal from "@/app/components/global/Reveal";
 import BookingCardReveal from "./_components/BookingCardReveal";
 
@@ -197,6 +203,10 @@ export default async function TourDetailPage({ params }: { params: Params }) {
     getReviewsForTour(tour.slug),
     getAggregateForTour(tour.slug),
   ]);
+  // Combined across ALL sources (first-party + Google/TourRadar) — for the
+  // teaser link only. `aggregate` (first-party-only) still drives JSON-LD and
+  // the "verified reviews" line per Google's structured-data policy.
+  const displayAggregate = computeReviewAggregate(reviews);
 
   const instagramHref = "https://www.instagram.com/imheretravels";
   const fallbackCommunityImages = tour.gallery.thumbnails
@@ -218,6 +228,7 @@ export default async function TourDetailPage({ params }: { params: Params }) {
       />
       <main className="flex-1">
         <TourViewRecorder slug={tour.slug} />
+        <ReviewsAnchorScroll />
         <Breadcrumbs
           tourName={tour.name}
           parent={
@@ -238,7 +249,13 @@ export default async function TourDetailPage({ params }: { params: Params }) {
                   >
                     {tour.name}
                   </AutoFitText>
-                  <div className="shrink-0 pt-3 md:pt-4">
+                  <div className="flex shrink-0 items-center gap-4 pt-3 md:pt-4">
+                    {!tour.comingSoon && (
+                      <ReviewsLink
+                        average={displayAggregate.average}
+                        count={displayAggregate.count}
+                      />
+                    )}
                     <ShareButton title={tour.header.title} />
                   </div>
                 </div>

@@ -3,8 +3,7 @@
  *
  * A traveler may submit a review only if they hold an eligible booking (status
  * "Confirmed" or "Completed") for the tour they're reviewing. They identify
- * themselves with the email on their booking, their booking ID / code, or their
- * per-booking access token.
+ * themselves with the email address on their booking.
  *
  * This module is server-only — it reads the `bookings` collection via the
  * firebase-admin singleton (which bypasses security rules), so it must never be
@@ -20,6 +19,7 @@ export interface VerifiedBooking {
   bookingId: string;
   bookingCode: string;
   firstName: string;
+  nationality?: string;
   tourPackageName: string;
 }
 
@@ -54,10 +54,10 @@ function firstNameOf(b: RawBooking): string {
   return "";
 }
 
-/** Collect candidate bookings matching an identifier (email / id / code / token). */
+/** Collect candidate bookings matching an email address. */
 async function findCandidateBookings(identifier: string): Promise<RawBooking[]> {
   const id = identifier.trim();
-  if (!id) return [];
+  if (!id || !id.includes("@")) return [];
 
   const col = adminDb.collection("bookings");
   const candidates: RawBooking[] = [];
@@ -71,19 +71,11 @@ async function findCandidateBookings(identifier: string): Promise<RawBooking[]> 
     }
   };
 
-  if (id.includes("@")) {
-    // Email — try exact and lowercased (stored casing is not guaranteed).
-    const variants = Array.from(new Set([id, id.toLowerCase()]));
-    for (const v of variants) {
-      const snap = await col.where("emailAddress", "==", v).limit(10).get();
-      push(snap.docs);
-    }
-  } else {
-    // Booking identifiers — bookingId, bookingCode, or access_token.
-    for (const field of ["bookingId", "bookingCode", "access_token"]) {
-      const snap = await col.where(field, "==", id).limit(5).get();
-      push(snap.docs);
-    }
+  // Try exact and lowercased (stored casing is not guaranteed).
+  const variants = Array.from(new Set([id, id.toLowerCase()]));
+  for (const v of variants) {
+    const snap = await col.where("emailAddress", "==", v).limit(10).get();
+    push(snap.docs);
   }
 
   return candidates;
@@ -116,6 +108,7 @@ export async function verifyBookingForTour(params: {
       bookingId: String(match.bookingId ?? match.id ?? ""),
       bookingCode: String(match.bookingCode ?? ""),
       firstName: firstNameOf(match),
+      nationality: match.nationality ? String(match.nationality).trim() || undefined : undefined,
       tourPackageName: String(match.tourPackageName ?? ""),
     },
   };

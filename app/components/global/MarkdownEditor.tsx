@@ -101,12 +101,15 @@ export default function MarkdownEditor({
   placeholder,
   maxLength = 5000,
   id,
+  highlighted = false,
 }: {
   value: string;
   onChange: (next: string) => void;
   placeholder?: string;
   maxLength?: number;
   id?: string;
+  /** Tints the border crimson-red to flag this as the primary/required field. */
+  highlighted?: boolean;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const emojiWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -395,7 +398,11 @@ export default function MarkdownEditor({
   const stopFocusLoss = (e: React.MouseEvent) => e.preventDefault();
 
   return (
-    <div className="rounded-md border border-light-grey bg-white">
+    <div
+      className={`rounded-md border bg-white transition-colors focus-within:border-crimson-red ${
+        highlighted ? "border-crimson-red/50" : "border-light-grey"
+      }`}
+    >
       <div className="flex items-center gap-1 border-b border-light-grey px-2 py-1.5">
         <button
           type="button"

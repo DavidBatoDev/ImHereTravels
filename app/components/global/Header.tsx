@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import { scrollToReviews } from "@/lib/reviews-scroll";
 
 type NavLink = { label: string; href: string };
 type NavItem = { label: string; href: string; dropdown?: NavLink[] };
@@ -137,6 +138,51 @@ export default function Header({
   const { scrollY } = useScroll();
   const pathname = usePathname();
   const isHostedTourDetail = hostedTourDetailPaths.includes(pathname);
+  // On a tour's own page, "Reviews" should land on that tour's own
+  // testimonials section rather than navigating away to the community hub.
+  const isTourDetail = pathname.startsWith("/tours/");
+
+  // Rendered as a plain <a>, not next/link's <Link> — deliberately bypassing
+  // the router entirely so there's no dependency on Link's own click/prefetch
+  // handling for what's just a same-page scroll. Mirrors ReviewsLink.tsx.
+  function renderNavLink(item: NavItem, mobile: boolean) {
+    const activeCls = isParentActive(item)
+      ? "text-crimson-red underline underline-offset-4 decoration-2"
+      : "text-midnight";
+    const className = mobile
+      ? `block py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${activeCls}`
+      : `font-body text-b4-desktop transition-colors hover:text-crimson-red ${activeCls}`;
+
+    if (item.href === "/reviews" && isTourDetail) {
+      return (
+        <a
+          key={item.href}
+          href="#reviews"
+          onClick={(e) => {
+            const { found } = scrollToReviews();
+            if (found) {
+              e.preventDefault();
+            }
+            if (mobile) closeMenu();
+          }}
+          className={className}
+        >
+          {item.label}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        onClick={mobile ? closeMenu : undefined}
+        className={className}
+      >
+        {item.label}
+      </Link>
+    );
+  }
 
   const isParentActive = (item: (typeof navItems)[number]) => {
     if (item.href === "/hosted-tours") {
@@ -226,13 +272,7 @@ export default function Header({
                 </div>
               </div>
             ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`font-body text-b4-desktop transition-colors hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-              >
-                {item.label}
-              </Link>
+              renderNavLink(item, false)
             ),
           )}
         </nav>
@@ -328,15 +368,7 @@ export default function Header({
                       </AnimatePresence>
                     </li>
                   ) : (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        onClick={closeMenu}
-                        className={`block py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
+                    <li key={item.href}>{renderNavLink(item, true)}</li>
                   ),
                 )}
               </ul>

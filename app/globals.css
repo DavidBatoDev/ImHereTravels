@@ -342,25 +342,3 @@ body {
   }
 }
 
-/* Hover-preview popover for review media (app/components/reviews/ReviewPhotos.tsx):
-   a quick fade-in plus a gentle continuous float so it reads as a live preview. */
-@keyframes hover-preview-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes hover-float {
-  0%,
-  100% { transform: translateY(0); }
-  50%  { transform: translateY(-7px); }
-}
-.hover-preview-card {
-  animation:
-    hover-preview-in 0.18s ease-out both,
-    hover-float 3.2s ease-in-out 0.18s infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hover-preview-card {
-    animation: hover-preview-in 0.18s ease-out both;
-  }
-}
-

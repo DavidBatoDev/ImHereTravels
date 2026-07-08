@@ -17,7 +17,7 @@ import { cache } from "react";
 import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase-admin";
 import { isExternalSource } from "@/types/review";
-import type { PublicReview, ReviewAggregate } from "@/types/review";
+import type { PublicReview, ReviewAggregate, ReviewVideo } from "@/types/review";
 
 const REVIEWS_COLLECTION = "tourReviews";
 const HUB_SCAN_LIMIT = 500;
@@ -71,25 +71,31 @@ export const getReviewsForTour = cache(
   },
 );
 
+/** Average + count over a set of reviews (no source filtering). */
+export function computeReviewAggregate(reviews: PublicReview[]): ReviewAggregate {
+  if (reviews.length === 0) return { average: 0, count: 0 };
+  const sum = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
+  return {
+    average: Math.round((sum / reviews.length) * 10) / 10,
+    count: reviews.length,
+  };
+}
+
 /**
  * Aggregate rating (avg + count) for a tour, from its published reviews.
  *
  * First-party only: federated (Google / TourRadar) reviews still render as cards
  * but are excluded from the "verified reviews" number and from the
  * AggregateRating JSON-LD (Google's structured-data policy forbids third-party
- * reviews in your own markup).
+ * reviews in your own markup). For a combined, all-sources display rating (e.g.
+ * a teaser link), use `computeReviewAggregate` directly on the full review list.
  */
 export const getAggregateForTour = cache(
   async (tourSlug: string): Promise<ReviewAggregate> => {
     const reviews = (await getReviewsForTour(tourSlug)).filter(
       (r) => !isExternalSource(r.source),
     );
-    if (reviews.length === 0) return { average: 0, count: 0 };
-    const sum = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
-    return {
-      average: Math.round((sum / reviews.length) * 10) / 10,
-      count: reviews.length,
-    };
+    return computeReviewAggregate(reviews);
   },
 );
 
@@ -118,6 +124,7 @@ export interface CreateReviewInput {
   reviewerLocation?: string;
   reviewerAvatar?: string;
   photos?: string[];
+  videos?: ReviewVideo[];
   bookingId: string;
   bookingCode?: string;
 }
@@ -158,6 +165,7 @@ export async function createReview(input: CreateReviewInput): Promise<string> {
   if (input.reviewerLocation) doc.reviewerLocation = input.reviewerLocation;
   if (input.reviewerAvatar) doc.reviewerAvatar = input.reviewerAvatar;
   if (input.photos && input.photos.length) doc.photos = input.photos;
+  if (input.videos && input.videos.length) doc.videos = input.videos;
   if (input.bookingCode) doc.bookingCode = input.bookingCode;
 
   const ref = await adminDb.collection(REVIEWS_COLLECTION).add(doc);

@@ -1,16 +1,32 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Star, X, Upload, ImagePlus, Loader2, CheckCircle2 } from "lucide-react";
+import {
+  Star,
+  X,
+  ImagePlus,
+  Video as VideoIcon,
+  Loader2,
+  CheckCircle2,
+} from "lucide-react";
 import MarkdownEditor from "@/app/components/global/MarkdownEditor";
+import NationalitySelect from "@/app/components/reviews/NationalitySelect";
 
 const MAX_PHOTOS = 6;
 
+const HEADLINE_SUGGESTIONS = [
+  "An unforgettable adventure",
+  "Perfectly organized, zero stress",
+  "Made lifelong friends on this trip",
+  "Worth every penny",
+];
+
 type Step = "verify" | "form" | "done";
+type UploadKind = "avatar" | "photo" | "video";
 
 async function uploadImage(
   file: File,
-  kind: "avatar" | "photo",
+  kind: UploadKind,
   tourKey: string,
 ): Promise<string> {
   const fd = new FormData();
@@ -68,6 +84,7 @@ export default function WriteReviewButton({
 }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify");
+  const [confirmClose, setConfirmClose] = useState(false);
 
   // Verify
   const [identifier, setIdentifier] = useState("");
@@ -77,40 +94,42 @@ export default function WriteReviewButton({
   // Form
   const [rating, setRating] = useState(0);
   const [firstName, setFirstName] = useState("");
-  const [location, setLocation] = useState("");
+  const [nationality, setNationality] = useState("");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [avatar, setAvatar] = useState<string | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null); // upload-in-progress label
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const honeypot = useRef("");
 
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
+  const videoInputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  const isDirty =
+    step === "form" &&
+    (rating > 0 ||
+      title.trim() !== "" ||
+      body.trim() !== "" ||
+      photos.length > 0 ||
+      !!videoUrl);
 
   function reset() {
     setStep("verify");
     setIdentifier("");
     setVerifyError(null);
+    setConfirmClose(false);
     setRating(0);
     setFirstName("");
-    setLocation("");
+    setNationality("");
     setTitle("");
     setBody("");
     setAvatar(null);
     setPhotos([]);
+    setVideoUrl(null);
     setFormError(null);
     honeypot.current = "";
   }
@@ -120,6 +139,26 @@ export default function WriteReviewButton({
     // Let the closing animation finish conceptually before resetting.
     setTimeout(reset, 200);
   }
+
+  function requestClose() {
+    if (isDirty) {
+      setConfirmClose(true);
+      return;
+    }
+    close();
+  }
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && requestClose();
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isDirty]);
 
   async function handleVerify(e: React.FormEvent) {
     e.preventDefault();
@@ -137,6 +176,7 @@ export default function WriteReviewButton({
         return;
       }
       if (data.firstName) setFirstName(data.firstName);
+      if (data.nationality) setNationality(data.nationality);
       setStep("form");
     } catch {
       setVerifyError("Something went wrong. Please try again.");
@@ -181,6 +221,22 @@ export default function WriteReviewButton({
     }
   }
 
+  async function handleVideo(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setBusy("video");
+    setFormError(null);
+    try {
+      const url = await uploadImage(file, "video", tourSlug);
+      setVideoUrl(url);
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Upload failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormError(null);
@@ -200,9 +256,10 @@ export default function WriteReviewButton({
           title: title.trim() || undefined,
           bodyMarkdown: body.trim(),
           reviewerFirstName: firstName.trim(),
-          reviewerLocation: location.trim() || undefined,
+          reviewerLocation: nationality.trim() || undefined,
           reviewerAvatar: avatar || undefined,
           photos,
+          video: videoUrl || undefined,
           website: honeypot.current,
         }),
       });
@@ -222,13 +279,15 @@ export default function WriteReviewButton({
   const inputCls =
     "w-full rounded-md border border-light-grey bg-white px-4 py-3 font-body text-b2-desktop text-midnight outline-none focus:border-crimson-red placeholder:text-grey";
   const labelCls = "mb-1.5 block font-sans text-h6-desktop font-bold text-midnight";
+  const pillButtonCls =
+    "inline-flex items-center justify-center gap-2 rounded-full bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium disabled:opacity-50";
 
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 rounded-md bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white transition-colors hover:bg-light-red"
+        className={pillButtonCls}
       >
         Write a review
       </button>
@@ -236,14 +295,14 @@ export default function WriteReviewButton({
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-end justify-center bg-midnight/50 p-0 md:items-center md:p-6"
-          onMouseDown={(e) => e.target === e.currentTarget && close()}
+          onMouseDown={(e) => e.target === e.currentTarget && requestClose()}
         >
           <div
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={`Write a review for ${tourName}`}
-            className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-lg bg-white p-6 shadow-xlarge md:rounded-lg md:p-8"
+            className="no-scrollbar relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-lg bg-white p-6 shadow-xlarge md:rounded-lg md:p-8"
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               <div>
@@ -256,7 +315,7 @@ export default function WriteReviewButton({
               </div>
               <button
                 type="button"
-                onClick={close}
+                onClick={requestClose}
                 aria-label="Close"
                 className="shrink-0 rounded-full p-1.5 text-dark-gray hover:bg-light-grey"
               >
@@ -267,18 +326,19 @@ export default function WriteReviewButton({
             {step === "verify" && (
               <form onSubmit={handleVerify} className="space-y-4">
                 <p className="font-body text-b2-desktop text-midnight">
-                  Enter the email or booking ID from your booking so we can confirm you
-                  travelled with us.
+                  Enter the email address you booked with so we can confirm you travelled
+                  with us.
                 </p>
                 <div>
                   <label htmlFor="identifier" className={labelCls}>
-                    Booking email or ID
+                    Email address
                   </label>
                   <input
                     id="identifier"
+                    type="email"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="you@email.com or IHT-1234"
+                    placeholder="you@email.com"
                     className={inputCls}
                     autoFocus
                     required
@@ -290,7 +350,7 @@ export default function WriteReviewButton({
                 <button
                   type="submit"
                   disabled={verifying || !identifier.trim()}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white transition-colors hover:bg-light-red disabled:opacity-50"
+                  className={`w-full ${pillButtonCls}`}
                 >
                   {verifying && <Loader2 className="size-4 animate-spin" />}
                   {verifying ? "Verifying…" : "Verify booking"}
@@ -329,15 +389,13 @@ export default function WriteReviewButton({
                     />
                   </div>
                   <div>
-                    <label htmlFor="location" className={labelCls}>
-                      Location <span className="font-normal text-grey">(optional)</span>
+                    <label htmlFor="nationality" className={labelCls}>
+                      Nationality <span className="font-normal text-grey">(optional)</span>
                     </label>
-                    <input
-                      id="location"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="London, United Kingdom"
-                      className={inputCls}
+                    <NationalitySelect
+                      id="nationality"
+                      value={nationality}
+                      onChange={setNationality}
                     />
                   </div>
                 </div>
@@ -354,10 +412,25 @@ export default function WriteReviewButton({
                     maxLength={120}
                     className={inputCls}
                   />
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <span className="font-body text-b4-desktop text-grey">
+                      Need inspiration?
+                    </span>
+                    {HEADLINE_SUGGESTIONS.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => setTitle((t) => (t.trim() ? t : s))}
+                        className="rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight transition-colors hover:bg-light-grey/70"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
-                  <label htmlFor="body" className={labelCls}>
+                  <label htmlFor="body" className={`${labelCls} after:ml-0.5 after:text-crimson-red after:content-['*']`}>
                     Your review
                   </label>
                   <MarkdownEditor
@@ -365,6 +438,7 @@ export default function WriteReviewButton({
                     value={body}
                     onChange={setBody}
                     placeholder="Tell fellow travelers about your experience…"
+                    highlighted
                   />
                 </div>
 
@@ -386,49 +460,132 @@ export default function WriteReviewButton({
                         )}
                       </div>
                       <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-light-grey px-3 py-2 font-body text-b4-desktop text-dark-gray hover:bg-light-grey">
-                        <Upload className="size-4" />
+                        {busy === "avatar" ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <ImagePlus className="size-4" />
+                        )}
                         {busy === "avatar" ? "Uploading…" : avatar ? "Change" : "Upload"}
                         <input type="file" accept="image/*" className="hidden" onChange={handleAvatar} />
                       </label>
                     </div>
                   </div>
 
-                  {/* Photos */}
+                  {/* Video */}
                   <div>
                     <span className={labelCls}>
-                      Trip photos <span className="font-normal text-grey">(up to {MAX_PHOTOS})</span>
+                      Tour video <span className="font-normal text-grey">(optional)</span>
                     </span>
-                    <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-light-grey px-3 py-2 font-body text-b4-desktop text-dark-gray hover:bg-light-grey">
-                      <ImagePlus className="size-4" />
-                      {busy === "photos" ? "Uploading…" : "Add photos"}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        onChange={handlePhotos}
-                        disabled={photos.length >= MAX_PHOTOS}
-                      />
-                    </label>
-                    {photos.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {photos.map((src, i) => (
-                          <div key={src} className="relative size-14 overflow-hidden rounded-sm bg-light-grey">
+                    <div className="w-24">
+                      {videoUrl ? (
+                        <div className="group relative aspect-square overflow-hidden rounded-md bg-midnight">
+                          <video
+                            src={videoUrl}
+                            muted
+                            loop
+                            autoPlay
+                            playsInline
+                            className="size-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            aria-label="Remove video"
+                            onClick={() => setVideoUrl(null)}
+                            className="absolute right-1 top-1 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                          >
+                            <X className="size-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled={busy === "video"}
+                          onClick={() => videoInputRef.current?.click()}
+                          className="flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-grey/40 text-grey transition-colors hover:border-crimson-red hover:text-crimson-red"
+                        >
+                          {busy === "video" ? (
+                            <Loader2 className="size-5 animate-spin" />
+                          ) : (
+                            <>
+                              <VideoIcon className="size-5" />
+                              <span className="font-body text-b4-desktop">Add video</span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      ref={videoInputRef}
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={handleVideo}
+                    />
+                  </div>
+                </div>
+
+                {/* Photos */}
+                <div>
+                  <span className={labelCls}>
+                    Tour photos <span className="font-normal text-grey">(up to {MAX_PHOTOS})</span>
+                  </span>
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                    {Array.from({ length: MAX_PHOTOS }).map((_, i) => {
+                      const src = photos[i];
+                      if (src) {
+                        return (
+                          <div
+                            key={src}
+                            className="group relative aspect-square overflow-hidden rounded-md bg-light-grey"
+                          >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={src} alt="" className="size-full object-cover" />
                             <button
                               type="button"
                               aria-label="Remove photo"
                               onClick={() => setPhotos((p) => p.filter((_, j) => j !== i))}
-                              className="absolute right-0.5 top-0.5 rounded-full bg-midnight/70 p-0.5 text-white"
+                              className="absolute right-1 top-1 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                             >
-                              <X className="size-3" />
+                              <X className="size-3.5" />
                             </button>
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        );
+                      }
+                      const isNextSlot = i === photos.length;
+                      return (
+                        <button
+                          key={`empty-${i}`}
+                          type="button"
+                          disabled={!isNextSlot || busy === "photos"}
+                          onClick={() => photoInputRef.current?.click()}
+                          className={`flex aspect-square flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed transition-colors ${
+                            isNextSlot
+                              ? "border-grey/40 text-grey hover:border-crimson-red hover:text-crimson-red"
+                              : "cursor-default border-light-grey text-light-grey"
+                          }`}
+                        >
+                          {busy === "photos" && isNextSlot ? (
+                            <Loader2 className="size-5 animate-spin" />
+                          ) : (
+                            <>
+                              <ImagePlus className="size-5" />
+                              {isNextSlot && (
+                                <span className="font-body text-b4-desktop">Add photo</span>
+                              )}
+                            </>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
+                  <input
+                    ref={photoInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handlePhotos}
+                  />
                 </div>
 
                 {formError && (
@@ -438,7 +595,7 @@ export default function WriteReviewButton({
                 <button
                   type="submit"
                   disabled={submitting || !!busy}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white transition-colors hover:bg-light-red disabled:opacity-50"
+                  className={`w-full ${pillButtonCls}`}
                 >
                   {submitting && <Loader2 className="size-4 animate-spin" />}
                   {submitting ? "Posting…" : "Post review"}
@@ -453,13 +610,41 @@ export default function WriteReviewButton({
                 <p className="max-w-md font-body text-b2-desktop text-grey">
                   Your review has been posted. It may take a moment to appear on the page.
                 </p>
-                <button
-                  type="button"
-                  onClick={close}
-                  className="rounded-md bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white hover:bg-light-red"
-                >
+                <button type="button" onClick={close} className={pillButtonCls}>
                   Done
                 </button>
+              </div>
+            )}
+
+            {confirmClose && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-t-lg bg-midnight/40 p-6 md:rounded-lg">
+                <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xlarge">
+                  <h4 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                    Discard your review?
+                  </h4>
+                  <p className="mt-2 font-body text-b4-desktop text-grey">
+                    You have unsaved changes. If you leave now, your progress will be lost.
+                  </p>
+                  <div className="mt-5 flex justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setConfirmClose(false)}
+                      className="rounded-full px-4 py-2 font-body text-b4-desktop font-medium text-midnight transition-colors hover:bg-light-grey"
+                    >
+                      Keep editing
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setConfirmClose(false);
+                        close();
+                      }}
+                      className="rounded-full bg-crimson-red px-4 py-2 font-body text-b4-desktop font-medium text-white transition-colors hover:bg-light-red"
+                    >
+                      Discard
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

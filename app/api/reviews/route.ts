@@ -7,6 +7,7 @@ import {
   hasReviewForBooking,
 } from "@/lib/reviews-firestore";
 import { MAX_PHOTOS_PER_REVIEW } from "@/lib/review-upload";
+import type { ReviewVideo } from "@/types/review";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,7 @@ type Body = {
   reviewerLocation?: string;
   reviewerAvatar?: string;
   photos?: string[];
+  video?: string;
   website?: string; // honeypot — real users leave this empty
 };
 
@@ -107,6 +109,7 @@ export async function POST(request: Request) {
     ? body.photos.filter(isOwnImageUrl).slice(0, MAX_PHOTOS_PER_REVIEW)
     : [];
   const reviewerAvatar = isOwnImageUrl(body.reviewerAvatar) ? body.reviewerAvatar : undefined;
+  const videos: ReviewVideo[] = isOwnImageUrl(body.video) ? [{ src: body.video }] : [];
 
   try {
     const id = await createReview({
@@ -120,6 +123,7 @@ export async function POST(request: Request) {
       reviewerLocation: body.reviewerLocation?.trim().slice(0, MAX_LOCATION_CHARS) || undefined,
       reviewerAvatar,
       photos,
+      videos,
       bookingId: verification.booking.bookingId,
       bookingCode: verification.booking.bookingCode || undefined,
     });

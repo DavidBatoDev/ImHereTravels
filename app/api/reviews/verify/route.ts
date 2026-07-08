@@ -8,18 +8,20 @@ export const runtime = "nodejs";
  * POST /api/reviews/verify — check that a traveler holds an eligible booking
  * (Confirmed/Completed) for a tour before showing the review form.
  *
- * Body: { identifier: string (email or booking id/code), tourSlug: string }
- * Returns: { ok: true, firstName } | { ok: false, error }
+ * Body: { identifier: string (booking email address), tourSlug: string }
+ * Returns: { ok: true, firstName, nationality? } | { ok: false, error }
  *
- * Only the first name is returned (for form prefill). The booking is re-verified
- * server-side at submit time, so nothing here is trusted for the actual write.
+ * Only prefill data is returned here. The booking is re-verified server-side
+ * at submit time, so nothing here is trusted for the actual write.
  */
 
 type Body = { identifier?: string; tourSlug?: string };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const REASONS: Record<string, string> = {
   not_found:
-    "We couldn't find a booking with those details. Check your booking email or ID and try again.",
+    "We couldn't find a booking with that email address. Double-check it and try again.",
   not_confirmed:
     "That booking isn't confirmed yet. Only confirmed or completed travelers can leave a review.",
   wrong_tour:
@@ -38,7 +40,13 @@ export async function POST(request: Request) {
   const tourSlug = body.tourSlug?.trim() ?? "";
   if (!identifier || !tourSlug) {
     return NextResponse.json(
-      { ok: false, error: "Please enter your booking email or ID." },
+      { ok: false, error: "Please enter your booking email address." },
+      { status: 400 },
+    );
+  }
+  if (!EMAIL_REGEX.test(identifier)) {
+    return NextResponse.json(
+      { ok: false, error: "Please enter a valid email address." },
       { status: 400 },
     );
   }
@@ -60,5 +68,9 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, firstName: result.booking.firstName });
+  return NextResponse.json({
+    ok: true,
+    firstName: result.booking.firstName,
+    nationality: result.booking.nationality,
+  });
 }

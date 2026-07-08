@@ -79,7 +79,13 @@ export default function ReviewModal({
         >
           <X className="size-5" />
         </button>
-        {children}
+        {/* Capped + self-scrolling so a long review + photo grid can never grow
+            taller than the viewport (the outer overlay's own scroll wasn't
+            enough — its background is fine at any height, but the panel
+            itself was overflowing off the bottom on short mobile viewports,
+            exposing the page behind it). Close button stays outside this box
+            so it's always visible, not scrolled away with the content. */}
+        <div className="no-scrollbar max-h-[85vh] overflow-y-auto rounded-lg">{children}</div>
       </div>
     </div>,
     document.body,

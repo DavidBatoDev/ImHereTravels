@@ -5,6 +5,7 @@ import Markdown from "@/app/components/global/Markdown";
 import ExpandableBody from "@/app/components/reviews/ExpandableBody";
 import Stars from "@/app/components/reviews/Stars";
 import ReviewPhotos from "@/app/components/reviews/ReviewPhotos";
+import { getTourRadarReviewsUrl } from "@/lib/tourradar-links";
 import type { PublicReview } from "@/types/review";
 
 function formatDate(review: PublicReview): string {
@@ -40,17 +41,30 @@ export default function ReviewCard({
       : review.source === "tourradar"
         ? "via TourRadar"
         : null;
+  const tourRadarUrl =
+    review.source === "tourradar" ? getTourRadarReviewsUrl(review.tourSlug) : undefined;
   const isModal = variant === "modal";
+
+  const sourceBadgeCls =
+    "whitespace-nowrap rounded-full bg-light-grey px-2.5 py-1 font-body text-b4-desktop text-dark-gray";
 
   const header = (
     <div className="flex items-center justify-between gap-3">
       <Stars count={review.rating} />
       <div className="flex items-center gap-2">
-        {sourceLabel && (
-          <span className="whitespace-nowrap rounded-full bg-light-grey px-2.5 py-1 font-body text-b4-desktop text-dark-gray">
-            {sourceLabel}
-          </span>
-        )}
+        {sourceLabel &&
+          (tourRadarUrl ? (
+            <a
+              href={tourRadarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${sourceBadgeCls} transition-colors hover:bg-light-grey/70 hover:text-crimson-red`}
+            >
+              {sourceLabel}
+            </a>
+          ) : (
+            <span className={sourceBadgeCls}>{sourceLabel}</span>
+          ))}
         {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
       </div>
     </div>
@@ -147,7 +161,7 @@ export default function ReviewCard({
   }
 
   return (
-    <li className="flex flex-col gap-5 rounded-lg bg-white p-8 shadow-small md:p-10">
+    <li className="flex flex-col gap-5 rounded-lg bg-white p-8 shadow-small transition-all duration-200 hover:-translate-y-0.5 hover:shadow-medium md:p-10">
       {header}
       {title}
       <ExpandableBody modal={<ReviewCard review={review} showTour={showTour} variant="modal" />}>
