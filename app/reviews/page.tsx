@@ -1,38 +1,20 @@
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ReviewCard from "@/app/components/reviews/ReviewCard";
+import RatingBreakdown from "@/app/components/reviews/RatingBreakdown";
+import ReviewInsights from "@/app/components/reviews/ReviewInsights";
+import CategoryRatings from "@/app/components/reviews/CategoryRatings";
 import ReviewsFilterBar from "@/app/components/reviews/ReviewsFilterBar";
 import {
   SORT_OPTIONS,
+  sortReviews,
   type SortValue,
   type TourOption,
 } from "@/app/components/reviews/reviews-filter";
 import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
-import { getAllPublishedReviews } from "@/lib/reviews-firestore";
+import { getAllPublishedReviews, computeCategoryAggregates } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
 import type { PublicReview } from "@/types/review";
-
-const hasMedia = (r: PublicReview) =>
-  (r.photos?.length ?? 0) + (r.videos?.length ?? 0) > 0;
-
-/** Sort a review list per the selected sort option (input is newest-first). */
-function sortReviews(list: PublicReview[], sort: SortValue): PublicReview[] {
-  const copy = [...list];
-  switch (sort) {
-    case "oldest":
-      return copy.sort((a, b) => a.createdAt - b.createdAt);
-    case "media":
-      return copy.sort(
-        (a, b) => Number(hasMedia(b)) - Number(hasMedia(a)) || b.createdAt - a.createdAt,
-      );
-    case "longest":
-      return copy.sort(
-        (a, b) => (b.bodyMarkdown?.length ?? 0) - (a.bodyMarkdown?.length ?? 0),
-      );
-    default:
-      return copy.sort((a, b) => b.createdAt - a.createdAt);
-  }
-}
 
 // Company-level TourRadar "Operator Reviews" widget (from the Widget Center).
 // Set to the iframe src URL (or full embed snippet) to show it on the hub.
@@ -137,15 +119,11 @@ export default async function ReviewsHubPage({
           </p>
 
           {stats.count > 0 && (
-            <p className="mt-4 flex items-center gap-2 font-body text-b2-desktop text-midnight">
-              <span className="font-bold">{stats.average.toFixed(1)}</span>
-              <span aria-hidden className="text-crimson-red">
-                ★
-              </span>
-              <span className="text-grey">
-                · {stats.count} review{stats.count === 1 ? "" : "s"}
-              </span>
-            </p>
+            <div className="mt-6 max-w-2xl rounded-lg bg-white p-6 shadow-small md:p-8">
+              <RatingBreakdown reviews={filtered} />
+              <ReviewInsights reviews={filtered} showHighlights={false} />
+              <CategoryRatings categories={computeCategoryAggregates(filtered)} />
+            </div>
           )}
 
           {tours.length > 1 && (
@@ -172,7 +150,7 @@ export default async function ReviewsHubPage({
               </Link>
             </div>
           ) : (
-            <ul className="mt-10 grid grid-cols-1 gap-6 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-10 columns-1 gap-6 md:mt-12 md:columns-2 lg:columns-3 [&>li]:mb-6 [&>li]:break-inside-avoid">
               {reviews.map((review) => (
                 <ReviewCard key={review.id} review={review} showTour />
               ))}

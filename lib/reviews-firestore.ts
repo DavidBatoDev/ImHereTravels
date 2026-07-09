@@ -16,8 +16,14 @@
 import { cache } from "react";
 import { Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase-admin";
-import { isExternalSource } from "@/types/review";
-import type { PublicReview, ReviewAggregate, ReviewVideo } from "@/types/review";
+import { isExternalSource, REVIEW_CATEGORIES } from "@/types/review";
+import type {
+  CategoryAggregate,
+  CategoryRatings,
+  PublicReview,
+  ReviewAggregate,
+  ReviewVideo,
+} from "@/types/review";
 
 const REVIEWS_COLLECTION = "tourReviews";
 const HUB_SCAN_LIMIT = 500;
@@ -31,6 +37,18 @@ function toMillis(v: unknown): number {
   return typeof v === "number" ? v : 0;
 }
 
+/** Keep only known category keys with a 1–5 numeric value; undefined if none. */
+function toCategoryRatings(raw: unknown): CategoryRatings | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const out: CategoryRatings = {};
+  for (const { key } of REVIEW_CATEGORIES) {
+    const v = (raw as Record<string, unknown>)[key];
+    const n = typeof v === "number" ? v : Number(v);
+    if (Number.isFinite(n) && n >= 1 && n <= 5) out[key] = Math.round(n);
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
 /** Project a raw Firestore review doc to the client-safe shape. */
 function toPublicReview(id: string, raw: RawDoc): PublicReview {
   return {
@@ -38,10 +56,12 @@ function toPublicReview(id: string, raw: RawDoc): PublicReview {
     tourSlug: raw.tourSlug ?? "",
     tourName: raw.tourName ?? "",
     rating: typeof raw.rating === "number" ? raw.rating : Number(raw.rating) || 5,
+    categoryRatings: toCategoryRatings(raw.categoryRatings),
     title: raw.title || undefined,
     bodyMarkdown: raw.bodyMarkdown ?? raw.body ?? "",
     reviewerFirstName: raw.reviewerFirstName ?? "",
     reviewerLocation: raw.reviewerLocation || undefined,
+    reviewerCountryEmoji: raw.reviewerCountryEmoji || undefined,
     reviewerAvatar: raw.reviewerAvatar || undefined,
     photos: Array.isArray(raw.photos) && raw.photos.length ? raw.photos : undefined,
     videos: Array.isArray(raw.videos) && raw.videos.length ? raw.videos : undefined,
@@ -82,6 +102,34 @@ export function computeReviewAggregate(reviews: PublicReview[]): ReviewAggregate
 }
 
 /**
+ * Per-category averages across a set of reviews. Only reviews that actually
+ * carry a score for a category count toward it; categories with no data are
+ * dropped. External reviews never have `categoryRatings`, so they fall out
+ * naturally (no source filter needed).
+ */
+export function computeCategoryAggregates(
+  reviews: PublicReview[],
+): CategoryAggregate[] {
+  return REVIEW_CATEGORIES.map(({ key, label }) => {
+    let sum = 0;
+    let count = 0;
+    for (const r of reviews) {
+      const v = r.categoryRatings?.[key];
+      if (typeof v === "number") {
+        sum += v;
+        count += 1;
+      }
+    }
+    return {
+      key,
+      label,
+      average: count ? Math.round((sum / count) * 10) / 10 : 0,
+      count,
+    };
+  }).filter((c) => c.count > 0);
+}
+
+/**
  * Aggregate rating (avg + count) for a tour, from its published reviews.
  *
  * First-party only: federated (Google / TourRadar) reviews still render as cards
@@ -118,6 +166,7 @@ export interface CreateReviewInput {
   tourSlug: string;
   tourName: string;
   rating: number;
+  categoryRatings?: CategoryRatings;
   title?: string;
   bodyMarkdown: string;
   reviewerFirstName: string;
@@ -161,6 +210,8 @@ export async function createReview(input: CreateReviewInput): Promise<string> {
     createdAt: now,
     updatedAt: now,
   };
+  if (input.categoryRatings && Object.keys(input.categoryRatings).length)
+    doc.categoryRatings = input.categoryRatings;
   if (input.title) doc.title = input.title;
   if (input.reviewerLocation) doc.reviewerLocation = input.reviewerLocation;
   if (input.reviewerAvatar) doc.reviewerAvatar = input.reviewerAvatar;

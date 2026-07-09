@@ -1,6 +1,10 @@
 import ReviewCard from "@/app/components/reviews/ReviewCard";
 import TourReviewsSection from "@/app/components/reviews/TourReviewsSection";
+import RatingBreakdown from "@/app/components/reviews/RatingBreakdown";
+import ReviewInsights from "@/app/components/reviews/ReviewInsights";
+import CategoryRatings from "@/app/components/reviews/CategoryRatings";
 import { buildKeywordChips, matchThemes } from "@/app/components/reviews/review-keywords";
+import { computeCategoryAggregates } from "@/lib/reviews-firestore";
 import WriteReviewButton from "./WriteReviewButton";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
 
@@ -54,12 +58,11 @@ const PLACEHOLDERS: PublicReview[] = [
 
 export default function Testimonials({
   reviews,
-  aggregate,
   tourSlug,
   tourName,
 }: {
   reviews?: PublicReview[];
-  aggregate?: ReviewAggregate;
+  aggregate?: ReviewAggregate; // still passed by the tour page; display now uses RatingBreakdown
   tourSlug: string;
   tourName: string;
 }) {
@@ -73,31 +76,36 @@ export default function Testimonials({
     ? reviews!.map((review) => ({
         id: review.id,
         themeKeys: matchThemes(review),
+        // Sort fields (satisfy ReviewSortFields) so the client section can sort
+        // with the same sorter the hub uses.
+        createdAt: review.createdAt,
+        photos: review.photos,
+        videos: review.videos,
+        bodyMarkdown: review.bodyMarkdown,
+        // Lowercased haystack for in-section search.
+        searchText: `${review.title ?? ""} ${review.bodyMarkdown ?? ""} ${
+          review.reviewerFirstName
+        } ${review.reviewerLocation ?? ""}`.toLowerCase(),
         node: <ReviewCard review={review} />,
       }))
     : [];
 
   return (
     <section id="reviews" className="mx-auto w-full max-w-7xl scroll-mt-24 px-4 py-10 md:px-8 md:py-14">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
-            {HEADING}
-          </h2>
-          {hasReal && aggregate && aggregate.count > 0 && (
-            <p className="mt-2 flex items-center gap-2 font-body text-b2-desktop text-midnight">
-              <span className="font-bold">{aggregate.average.toFixed(1)}</span>
-              <span aria-hidden className="text-crimson-red">
-                ★
-              </span>
-              <span className="text-grey">
-                · {aggregate.count} verified review{aggregate.count === 1 ? "" : "s"}
-              </span>
-            </p>
-          )}
-        </div>
+      <div className="flex items-start justify-between gap-4">
+        <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+          {HEADING}
+        </h2>
         <WriteReviewButton tourSlug={tourSlug} tourName={tourName} />
       </div>
+
+      {hasReal && (
+        <div className="mt-6 max-w-2xl rounded-lg bg-white p-6 shadow-small md:p-8">
+          <RatingBreakdown reviews={reviews!} />
+          <ReviewInsights reviews={reviews!} />
+          <CategoryRatings categories={computeCategoryAggregates(reviews!)} />
+        </div>
+      )}
 
       {hasReal ? (
         <TourReviewsSection
@@ -107,7 +115,7 @@ export default function Testimonials({
         />
       ) : (
         // No real reviews yet — show the generic placeholder testimonials.
-        <ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 columns-1 gap-6 md:columns-2 lg:columns-3 [&>li]:mb-6 [&>li]:break-inside-avoid">
           {PLACEHOLDERS.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}

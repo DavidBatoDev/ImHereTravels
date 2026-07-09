@@ -5,15 +5,18 @@ import Markdown from "@/app/components/global/Markdown";
 import ExpandableBody from "@/app/components/reviews/ExpandableBody";
 import Stars from "@/app/components/reviews/Stars";
 import ReviewPhotos from "@/app/components/reviews/ReviewPhotos";
+import ReactCountryFlag from "react-country-flag";
 import { getTourRadarReviewsUrl } from "@/lib/tourradar-links";
+import { isoForLocation, isoFromFlagEmoji } from "@/lib/country-flags";
 import type { PublicReview } from "@/types/review";
 
 function formatDate(review: PublicReview): string {
   if (review.displayDate) return review.displayDate;
   if (!review.createdAt) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
+  // "MMMM dd, yyyy" → e.g. "July 09, 2026".
+  return new Intl.DateTimeFormat("en-US", {
     month: "long",
+    day: "2-digit",
     year: "numeric",
   }).format(new Date(review.createdAt));
 }
@@ -44,14 +47,19 @@ export default function ReviewCard({
   const tourRadarUrl =
     review.source === "tourradar" ? getTourRadarReviewsUrl(review.tourSlug) : undefined;
   const isModal = variant === "modal";
+  // Real SVG flag (emoji flags don't render on Windows). Prefer the source's flag
+  // (TourRadar countryEmoji → ISO), else derive from the free-text location.
+  const countryIso = review.reviewerCountryEmoji
+    ? isoFromFlagEmoji(review.reviewerCountryEmoji)
+    : isoForLocation(review.reviewerLocation);
 
   const sourceBadgeCls =
     "whitespace-nowrap rounded-full bg-light-grey px-2.5 py-1 font-body text-b4-desktop text-dark-gray";
 
   const header = (
-    <div className="flex items-center justify-between gap-3">
-      <Stars count={review.rating} />
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-1.5">
+      <div className="flex items-center justify-between gap-3">
+        <Stars count={review.rating} />
         {sourceLabel &&
           (tourRadarUrl ? (
             <a
@@ -65,8 +73,8 @@ export default function ReviewCard({
           ) : (
             <span className={sourceBadgeCls}>{sourceLabel}</span>
           ))}
-        {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
       </div>
+      {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
     </div>
   );
 
@@ -138,8 +146,19 @@ export default function ReviewCard({
             </span>
           )}
         </p>
-        {review.reviewerLocation && (
-          <p className="font-body text-b4-desktop text-vivid-orange">{review.reviewerLocation}</p>
+        {(countryIso || review.reviewerLocation) && (
+          <p className="flex items-center gap-1.5 font-body text-b4-desktop text-vivid-orange">
+            {countryIso && (
+              <ReactCountryFlag
+                countryCode={countryIso}
+                svg
+                title={review.reviewerLocation || countryIso}
+                style={{ width: "1.1em", height: "1.1em", borderRadius: "2px" }}
+                aria-hidden
+              />
+            )}
+            {review.reviewerLocation && <span className="truncate">{review.reviewerLocation}</span>}
+          </p>
         )}
       </div>
     </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Calendar, Route } from "lucide-react";
+import ReviewsLink from "./ReviewsLink";
 import type { Tour, TourPriceCategory } from "@/types/tour";
 
 const BADGE_STYLES: Record<
@@ -16,10 +17,14 @@ export default function BookingCard({
   booking,
   sticky = false,
   comingSoon = false,
+  reviewAverage = 0,
+  reviewCount = 0,
 }: {
   booking: Tour["booking"];
   sticky?: boolean;
   comingSoon?: boolean;
+  reviewAverage?: number;
+  reviewCount?: number;
 }) {
   const hasCategories =
     booking.priceCategories && booking.priceCategories.length > 0;
@@ -41,6 +46,11 @@ export default function BookingCard({
           <p className="mt-1 font-body text-b2-mobile md:text-b1 text-dark-gray">
             {booking.routeLabel}
           </p>
+        )}
+        {!comingSoon && reviewCount > 0 && (
+          <div className="mt-3">
+            <ReviewsLink average={reviewAverage} count={reviewCount} />
+          </div>
         )}
       </div>
 

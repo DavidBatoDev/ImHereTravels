@@ -360,12 +360,22 @@ export default async function TourDetailPage({ params }: { params: Params }) {
 
               <Reveal y={16} delay={60}>
                 <div className="mt-6 lg:hidden">
-                  <BookingCard booking={tour.booking} comingSoon={tour.comingSoon} />
+                  <BookingCard
+                    booking={tour.booking}
+                    comingSoon={tour.comingSoon}
+                    reviewAverage={displayAggregate.average}
+                    reviewCount={displayAggregate.count}
+                  />
                 </div>
               </Reveal>
             </div>
 
-            <BookingCardReveal booking={tour.booking} comingSoon={tour.comingSoon} />
+            <BookingCardReveal
+              booking={tour.booking}
+              comingSoon={tour.comingSoon}
+              reviewAverage={displayAggregate.average}
+              reviewCount={displayAggregate.count}
+            />
           </div>
         </div>
 

@@ -18,6 +18,30 @@ export function isExternalSource(source?: ReviewSource): boolean {
   return source === "google" || source === "tourradar";
 }
 
+/**
+ * Airbnb-style per-category ratings. Travelers optionally rate these in addition
+ * to the overall star; tours surface per-category averages. External (federated)
+ * reviews never carry them, so the category panel is gated on their presence.
+ */
+export const REVIEW_CATEGORIES = [
+  { key: "guide", label: "Tour Guide" },
+  { key: "experience", label: "Experience" },
+  { key: "value", label: "Value" },
+  { key: "food", label: "Food" },
+  { key: "accommodation", label: "Accommodation" },
+] as const;
+
+export type CategoryKey = (typeof REVIEW_CATEGORIES)[number]["key"];
+/** 1–5 per rated category; partial because each category is optional. */
+export type CategoryRatings = Partial<Record<CategoryKey, number>>;
+/** Per-category average across a tour's reviews (only categories with data). */
+export interface CategoryAggregate {
+  key: CategoryKey;
+  label: string;
+  average: number; // rounded to one decimal
+  count: number;
+}
+
 /** A traveler-uploaded review video (played inline; `poster` is a still frame). */
 export interface ReviewVideo {
   src: string; // mp4 URL
@@ -40,12 +64,14 @@ export interface ReviewDoc {
   tourName: string; // denormalized display name
 
   rating: number; // 1–5
+  categoryRatings?: CategoryRatings; // optional per-category stars (first-party only)
   title?: string; // optional headline
   bodyMarkdown: string; // WYSIWYG output (markdown source)
 
   reviewerFirstName: string;
   reviewerLastName?: string; // usually withheld publicly
   reviewerLocation?: string;
+  reviewerCountryEmoji?: string; // nationality flag (e.g. from TourRadar countryEmoji)
   reviewerAvatar?: string; // uploaded photo URL; empty → initial-avatar fallback
   photos?: string[]; // uploaded trip-photo URLs
   videos?: ReviewVideo[]; // uploaded trip videos (e.g. TourRadar "moments")
@@ -79,10 +105,12 @@ export interface PublicReview {
   tourSlug: string;
   tourName: string;
   rating: number;
+  categoryRatings?: CategoryRatings;
   title?: string;
   bodyMarkdown: string;
   reviewerFirstName: string;
   reviewerLocation?: string;
+  reviewerCountryEmoji?: string; // nationality flag, when known
   reviewerAvatar?: string;
   photos?: string[];
   videos?: ReviewVideo[];

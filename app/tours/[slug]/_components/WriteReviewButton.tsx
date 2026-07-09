@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import MarkdownEditor from "@/app/components/global/MarkdownEditor";
 import NationalitySelect from "@/app/components/reviews/NationalitySelect";
+import { REVIEW_CATEGORIES } from "@/types/review";
+import type { CategoryRatings } from "@/types/review";
 
 const MAX_PHOTOS = 6;
 
@@ -93,6 +95,7 @@ export default function WriteReviewButton({
 
   // Form
   const [rating, setRating] = useState(0);
+  const [categoryRatings, setCategoryRatings] = useState<CategoryRatings>({});
   const [firstName, setFirstName] = useState("");
   const [nationality, setNationality] = useState("");
   const [title, setTitle] = useState("");
@@ -123,6 +126,7 @@ export default function WriteReviewButton({
     setVerifyError(null);
     setConfirmClose(false);
     setRating(0);
+    setCategoryRatings({});
     setFirstName("");
     setNationality("");
     setTitle("");
@@ -253,6 +257,7 @@ export default function WriteReviewButton({
           identifier,
           tourSlug,
           rating,
+          categoryRatings,
           title: title.trim() || undefined,
           bodyMarkdown: body.trim(),
           reviewerFirstName: firstName.trim(),
@@ -373,6 +378,33 @@ export default function WriteReviewButton({
                 <div>
                   <span className={labelCls}>Your rating</span>
                   <StarInput value={rating} onChange={setRating} />
+                </div>
+
+                <div>
+                  <span className={labelCls}>
+                    Rate by category{" "}
+                    <span className="font-body text-b4-desktop font-normal text-grey">
+                      (optional)
+                    </span>
+                  </span>
+                  <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                    {REVIEW_CATEGORIES.map((cat) => (
+                      <div
+                        key={cat.key}
+                        className="flex items-center justify-between gap-3"
+                      >
+                        <span className="font-body text-b2-desktop text-midnight">
+                          {cat.label}
+                        </span>
+                        <StarInput
+                          value={categoryRatings[cat.key] ?? 0}
+                          onChange={(n) =>
+                            setCategoryRatings((prev) => ({ ...prev, [cat.key]: n }))
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">

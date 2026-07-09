@@ -7,7 +7,8 @@ import {
   hasReviewForBooking,
 } from "@/lib/reviews-firestore";
 import { MAX_PHOTOS_PER_REVIEW } from "@/lib/review-upload";
-import type { ReviewVideo } from "@/types/review";
+import { REVIEW_CATEGORIES } from "@/types/review";
+import type { CategoryRatings, ReviewVideo } from "@/types/review";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,7 @@ type Body = {
   identifier?: string;
   tourSlug?: string;
   rating?: number;
+  categoryRatings?: Record<string, unknown>;
   title?: string;
   bodyMarkdown?: string;
   reviewerFirstName?: string;
@@ -32,6 +34,17 @@ type Body = {
   video?: string;
   website?: string; // honeypot — real users leave this empty
 };
+
+/** Keep only known category keys with an integer 1–5; undefined if none valid. */
+function sanitizeCategoryRatings(raw: unknown): CategoryRatings | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const out: CategoryRatings = {};
+  for (const { key } of REVIEW_CATEGORIES) {
+    const n = Number((raw as Record<string, unknown>)[key]);
+    if (Number.isFinite(n) && n >= 1 && n <= 5) out[key] = Math.round(n);
+  }
+  return Object.keys(out).length ? out : undefined;
+}
 
 function isOwnImageUrl(url: unknown): url is string {
   if (typeof url !== "string" || !url) return false;
@@ -117,6 +130,7 @@ export async function POST(request: Request) {
       tourSlug: tour.slug,
       tourName: tour.name,
       rating: Math.round(rating),
+      categoryRatings: sanitizeCategoryRatings(body.categoryRatings),
       title: body.title?.trim().slice(0, MAX_TITLE_CHARS) || undefined,
       bodyMarkdown,
       reviewerFirstName,

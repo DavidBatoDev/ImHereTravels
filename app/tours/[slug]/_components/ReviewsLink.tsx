@@ -23,11 +23,15 @@ export default function ReviewsLink({
     if (found) e.preventDefault();
   }
 
+  const label =
+    count > 0 ? `${average.toFixed(1)} stars, ${count} reviews` : "Read reviews";
+
   return (
     <a
       href="#reviews"
       onClick={handleClick}
-      className="inline-flex items-center gap-1.5 font-body text-b4-desktop text-midnight underline underline-offset-2 transition-colors hover:text-crimson-red"
+      aria-label={label}
+      className="group inline-flex items-center gap-2 rounded-full border border-light-grey bg-white px-3.5 py-1.5 font-body text-b4-desktop text-midnight shadow-small transition-all hover:border-crimson-red hover:shadow-medium"
     >
       {count > 0 ? (
         <>
@@ -35,12 +39,17 @@ export default function ReviewsLink({
             ★
           </span>
           <span className="font-bold">{average.toFixed(1)}</span>
-          <span>
-            · {count} review{count === 1 ? "" : "s"}
+          <span aria-hidden className="text-light-grey">
+            |
+          </span>
+          <span className="text-dark-gray underline underline-offset-2 group-hover:text-crimson-red">
+            {count} review{count === 1 ? "" : "s"}
           </span>
         </>
       ) : (
-        "Read reviews"
+        <span className="underline underline-offset-2 group-hover:text-crimson-red">
+          Read reviews
+        </span>
       )}
     </a>
   );

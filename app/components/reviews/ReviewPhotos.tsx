@@ -44,6 +44,10 @@ export default function ReviewPhotos({
   ];
   const [active, setActive] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+  // Featured video orientation (many uploads are phone-shot portrait): once the
+  // metadata loads we switch the preview box to a portrait shape instead of
+  // cropping the video into a short landscape band.
+  const [featuredPortrait, setFeaturedPortrait] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   useEffect(() => setMounted(true), []);
@@ -119,54 +123,92 @@ export default function ReviewPhotos({
     );
   };
 
-  // ── Card preview: featured (autoplaying) video + up to 3 photos + "+N" ──────
+  // ── Card preview: adaptive collage (video beside photos, or a photo grid) ────
+  const v0 = media[0];
+  const featuredVideo = (className: string, remaining: number) =>
+    v0.type === "video" ? (
+      <button
+        type="button"
+        onClick={() => setActive(0)}
+        aria-label={`Play video from ${authorAlt}`}
+        className={`group relative w-full overflow-hidden rounded-sm bg-midnight ${className}`}
+      >
+        <video
+          src={v0.src}
+          poster={v0.poster}
+          muted
+          loop
+          autoPlay
+          playsInline
+          preload="metadata"
+          onLoadedMetadata={(e) => {
+            const v = e.currentTarget;
+            if (v.videoWidth && v.videoHeight)
+              setFeaturedPortrait(v.videoHeight > v.videoWidth);
+          }}
+          className="size-full object-cover"
+        />
+        {remaining > 0 ? (
+          <span className="absolute inset-0 flex items-center justify-center bg-midnight/60 font-sans text-h6-desktop font-bold text-white">
+            +{remaining}
+          </span>
+        ) : (
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span className="flex size-9 items-center justify-center rounded-full bg-black/50 text-white">
+              <Play className="size-4 translate-x-px fill-current" />
+            </span>
+          </span>
+        )}
+      </button>
+    ) : null;
+
   let gallery: React.ReactNode;
   if (preview) {
-    const hasVideo = videos.length > 0; // media[0] is the featured video
-    const previewPhotoCount = Math.min(photos.length, PHOTO_PREVIEW);
-    const shown = (hasVideo ? 1 : 0) + previewPhotoCount;
-    const remaining = media.length - shown;
+    const hasVideo = videos.length > 0 && v0.type === "video";
 
-    gallery = (
-      <div className="flex flex-col gap-2">
-        {hasVideo && media[0].type === "video" && (
-          <button
-            type="button"
-            onClick={() => setActive(0)}
-            aria-label={`Play video from ${authorAlt}`}
-            className="relative h-44 w-full overflow-hidden rounded-sm bg-midnight"
-          >
-            <video
-              src={media[0].src}
-              poster={media[0].poster}
-              muted
-              loop
-              autoPlay
-              playsInline
-              preload="metadata"
-              className="size-full object-cover"
-            />
-            {previewPhotoCount === 0 && remaining > 0 && (
-              <span className="absolute inset-0 flex items-center justify-center bg-midnight/60 font-sans text-h6-desktop font-bold text-white">
-                +{remaining}
-              </span>
-            )}
-          </button>
-        )}
-        {previewPhotoCount > 0 && (
+    if (hasVideo && photos.length > 0) {
+      // Collage: photos on the LEFT, video on the RIGHT — fills the card width and
+      // gives portrait videos a proper tall slot instead of a cropped band.
+      const leftPhotos = photos.slice(0, 2);
+      const remaining = media.length - (1 + leftPhotos.length);
+      gallery = (
+        <div className="grid h-64 grid-cols-2 gap-2">
+          <div className={`h-full ${leftPhotos.length === 2 ? "grid grid-rows-2 gap-2" : ""}`}>
+            {leftPhotos.map((_, pi) => (
+              <Tile
+                key={pi}
+                index={videos.length + pi}
+                className="size-full"
+                overflow={pi === leftPhotos.length - 1 ? remaining : 0}
+              />
+            ))}
+          </div>
+          {featuredVideo("h-full", 0)}
+        </div>
+      );
+    } else if (hasVideo) {
+      // Video only → orientation-aware single box (portrait no longer cropped).
+      gallery = featuredVideo(featuredPortrait ? "aspect-3/4" : "h-44", media.length - 1);
+    } else {
+      // Photos only.
+      const count = Math.min(photos.length, PHOTO_PREVIEW);
+      const remaining = media.length - count;
+      gallery =
+        photos.length === 1 ? (
+          <Tile index={0} className="h-56 w-full" />
+        ) : (
           <div className="grid grid-cols-3 gap-2">
             {photos.slice(0, PHOTO_PREVIEW).map((_, pi) => (
               <Tile
                 key={pi}
-                index={videos.length + pi}
+                index={pi}
                 className="aspect-square w-full"
-                overflow={pi === previewPhotoCount - 1 ? remaining : 0}
+                overflow={pi === count - 1 ? remaining : 0}
               />
             ))}
           </div>
-        )}
-      </div>
-    );
+        );
+    }
   } else {
     // Full grid (focus modal): show everything.
     gallery = (
