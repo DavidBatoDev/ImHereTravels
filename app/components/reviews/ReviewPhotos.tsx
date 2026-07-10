@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
+import useFocusTrap from "@/app/components/reviews/useFocusTrap";
 import type { ReviewVideo } from "@/types/review";
 
 type MediaItem =
@@ -49,6 +50,12 @@ export default function ReviewPhotos({
   // cropping the video into a short landscape band.
   const [featuredPortrait, setFeaturedPortrait] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+  const reduce = !!useReducedMotion();
+
+  // Trap focus inside the viewer while it's open; focus returns to the tile that
+  // opened it on close.
+  useFocusTrap({ active: active !== null, containerRef: viewerRef });
 
   useEffect(() => setMounted(true), []);
 
@@ -73,55 +80,23 @@ export default function ReviewPhotos({
   const go = (delta: number) =>
     setActive((i) => (i === null ? i : (i + delta + media.length) % media.length));
 
-  /** One clickable image tile (thumbnail or modal grid). `overflow` renders "+N". */
-  const Tile = ({
-    index,
-    className,
-    overflow = 0,
-  }: {
-    index: number;
-    className: string;
-    overflow?: number;
-  }) => {
-    const item = media[index];
-    const thumb = item.type === "video" ? item.poster : item.src;
-    return (
-      <button
-        type="button"
-        onClick={() => setActive(index)}
-        aria-label={
-          item.type === "video"
-            ? `Play video from ${authorAlt}`
-            : `View photo ${index + 1} from ${authorAlt}`
-        }
-        className={`relative overflow-hidden rounded-sm bg-light-grey ${className}`}
-      >
-        {thumb ? (
-          <ImageWithSkeleton
-            src={thumb}
-            alt={`Trip ${item.type} from ${authorAlt}`}
-            fill
-            sizes="120px"
-            className="object-cover"
-          />
-        ) : (
-          <span className="flex size-full items-center justify-center bg-midnight/80" />
-        )}
-        {item.type === "video" && overflow === 0 && (
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="flex size-7 items-center justify-center rounded-full bg-black/55 text-white">
-              <Play className="size-4 translate-x-px fill-current" />
-            </span>
-          </span>
-        )}
-        {overflow > 0 && (
-          <span className="absolute inset-0 flex items-center justify-center bg-midnight/60 font-sans text-h6-desktop font-bold text-white">
-            +{overflow}
-          </span>
-        )}
-      </button>
-    );
-  };
+  /**
+   * One clickable tile. A plain render function (NOT an inline component) — as a
+   * component its identity would change every render, so React would unmount and
+   * remount every tile on each state change, detaching the node the focus trap
+   * needs to restore focus to (and re-triggering the image skeletons).
+   */
+  const tile = (index: number, className: string, overflow = 0) => (
+    <MediaTile
+      key={index}
+      item={media[index]}
+      index={index}
+      authorAlt={authorAlt}
+      onOpen={setActive}
+      className={className}
+      overflow={overflow}
+    />
+  );
 
   // ── Card preview: adaptive collage (video beside photos, or a photo grid) ────
   const v0 = media[0];
@@ -174,14 +149,13 @@ export default function ReviewPhotos({
       gallery = (
         <div className="grid h-64 grid-cols-2 gap-2">
           <div className={`h-full ${leftPhotos.length === 2 ? "grid grid-rows-2 gap-2" : ""}`}>
-            {leftPhotos.map((_, pi) => (
-              <Tile
-                key={pi}
-                index={videos.length + pi}
-                className="size-full"
-                overflow={pi === leftPhotos.length - 1 ? remaining : 0}
-              />
-            ))}
+            {leftPhotos.map((_, pi) =>
+              tile(
+                videos.length + pi,
+                "size-full",
+                pi === leftPhotos.length - 1 ? remaining : 0,
+              ),
+            )}
           </div>
           {featuredVideo("h-full", 0)}
         </div>
@@ -195,17 +169,14 @@ export default function ReviewPhotos({
       const remaining = media.length - count;
       gallery =
         photos.length === 1 ? (
-          <Tile index={0} className="h-56 w-full" />
+          tile(0, "h-56 w-full")
         ) : (
           <div className="grid grid-cols-3 gap-2">
-            {photos.slice(0, PHOTO_PREVIEW).map((_, pi) => (
-              <Tile
-                key={pi}
-                index={pi}
-                className="aspect-square w-full"
-                overflow={pi === count - 1 ? remaining : 0}
-              />
-            ))}
+            {photos
+              .slice(0, PHOTO_PREVIEW)
+              .map((_, pi) =>
+                tile(pi, "aspect-square w-full", pi === count - 1 ? remaining : 0),
+              )}
           </div>
         );
     }
@@ -213,9 +184,7 @@ export default function ReviewPhotos({
     // Full grid (focus modal): show everything.
     gallery = (
       <div className="flex flex-wrap gap-2">
-        {media.map((_, i) => (
-          <Tile key={i} index={i} className="size-16 md:size-20" />
-        ))}
+        {media.map((_, i) => tile(i, "size-16 md:size-20"))}
       </div>
     );
   }
@@ -229,10 +198,14 @@ export default function ReviewPhotos({
             {current && (
               <motion.div
                 key="review-media-viewer"
-                initial={{ opacity: 0 }}
+                ref={viewerRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label={`Trip media from ${authorAlt}`}
+                initial={reduce ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                exit={reduce ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: reduce ? 0 : 0.2, ease: "easeOut" }}
                 className="fixed inset-0 z-50 flex items-center justify-center bg-midnight/80 p-4"
                 onClick={() => setActive(null)}
                 onTouchStart={(e) => {
@@ -285,10 +258,10 @@ export default function ReviewPhotos({
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={active}
-                    initial={{ opacity: 0, scale: 0.96 }}
+                    initial={reduce ? false : { opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                    exit={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.96 }}
+                    transition={{ duration: reduce ? 0 : 0.18, ease: [0.22, 1, 0.36, 1] }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     {current.type === "video" ? (
@@ -316,5 +289,65 @@ export default function ReviewPhotos({
           document.body,
         )}
     </>
+  );
+}
+
+/**
+ * One clickable media tile. Lives at module scope so its component identity is
+ * stable across `ReviewPhotos` renders — otherwise every state change would
+ * remount the tiles, flashing the image skeletons and detaching the node the
+ * lightbox's focus trap restores focus to.
+ */
+function MediaTile({
+  item,
+  index,
+  authorAlt,
+  onOpen,
+  className,
+  overflow = 0,
+}: {
+  item: MediaItem;
+  index: number;
+  authorAlt: string;
+  onOpen: (index: number) => void;
+  className: string;
+  overflow?: number;
+}) {
+  const thumb = item.type === "video" ? item.poster : item.src;
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(index)}
+      aria-label={
+        item.type === "video"
+          ? `Play video from ${authorAlt}`
+          : `View photo ${index + 1} from ${authorAlt}`
+      }
+      className={`relative overflow-hidden rounded-sm bg-light-grey ${className}`}
+    >
+      {thumb ? (
+        <ImageWithSkeleton
+          src={thumb}
+          alt={`Trip ${item.type} from ${authorAlt}`}
+          fill
+          sizes="120px"
+          className="object-cover"
+        />
+      ) : (
+        <span className="flex size-full items-center justify-center bg-midnight/80" />
+      )}
+      {item.type === "video" && overflow === 0 && (
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span className="flex size-7 items-center justify-center rounded-full bg-black/55 text-white">
+            <Play className="size-4 translate-x-px fill-current" />
+          </span>
+        </span>
+      )}
+      {overflow > 0 && (
+        <span className="absolute inset-0 flex items-center justify-center bg-midnight/60 font-sans text-h6-desktop font-bold text-white">
+          +{overflow}
+        </span>
+      )}
+    </button>
   );
 }

@@ -3,30 +3,53 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Check, ChevronDown, Search } from "lucide-react";
+import SearchInput from "@/app/components/reviews/SearchInput";
+import useListboxNav from "@/app/components/reviews/useListboxNav";
 import {
   DEFAULT_SORT,
+  DEFAULT_SOURCE,
   SORT_OPTIONS,
+  SOURCE_OPTIONS,
   type SortValue,
+  type SourceValue,
   type TourOption,
 } from "@/app/components/reviews/reviews-filter";
 
-/** Client filter bar for the reviews hub: tour selector + sort, URL-driven. */
+const SEARCH_DEBOUNCE_MS = 300;
+
+/**
+ * Client filter bar for the reviews hub: free-text search + tour selector + sort.
+ * All three are URL-driven (`?q=`, `?tour=`, `?sort=`) so a filtered view is
+ * shareable and the server does the filtering. Search is debounced so typing
+ * doesn't push a history entry per keystroke.
+ */
 export default function ReviewsFilterBar({
   tours,
   totalCount,
   activeTour,
   activeSort,
+  activeQuery = "",
+  activeSource = DEFAULT_SOURCE,
+  sourceCounts,
 }: {
   tours: TourOption[];
   totalCount: number;
   activeTour?: string;
   activeSort: SortValue;
+  activeQuery?: string;
+  activeSource?: SourceValue;
+  sourceCounts?: Record<SourceValue, number>;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const push = (next: { tour?: string | null; sort?: SortValue }) => {
+  const push = (next: {
+    tour?: string | null;
+    sort?: SortValue;
+    q?: string | null;
+    source?: SourceValue;
+  }) => {
     const params = new URLSearchParams(searchParams.toString());
     if (next.tour !== undefined) {
       if (next.tour) params.set("tour", next.tour);
@@ -36,48 +59,86 @@ export default function ReviewsFilterBar({
       if (next.sort && next.sort !== DEFAULT_SORT) params.set("sort", next.sort);
       else params.delete("sort");
     }
+    if (next.q !== undefined) {
+      if (next.q) params.set("q", next.q);
+      else params.delete("q");
+    }
+    if (next.source !== undefined) {
+      if (next.source && next.source !== DEFAULT_SOURCE) params.set("source", next.source);
+      else params.delete("source");
+    }
     const qs = params.toString();
     router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
+
+  // Local text state, pushed to the URL after a pause.
+  const [query, setQuery] = useState(activeQuery);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const next = query.trim();
+      if (next !== activeQuery) push({ q: next || null });
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, activeQuery]);
 
   const activeTourName = activeTour
     ? tours.find((t) => t.slug === activeTour)?.name ?? "Select tour"
     : `All tours (${totalCount})`;
   const activeSortLabel =
-    SORT_OPTIONS.find((s) => s.value === activeSort)?.label ?? "Most recent";
+    SORT_OPTIONS.find((s) => s.value === activeSort)?.label ?? SORT_OPTIONS[0].label;
+  const activeSourceLabel =
+    SOURCE_OPTIONS.find((s) => s.value === activeSource)?.label ?? SOURCE_OPTIONS[0].label;
+
+  // Hide the source menu when every review comes from one place — a filter that
+  // can only ever return "all" or "nothing" is noise.
+  const showSourceMenu =
+    !sourceCounts ||
+    SOURCE_OPTIONS.filter((o) => o.value !== "all" && sourceCounts[o.value] > 0).length > 1;
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-      <TourMenu
-        tours={tours}
-        totalCount={totalCount}
-        activeTour={activeTour}
-        label={activeTourName}
-        onSelect={(slug) => push({ tour: slug })}
-      />
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+      <SearchInput value={query} onChange={setQuery} className="w-full sm:max-w-xs" />
+      {tours.length > 1 && (
+        <TourMenu
+          tours={tours}
+          totalCount={totalCount}
+          activeTour={activeTour}
+          label={activeTourName}
+          onSelect={(slug) => push({ tour: slug })}
+        />
+      )}
+      {showSourceMenu && (
+        <SourceMenu
+          activeSource={activeSource}
+          label={activeSourceLabel}
+          counts={sourceCounts}
+          onSelect={(source) => push({ source })}
+        />
+      )}
       <SortMenu activeSort={activeSort} label={activeSortLabel} onSelect={(sort) => push({ sort })} />
     </div>
   );
 }
 
-/** Shared dropdown shell: button + popover, closes on outside click / Escape. */
+/**
+ * Shared dropdown shell: closes on outside click. Escape + focus restore + arrow
+ * navigation are owned by `useListboxNav` in each menu.
+ */
 function useDropdown() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
-  return { open, setOpen, ref };
+  return { open, setOpen, ref, triggerRef, listRef };
 }
 
 const triggerClass =
@@ -100,13 +161,24 @@ function TourMenu({
   label: string;
   onSelect: (slug: string | null) => void;
 }) {
-  const { open, setOpen, ref } = useDropdown();
+  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
   const [query, setQuery] = useState("");
+  const hasSearch = tours.length > 6;
   const filtered = tours.filter((t) => t.name.toLowerCase().includes(query.trim().toLowerCase()));
+
+  // When the panel has its own autofocused search box, don't steal that focus.
+  useListboxNav({
+    open,
+    listRef,
+    triggerRef,
+    onClose: () => setOpen(false),
+    autoFocus: !hasSearch,
+  });
 
   return (
     <div ref={ref} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -119,8 +191,8 @@ function TourMenu({
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className={panelClass} role="listbox">
-          {tours.length > 6 && (
+        <div ref={listRef} className={panelClass} role="listbox">
+          {hasSearch && (
             <div className="sticky top-0 mb-1 flex items-center gap-2 rounded-sm bg-white px-2 py-1.5">
               <Search className="size-4 text-grey" />
               <input
@@ -128,6 +200,7 @@ function TourMenu({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search tours…"
+                aria-label="Search tours"
                 className="w-full bg-transparent font-body text-b4-desktop text-midnight outline-none placeholder:text-grey"
               />
             </div>
@@ -162,6 +235,62 @@ function TourMenu({
   );
 }
 
+function SourceMenu({
+  activeSource,
+  label,
+  counts,
+  onSelect,
+}: {
+  activeSource: SourceValue;
+  label: string;
+  counts?: Record<SourceValue, number>;
+  onSelect: (source: SourceValue) => void;
+}) {
+  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
+  useListboxNav({ open, listRef, triggerRef, onClose: () => setOpen(false) });
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className={triggerClass}
+      >
+        <span className="truncate">
+          <span className="text-grey">Source:</span> {label}
+        </span>
+        <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div ref={listRef} className={panelClass} role="listbox">
+          {SOURCE_OPTIONS
+            // Drop sources with nothing behind them (e.g. Google before go-live);
+            // keep the current selection so it can always be read back.
+            .filter(
+              (s) =>
+                !counts || s.value === "all" || s.value === activeSource || counts[s.value] > 0,
+            )
+            .map((s) => (
+              <MenuItem
+                key={s.value}
+                label={s.label}
+                count={counts?.[s.value]}
+                selected={activeSource === s.value}
+                onClick={() => {
+                  onSelect(s.value);
+                  setOpen(false);
+                }}
+              />
+            ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SortMenu({
   activeSort,
   label,
@@ -171,10 +300,13 @@ function SortMenu({
   label: string;
   onSelect: (sort: SortValue) => void;
 }) {
-  const { open, setOpen, ref } = useDropdown();
+  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
+  useListboxNav({ open, listRef, triggerRef, onClose: () => setOpen(false) });
+
   return (
     <div ref={ref} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -187,7 +319,7 @@ function SortMenu({
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className={panelClass} role="listbox">
+        <div ref={listRef} className={panelClass} role="listbox">
           {SORT_OPTIONS.map((s) => (
             <MenuItem
               key={s.value}

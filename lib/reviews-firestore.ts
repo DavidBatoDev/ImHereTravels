@@ -69,6 +69,7 @@ function toPublicReview(id: string, raw: RawDoc): PublicReview {
     createdAt: toMillis(raw.createdAt),
     displayDate: raw.displayDate || undefined,
     source: raw.source ?? "user",
+    externalTourId: raw.externalTourId || undefined,
     externalReply: raw.externalReply || undefined,
   };
 }

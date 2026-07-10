@@ -249,6 +249,11 @@ html {
   --text-b2-mobile--line-height: 1.5;
   --text-b2-mobile--font-weight: 500;
 
+  /* B3 — DM Sans Medium (16px) */
+  --text-b3-desktop: 1rem;              /* 16px */
+  --text-b3-desktop--line-height: 1.5;
+  --text-b3-desktop--font-weight: 500;
+
   /* B4 — DM Sans Medium (desktop 14 / mobile 12) */
   --text-b4-desktop: 0.875rem;          /* 14px */
   --text-b4-desktop--line-height: 1.5;
@@ -339,6 +344,25 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .review-reveal-highlight :is(p, li) {
     animation: none;
+  }
+}
+
+/* ---------- Global reduced-motion safety net ---------- */
+/* The rules above opt specific effects out by class, but several animations are
+   applied as INLINE styles (e.g. the `marquee` carousel in WhyTravelCarousel),
+   which a normal rule can't override — hence `!important`. This also neutralises
+   every CSS transition (modal/lightbox fades, hover lifts) and makes anchor
+   scrolling instant. Note: the gallery-door overlays are driven by the Web
+   Animations API from JS, so they're unaffected here and are gated in their own
+   component instead. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

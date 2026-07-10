@@ -1,15 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
+import useFocusTrap from "@/app/components/reviews/useFocusTrap";
 
 const DURATION = 200; // ms — keep in sync with the transition duration below
 
 /**
- * Focus modal for a single review: dims the page, traps scroll, and closes on
- * backdrop click / Escape / the X button. Animates in and out, and compensates
- * for the removed scrollbar so the page doesn't shift when it opens.
+ * Focus modal for a single review: dims the page, traps scroll AND focus, and
+ * closes on backdrop click / Escape / the X button. Animates in and out (skipped
+ * under `prefers-reduced-motion`), compensates for the removed scrollbar so the
+ * page doesn't shift, and returns focus to whatever opened it.
  */
 export default function ReviewModal({
   children,
@@ -20,21 +23,33 @@ export default function ReviewModal({
 }) {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const reduce = !!useReducedMotion();
 
   useEffect(() => setMounted(true), []);
 
   // Trigger the enter transition on the frame after the first (hidden) paint.
   useEffect(() => {
     if (!mounted) return;
+    if (reduce) {
+      setVisible(true);
+      return;
+    }
     const id = requestAnimationFrame(() => setVisible(true));
     return () => cancelAnimationFrame(id);
-  }, [mounted]);
+  }, [mounted, reduce]);
 
   // Play the exit transition, then unmount.
   const requestClose = useCallback(() => {
+    if (reduce) {
+      onClose();
+      return;
+    }
     setVisible(false);
     window.setTimeout(onClose, DURATION);
-  }, [onClose]);
+  }, [onClose, reduce]);
+
+  useFocusTrap({ active: mounted, containerRef: panelRef });
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && requestClose();
@@ -58,15 +73,19 @@ export default function ReviewModal({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 transition-colors duration-200 ease-out md:items-center md:p-8 ${
-        visible ? "bg-midnight/70" : "bg-midnight/0"
-      }`}
+      className={`fixed inset-0 z-40 flex items-start justify-center overflow-y-auto p-4 md:items-center md:p-8 ${
+        reduce ? "" : "transition-colors duration-200 ease-out"
+      } ${visible ? "bg-midnight/70" : "bg-midnight/0"}`}
       onClick={requestClose}
       role="dialog"
       aria-modal="true"
+      aria-label="Review details"
     >
       <div
-        className={`relative my-auto w-full max-w-2xl transition duration-200 ease-out ${
+        ref={panelRef}
+        className={`relative my-auto w-full max-w-2xl ${
+          reduce ? "" : "transition duration-200 ease-out"
+        } ${
           visible ? "translate-y-0 scale-100 opacity-100" : "translate-y-3 scale-[0.98] opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}

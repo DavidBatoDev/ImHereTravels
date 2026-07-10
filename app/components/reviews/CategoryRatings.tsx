@@ -30,12 +30,22 @@ export default function CategoryRatings({
       {categories.map((c) => {
         const Icon = CATEGORY_ICON[c.key] ?? Star;
         return (
-          <div key={c.key} className="flex items-center justify-between gap-3">
-            <span className="flex items-center gap-2 font-body text-b3-desktop text-midnight">
+          // One clean string for screen readers ("Tour Guide: 4.8 out of 5"); the
+          // icon, stars and number are decorative duplicates of that label.
+          <div
+            key={c.key}
+            role="group"
+            aria-label={`${c.label}: ${c.average.toFixed(1)} out of 5`}
+            className="flex items-center justify-between gap-3"
+          >
+            <span
+              aria-hidden
+              className="flex items-center gap-2 font-body text-b3-desktop text-midnight"
+            >
               <Icon className="size-4 shrink-0 text-crimson-red" strokeWidth={2} />
               {c.label}
             </span>
-            <span className="flex items-center gap-2">
+            <span aria-hidden className="flex items-center gap-2">
               <Stars count={c.average} />
               <span className="w-7 text-right font-body text-b4-desktop font-medium text-midnight">
                 {c.average.toFixed(1)}

@@ -47,6 +47,8 @@ export default function ExpandableBody({
         <button
           type="button"
           onClick={() => setOpen(true)}
+          aria-expanded={open}
+          aria-haspopup="dialog"
           className="mt-2 font-body text-b4-desktop font-medium text-crimson-red underline underline-offset-2 hover:text-light-red"
         >
           Read more

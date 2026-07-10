@@ -2,7 +2,7 @@
  * Tour review types (shared shape for the `tourReviews` Firestore collection).
  *
  * Reviews were historically an embedded `details.reviews[]` array on each
- * `tourPackages` doc (see `TourReview` in ./tour.ts). They now live in their own
+ * `tourPackages` doc. That path was removed; they now live in their own
  * top-level `tourReviews` collection so we can support user submissions,
  * moderation/hide, verified-booking linkage, photos, and cross-tour aggregation.
  */
@@ -88,11 +88,18 @@ export interface ReviewDoc {
   // until an admin assigns a tour (or marks the review hub-only).
   externalId?: string; // dedup key = external review id / content hash
   externalSource?: "google" | "tourradar"; // provider discriminator
+  externalTourId?: string; // provider's tour id (TourRadar `/t/{id}`) — drives the outbound link
   externalUpdatedAt?: number; // epoch ms, Google updateTime — detects edits on re-sync
   externalReply?: string; // owner reply (reviewReply.comment), display-only
   reviewerFullName?: string; // Google displayName as-received (before first-name split)
   assigned?: boolean; // admin has triaged (assigned a tour OR marked hub-only)
   deletedOnGoogleAt?: number; // epoch ms — flagged when absent from a later sync
+  /**
+   * Epoch ms — set when a review disappeared from a later TourRadar scrape. A soft
+   * delete: the doc, its re-hosted media and its moderation state are all preserved,
+   * because an unattended scrape failure must never destroy real reviews.
+   */
+  deletedOnTourRadarAt?: number;
 
   createdAt: number; // epoch ms
   updatedAt: number; // epoch ms
@@ -118,6 +125,7 @@ export interface PublicReview {
   createdAt: number;
   displayDate?: string;
   source?: ReviewSource; // lets the card badge external reviews (e.g. "via Google")
+  externalTourId?: string; // provider tour id, for the "via TourRadar" outbound link
   externalReply?: string; // owner reply, shown as "Response from the owner"
 }
 

@@ -4,6 +4,7 @@ import RatingBreakdown from "@/app/components/reviews/RatingBreakdown";
 import ReviewInsights from "@/app/components/reviews/ReviewInsights";
 import CategoryRatings from "@/app/components/reviews/CategoryRatings";
 import { buildKeywordChips, matchThemes } from "@/app/components/reviews/review-keywords";
+import { reviewSearchText } from "@/app/components/reviews/reviews-filter";
 import { computeCategoryAggregates } from "@/lib/reviews-firestore";
 import WriteReviewButton from "./WriteReviewButton";
 import type { PublicReview, ReviewAggregate } from "@/types/review";
@@ -77,15 +78,14 @@ export default function Testimonials({
         id: review.id,
         themeKeys: matchThemes(review),
         // Sort fields (satisfy ReviewSortFields) so the client section can sort
-        // with the same sorter the hub uses.
+        // with the same sorter the hub uses — `verified` feeds "Most relevant".
         createdAt: review.createdAt,
+        verified: review.verified,
         photos: review.photos,
         videos: review.videos,
         bodyMarkdown: review.bodyMarkdown,
-        // Lowercased haystack for in-section search.
-        searchText: `${review.title ?? ""} ${review.bodyMarkdown ?? ""} ${
-          review.reviewerFirstName
-        } ${review.reviewerLocation ?? ""}`.toLowerCase(),
+        // Lowercased haystack for in-section search (same recipe as the hub).
+        searchText: reviewSearchText(review),
         node: <ReviewCard review={review} />,
       }))
     : [];

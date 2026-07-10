@@ -1,7 +1,9 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import { ChevronDown, Search, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import SearchInput from "@/app/components/reviews/SearchInput";
+import useListboxNav from "@/app/components/reviews/useListboxNav";
 import {
   DEFAULT_SORT,
   SORT_OPTIONS,
@@ -136,39 +138,6 @@ export default function TourReviewsSection({
   );
 }
 
-/** Search box that filters reviews within the section (no navigation). */
-function SearchInput({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div className="relative w-full sm:max-w-xs">
-      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-grey" />
-      <input
-        type="search"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search reviews"
-        aria-label="Search reviews"
-        className="w-full rounded-full border border-light-grey bg-white py-2 pl-9 pr-9 font-body text-b4-desktop text-midnight outline-none transition-colors placeholder:text-grey focus:border-crimson-red"
-      />
-      {value && (
-        <button
-          type="button"
-          aria-label="Clear search"
-          onClick={() => onChange("")}
-          className="absolute right-2 top-1/2 flex size-6 -translate-y-1/2 items-center justify-center rounded-full text-grey hover:bg-light-grey hover:text-midnight"
-        >
-          <X className="size-4" />
-        </button>
-      )}
-    </div>
-  );
-}
-
 function Chip({
   active,
   onClick,
@@ -204,26 +173,28 @@ function SortDropdown({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
+  // Escape + focus restore are owned by useListboxNav; this only closes on
+  // clicks outside the menu.
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDoc);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDoc);
-      document.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
+
+  useListboxNav({ open, listRef, triggerRef, onClose: () => setOpen(false) });
 
   const current = SORT_OPTIONS.find((o) => o.value === value) ?? SORT_OPTIONS[0];
 
   return (
     <div ref={ref} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -239,6 +210,7 @@ function SortDropdown({
 
       {open && (
         <ul
+          ref={listRef}
           role="listbox"
           className="absolute right-0 z-20 mt-2 min-w-52 overflow-hidden rounded-md bg-white py-1 shadow-medium ring-1 ring-black/5"
         >

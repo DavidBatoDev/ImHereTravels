@@ -32,10 +32,14 @@ export default function ReviewCard({
   review,
   showTour = false,
   variant = "grid",
+  as: Shell = "li",
 }: {
   review: PublicReview;
   showTour?: boolean;
   variant?: "grid" | "modal";
+  /** Grid-variant shell element. `li` for a plain <ul>; `div` when the caller
+   *  supplies its own list item (e.g. to wrap the card in extra chrome). */
+  as?: "li" | "div";
 }) {
   const date = formatDate(review);
   const sourceLabel =
@@ -45,7 +49,9 @@ export default function ReviewCard({
         ? "via TourRadar"
         : null;
   const tourRadarUrl =
-    review.source === "tourradar" ? getTourRadarReviewsUrl(review.tourSlug) : undefined;
+    review.source === "tourradar"
+      ? getTourRadarReviewsUrl(review.tourSlug, review.externalTourId)
+      : undefined;
   const isModal = variant === "modal";
   // Real SVG flag (emoji flags don't render on Windows). Prefer the source's flag
   // (TourRadar countryEmoji → ISO), else derive from the free-text location.
@@ -180,7 +186,7 @@ export default function ReviewCard({
   }
 
   return (
-    <li className="flex flex-col gap-5 rounded-lg bg-white p-8 shadow-small transition-all duration-200 hover:-translate-y-0.5 hover:shadow-medium md:p-10">
+    <Shell className="flex flex-col gap-5 rounded-lg bg-white p-8 shadow-small transition-all duration-200 hover:-translate-y-0.5 hover:shadow-medium md:p-10">
       {header}
       {title}
       <ExpandableBody modal={<ReviewCard review={review} showTour={showTour} variant="modal" />}>
@@ -190,6 +196,6 @@ export default function ReviewCard({
       {photos}
       {tourLink}
       {reviewer}
-    </li>
+    </Shell>
   );
 }

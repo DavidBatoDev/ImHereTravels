@@ -32,7 +32,6 @@ import type {
   TourFaq,
   TourThingToKnow,
   TourTip,
-  TourReview,
   TourRelated,
   TourBookingCard,
 } from "@/types/tour";
@@ -314,26 +313,6 @@ function toTour(raw: RawDoc): Tour {
     tips = { heading: "Tips", items: [] };
   }
 
-  // ── Reviews ───────────────────────────────────────────────────────────────
-  // Per-tour reviews (admin-edited). Blank rows are dropped (a review needs at
-  // least body + reviewer name). When none survive, `reviews` stays undefined
-  // and the tour page renders generic placeholder testimonials instead.
-  let reviews: Tour["reviews"];
-  if (Array.isArray(details.reviews) && details.reviews.length) {
-    const mapped = (details.reviews as RawDoc[])
-      .map((r): TourReview => ({
-        rating:
-          typeof r.rating === "number" ? r.rating : Number(r.rating) || 5,
-        date: r.date ?? "",
-        body: r.body ?? "",
-        reviewerName: r.reviewerName ?? "",
-        reviewerLocation: r.reviewerLocation ?? "",
-        reviewerAvatar: r.reviewerAvatar || undefined,
-      }))
-      .filter((r) => r.body.trim() && r.reviewerName.trim());
-    if (mapped.length) reviews = mapped;
-  }
-
   // ── Map ───────────────────────────────────────────────────────────────────
   let map: Tour["map"];
   if (details.map && (details.map.image || details.map.embedUrl)) {
@@ -422,7 +401,6 @@ function toTour(raw: RawDoc): Tour {
     faqs,
     thingsToKnow,
     tips,
-    reviews,
     tourRadarWidgetId: raw.tourRadarWidgetId || undefined,
     tourRadarWidgetUrl: raw.tourRadarWidgetUrl || undefined,
     booking,
