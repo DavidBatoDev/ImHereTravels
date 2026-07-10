@@ -241,10 +241,10 @@ function TeamSection() {
         </h2>
       </Reveal>
 
-      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {team.map((member, i) => (
-          <Reveal as="li" key={member.name} delay={i * 120}>
-            <div className="flex flex-col gap-6 rounded-lg bg-white p-8 md:p-10">
+          <Reveal as="li" key={member.name} delay={i * 120} className="h-full">
+            <div className="flex h-full flex-col gap-6 rounded-lg bg-white p-8 md:p-10">
               <div className="flex flex-col items-center gap-4">
                 <div className="relative size-35 shrink-0 overflow-hidden rounded-full md:size-45">
                   <ImageWithSkeleton

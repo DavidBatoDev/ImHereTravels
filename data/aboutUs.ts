@@ -66,10 +66,16 @@ export const team = [
     bio: "With over 8 years of experience in the finance industry with major companies. He brings a wealth of knowledge and business acumen to the company. He combines his financial expertise and passion for travel to create a unique and sustainable travel experience.",
   },
   {
-    name: "Kristoffer Lagura",
-    role: "Marketing Director",
-    image: "/about/kristoffer.jpg",
-    bio: "A role he has held since its inception, Kristoffer brings to the table a wealth of knowledge, ideas, and strategies. With over 8 years of experience in the hospitality and sales and marketing, he is all about creating a unique and memorable experience for all travellers.",
+    name: "Bella Milan",
+    role: "Partnerships & Communications",
+    image: "/about/bella.jpg",
+    bio: "A Tourism graduate with a passion for connecting people through travel, Bella leads Partnerships & Communications at I'm Here Travels. She works with creators, travel partners, and guests to build authentic collaborations and help bring unforgettable group adventures to life.",
+  },
+  {
+    name: "Jeralyn Villamero",
+    role: "Operations Manager",
+    image: "/about/jeralyn.jpg",
+    bio: "As an Operations Manager at I'm Here Travels, Jera turns travel plans into smooth, unforgettable adventures. Her role involves coordinating with suppliers, managing bookings, refining itineraries, and ensuring every trip runs smoothly. With a strong attention to detail and a passion for travel, she helps create seamless and memorable experiences for every guest.",
   },
 ];
 
