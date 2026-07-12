@@ -32,11 +32,14 @@ export default function ReviewPhotos({
   videos = [],
   authorAlt,
   preview = false,
+  rail = false,
 }: {
   photos?: string[];
   videos?: ReviewVideo[];
   authorAlt: string;
   preview?: boolean;
+  /** Compact list-row mode: one full-height cover tile with a `+N` badge. */
+  rail?: boolean;
 }) {
   // Videos first — they're the most engaging thing to open.
   const media: MediaItem[] = [
@@ -138,7 +141,45 @@ export default function ReviewPhotos({
     ) : null;
 
   let gallery: React.ReactNode;
-  if (preview) {
+  if (rail) {
+    // Compact row rail: a single cover tile filling the (stretched) parent, with
+    // a `+N` badge for the rest. Opens the same lightbox as every other tile.
+    const cover = media[0];
+    const remaining = media.length - 1;
+    const thumb = cover.type === "video" ? cover.poster : cover.src;
+    gallery = (
+      <button
+        type="button"
+        onClick={() => setActive(0)}
+        aria-label={`View ${media.length} trip ${media.length === 1 ? "photo" : "photos"} from ${authorAlt}`}
+        className="group/rail relative h-full w-full overflow-hidden bg-light-grey"
+      >
+        {thumb ? (
+          <ImageWithSkeleton
+            src={thumb}
+            alt={`Trip ${cover.type} from ${authorAlt}`}
+            fill
+            sizes="160px"
+            className="object-cover transition-transform duration-300 group-hover/rail:scale-105"
+          />
+        ) : (
+          <span className="flex size-full items-center justify-center bg-midnight/80" />
+        )}
+        {cover.type === "video" && remaining === 0 && (
+          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span className="flex size-9 items-center justify-center rounded-full bg-black/50 text-white">
+              <Play className="size-4 translate-x-px fill-current" />
+            </span>
+          </span>
+        )}
+        {remaining > 0 && (
+          <span className="absolute inset-0 flex items-center justify-center bg-midnight/50 font-sans text-h6-desktop font-bold text-white">
+            +{remaining}
+          </span>
+        )}
+      </button>
+    );
+  } else if (preview) {
     const hasVideo = videos.length > 0 && v0.type === "video";
 
     if (hasVideo && photos.length > 0) {

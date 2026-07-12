@@ -36,7 +36,7 @@ export default function ReviewCard({
 }: {
   review: PublicReview;
   showTour?: boolean;
-  variant?: "grid" | "modal";
+  variant?: "grid" | "modal" | "row";
   /** Grid-variant shell element. `li` for a plain <ul>; `div` when the caller
    *  supplies its own list item (e.g. to wrap the card in extra chrome). */
   as?: "li" | "div";
@@ -169,6 +169,112 @@ export default function ReviewCard({
       </div>
     </div>
   );
+
+  // Compact list-row variant (reviews hub): identity + stars/date on top, a
+  // tightly-clamped body with "Read more", a meta row (source pill + tour link),
+  // and the trip photos as a full-height rail on the far right.
+  if (variant === "row") {
+    const hasMedia =
+      (review.photos?.length ?? 0) > 0 || (review.videos?.length ?? 0) > 0;
+    return (
+      <Shell className="group relative flex min-h-40 overflow-hidden rounded-lg bg-white shadow-small transition-all duration-200 hover:shadow-medium">
+        <div className="flex min-w-0 flex-1 flex-col gap-3 p-5 md:p-6">
+          <div className="flex items-start justify-between gap-3">
+            {/* Compact identity (smaller avatar than the grid card). */}
+            <div className="flex min-w-0 items-center gap-3">
+              {review.reviewerAvatar ? (
+                <div className="relative size-10 shrink-0 overflow-hidden rounded-full bg-light-grey">
+                  <ImageWithSkeleton
+                    src={review.reviewerAvatar}
+                    alt=""
+                    fill
+                    rounded="full"
+                    sizes="40px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-light-grey font-sans text-b2-desktop font-bold text-midnight">
+                  {review.reviewerFirstName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="flex items-center gap-1.5 font-sans text-b2-desktop font-bold text-midnight">
+                  <span className="truncate">{review.reviewerFirstName}</span>
+                  {review.verified && (
+                    <span className="text-spring-green" title="Verified traveler">
+                      <BadgeCheck className="size-4" />
+                    </span>
+                  )}
+                </p>
+                {(countryIso || review.reviewerLocation) && (
+                  <p className="flex items-center gap-1.5 font-body text-b4-desktop text-vivid-orange">
+                    {countryIso && (
+                      <ReactCountryFlag
+                        countryCode={countryIso}
+                        svg
+                        title={review.reviewerLocation || countryIso}
+                        style={{ width: "1.1em", height: "1.1em", borderRadius: "2px" }}
+                        aria-hidden
+                      />
+                    )}
+                    {review.reviewerLocation && (
+                      <span className="truncate">{review.reviewerLocation}</span>
+                    )}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex shrink-0 flex-col items-end gap-1">
+              <Stars count={review.rating} />
+              {date && <span className="font-body text-b4-desktop text-grey">{date}</span>}
+            </div>
+          </div>
+
+          {title}
+
+          <ExpandableBody
+            collapsedClassName="max-h-20"
+            modal={<ReviewCard review={review} showTour={showTour} variant="modal" />}
+          >
+            {body}
+          </ExpandableBody>
+
+          {reply}
+
+          <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-1">
+            {sourceLabel &&
+              (tourRadarUrl ? (
+                <a
+                  href={tourRadarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${sourceBadgeCls} transition-colors hover:bg-light-grey/70 hover:text-crimson-red`}
+                >
+                  {sourceLabel}
+                </a>
+              ) : (
+                <span className={sourceBadgeCls}>{sourceLabel}</span>
+              ))}
+            {tourLink && (
+              <span className="font-body text-b4-desktop text-grey">from {tourLink}</span>
+            )}
+          </div>
+        </div>
+
+        {hasMedia && (
+          <div className="relative w-24 shrink-0 self-stretch sm:w-28 md:w-40">
+            <ReviewPhotos
+              photos={review.photos}
+              videos={review.videos}
+              authorAlt={review.reviewerFirstName}
+              rail
+            />
+          </div>
+        )}
+      </Shell>
+    );
+  }
 
   // Modal variant: everything visible, body unclamped, no "Read more".
   if (isModal) {
