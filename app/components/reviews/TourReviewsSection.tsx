@@ -51,6 +51,7 @@ export default function TourReviewsSection({
   const [sort, setSort] = useState<SortValue>(DEFAULT_SORT);
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const q = query.trim().toLowerCase();
   const filtered = items.filter(
@@ -60,16 +61,23 @@ export default function TourReviewsSection({
   );
   const sorted = sortReviews(filtered, sort);
   const visible = expanded ? sorted : sorted.slice(0, initialVisible);
-  const hiddenCount = sorted.length - visible.length;
+  // Always the count still hidden while collapsed, even once `visible` covers
+  // everything (so the button's label survives the expand/collapse toggle).
+  const remainingCount = Math.max(0, sorted.length - initialVisible);
 
   const selectChip = (key: string | null) => {
     setActive(key);
     setExpanded(false); // collapse back to the standard height when refiltering
   };
 
+  const collapse = () => {
+    setExpanded(false);
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <div className="mt-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div ref={sectionRef} className="mt-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SearchInput value={query} onChange={setQuery} />
         <SortDropdown value={sort} onChange={setSort} />
       </div>
@@ -121,14 +129,16 @@ export default function TourReviewsSection({
             ))}
           </ul>
 
-          {hiddenCount > 0 && (
+          {remainingCount > 0 && (
             <div className="mt-8 flex justify-center">
               <button
                 type="button"
-                onClick={() => setExpanded(true)}
+                onClick={() => (expanded ? collapse() : setExpanded(true))}
                 className="rounded-full border border-light-grey bg-white px-6 py-3 font-body text-b3-desktop font-medium text-midnight shadow-small transition-colors hover:bg-light-grey"
               >
-                Show {hiddenCount} more review{hiddenCount === 1 ? "" : "s"}
+                {expanded
+                  ? "Show less"
+                  : `Show ${remainingCount} more review${remainingCount === 1 ? "" : "s"}`}
               </button>
             </div>
           )}

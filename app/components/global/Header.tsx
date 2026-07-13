@@ -7,8 +7,14 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 
 type NavLink = { label: string; href: string };
+// A non-clickable heading inside a dropdown, grouping the links after it until
+// the next section (or the end of the list).
+type NavSection = { section: string };
+type DropdownEntry = NavLink | NavSection;
 // `href` is optional: a dropdown-only trigger (e.g. "More") has no landing page.
-type NavItem = { label: string; href?: string; dropdown?: NavLink[] };
+type NavItem = { label: string; href?: string; dropdown?: DropdownEntry[] };
+
+const isSection = (entry: DropdownEntry): entry is NavSection => "section" in entry;
 
 // Static Destinations dropdown (not built from Firebase). "Tours" and
 // "Resident Hosts" are injected dynamically in the component (see navItems).
@@ -112,9 +118,20 @@ export default function Header({
         href: "/tours",
         dropdown: [{ label: "All Tours", href: "/tours" }, ...tourLinks],
       },
-      { label: "Hosted Tours", href: "/hosted-tours", dropdown: hostedTourLinks },
+      {
+        label: "Hosted Tours",
+        href: "/hosted-tours",
+        // Resident Hosts folded in here (was its own top-level item), kept as
+        // its own labeled section so the two groups still read distinctly.
+        dropdown: [
+          { section: "Hosted Tours" },
+          ...hostedTourLinks,
+          { section: "Resident Hosts" },
+          { label: "All Resident Hosts", href: "/resident-hosts" },
+          ...hostLinks,
+        ],
+      },
       DESTINATIONS_NAV,
-      { label: "Resident Hosts", href: "/resident-hosts", dropdown: hostLinks },
       { label: "Reviews", href: "/reviews" },
       { label: "More", dropdown: MORE_DROPDOWN },
     ];
@@ -160,12 +177,17 @@ export default function Header({
     if (!item.href) {
       return (
         item.dropdown?.some(
-          (c) => pathname === c.href || pathname.startsWith(c.href + "/"),
+          (c) => !isSection(c) && (pathname === c.href || pathname.startsWith(c.href + "/")),
         ) ?? false
       );
     }
     if (item.href === "/hosted-tours") {
-      return pathname === item.href || isHostedTourDetail;
+      return (
+        pathname === item.href ||
+        isHostedTourDetail ||
+        pathname === "/resident-hosts" ||
+        pathname.startsWith("/resident-hosts/")
+      );
     }
     if (item.href === "/tours" && isHostedTourDetail) {
       return false;
@@ -245,16 +267,29 @@ export default function Header({
 
                 <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
                   <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">
-                    {item.dropdown.map((child) => (
-                      <li key={child.label}>
-                        <Link
-                          href={child.href}
-                          className={`block px-4 py-2.5 font-body text-b4-desktop transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-midnight"}`}
+                    {item.dropdown.map((child, i) =>
+                      isSection(child) ? (
+                        <li
+                          key={`section-${child.section}`}
+                          aria-hidden
+                          className={`flex items-center gap-2 px-4 pb-1.5 pt-2.5 ${i > 0 ? "mt-1" : ""}`}
                         >
-                          {child.label}
-                        </Link>
-                      </li>
-                    ))}
+                          <span className="whitespace-nowrap font-body text-xs uppercase tracking-wide text-grey">
+                            {child.section}
+                          </span>
+                          <span className="h-px flex-1 bg-grey" />
+                        </li>
+                      ) : (
+                        <li key={child.label}>
+                          <Link
+                            href={child.href}
+                            className={`block px-4 py-2.5 font-body text-b4-desktop transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-midnight"}`}
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </div>
               </div>
@@ -351,17 +386,30 @@ export default function Header({
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden pb-3 sm:grid sm:grid-cols-2 sm:gap-x-4"
                           >
-                            {item.dropdown.map((child) => (
-                              <li key={child.label}>
-                                <Link
-                                  href={child.href}
-                                  onClick={closeMenu}
-                                  className={`block rounded-sm px-3 py-2 font-body text-b4-mobile transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-dark-gray"}`}
+                            {item.dropdown.map((child, i) =>
+                              isSection(child) ? (
+                                <li
+                                  key={`section-${child.section}`}
+                                  aria-hidden
+                                  className={`col-span-2 flex items-center gap-2 px-3 pb-1 pt-3 ${i > 0 ? "mt-1" : ""}`}
                                 >
-                                  {child.label}
-                                </Link>
-                              </li>
-                            ))}
+                                  <span className="whitespace-nowrap font-body text-xs uppercase tracking-wide text-grey">
+                                    {child.section}
+                                  </span>
+                                  <span className="h-px flex-1 bg-grey" />
+                                </li>
+                              ) : (
+                                <li key={child.label}>
+                                  <Link
+                                    href={child.href}
+                                    onClick={closeMenu}
+                                    className={`block rounded-sm px-3 py-2 font-body text-b4-mobile transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-dark-gray"}`}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                </li>
+                              ),
+                            )}
                           </motion.ul>
                         )}
                       </AnimatePresence>

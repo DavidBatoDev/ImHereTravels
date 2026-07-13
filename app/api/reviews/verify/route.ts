@@ -26,6 +26,8 @@ const REASONS: Record<string, string> = {
     "That booking isn't confirmed yet. Only confirmed or completed travelers can leave a review.",
   wrong_tour:
     "That booking is for a different tour. You can only review a tour you've booked.",
+  not_started:
+    "You can leave a review once your trip has started. Come back when you're travelling with us.",
 };
 
 export async function POST(request: Request) {

@@ -10,6 +10,9 @@ import {
   CheckCircle2,
   Camera,
   Sparkles,
+  Clock,
+  CalendarDays,
+  ArrowRight,
 } from "lucide-react";
 import MarkdownEditor from "@/app/components/global/MarkdownEditor";
 import NationalitySelect from "@/app/components/reviews/NationalitySelect";
@@ -27,6 +30,35 @@ const HEADLINE_SUGGESTIONS = [
 
 type Step = "verify" | "select" | "form" | "done";
 type UploadKind = "avatar" | "photo" | "video";
+
+/** A tour the traveler booked, from POST /api/reviews/my-tours. */
+type HubTour = {
+  slug: string;
+  name: string;
+  started: boolean;
+  status?: string;
+  tourDate?: string;
+  tourDuration?: string;
+  reservationDate?: string;
+};
+
+/** Coloured trip-phase pill for the tour picker. */
+function StatusBadge({ status }: { status: string }) {
+  const styles: Record<string, string> = {
+    Completed: "bg-spring-green/10 text-spring-green",
+    Ongoing: "bg-vivid-orange/10 text-vivid-orange",
+    Upcoming: "bg-light-grey text-dark-gray",
+  };
+  return (
+    <span
+      className={`rounded-full px-2 py-0.5 font-body text-b4-desktop font-medium ${
+        styles[status] ?? "bg-light-grey text-dark-gray"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
 
 async function uploadImage(
   file: File,
@@ -134,7 +166,7 @@ export default function WriteReviewButton({
     tourSlug && tourName ? { slug: tourSlug, name: tourName } : null,
   );
   // Hub mode: the tours the traveler's email is eligible to review.
-  const [hubTours, setHubTours] = useState<{ slug: string; name: string }[]>([]);
+  const [hubTours, setHubTours] = useState<HubTour[]>([]);
 
   // Form
   const [rating, setRating] = useState(0);
@@ -215,8 +247,8 @@ export default function WriteReviewButton({
     setVerifyError(null);
     try {
       if (hubMode) {
-        // Look the traveler up by email and surface the tours they can review.
-        const res = await fetch("/api/reviews/my-bookings", {
+        // Look the traveler up by email and surface every tour they booked.
+        const res = await fetch("/api/reviews/my-tours", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ identifier }),
@@ -226,20 +258,15 @@ export default function WriteReviewButton({
           setVerifyError(data.error || "We couldn't find your bookings.");
           return;
         }
-        if (data.firstName) setFirstName(data.firstName);
-        if (data.nationality) setNationality(data.nationality);
-        const tours = (data.tours ?? []) as { slug: string; name: string }[];
+        const tours = (data.tours ?? []) as HubTour[];
         if (tours.length === 0) {
-          setVerifyError("We couldn't match your booking to a reviewable tour.");
+          setVerifyError(
+            "We couldn't find any bookings you can review with that email.",
+          );
           return;
         }
         setHubTours(tours);
-        if (tours.length === 1) {
-          setSelected(tours[0]);
-          setStep("form");
-        } else {
-          setStep("select");
-        }
+        setStep("select");
       } else {
         const res = await fetch("/api/reviews/verify", {
           method: "POST",
@@ -383,24 +410,25 @@ export default function WriteReviewButton({
             aria-label={selected ? `Write a review for ${selected.name}` : "Write a review"}
             className="no-scrollbar relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-lg bg-white p-5 shadow-xlarge md:rounded-lg md:p-6"
           >
-            <div className="-mx-5 mb-6 border-b border-light-grey px-5 pb-4 md:-mx-6 md:px-6">
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="min-w-0 font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+            <div className="-mx-5 mb-6 flex items-start justify-between gap-4 border-b border-light-grey px-5 pb-4 md:-mx-6 md:px-6">
+              <div className="min-w-0">
+                <h3 className="font-sans text-h4-mobile md:text-h4-desktop text-midnight">
                   {selected ? `Review ${selected.name}` : "Write a review"}
                 </h3>
-                <button
-                  type="button"
-                  onClick={requestClose}
-                  aria-label="Close"
-                  className="-mr-1.5 -mt-1.5 shrink-0 rounded-full p-1.5 text-dark-gray transition-colors hover:bg-light-grey"
-                >
-                  <X className="size-5" />
-                </button>
+                {step === "select" && (
+                  <p className="mt-1.5 font-body text-b4-desktop text-grey">
+                    Select a tour to leave a review — you can review once your trip has started.
+                  </p>
+                )}
               </div>
-              <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-spring-green/10 px-3 py-1 font-body text-b4-desktop font-medium text-spring-green">
-                <CheckCircle2 className="size-3.5" />
-                Verified travelers only
-              </span>
+              <button
+                type="button"
+                onClick={requestClose}
+                aria-label="Close"
+                className="-mr-1.5 -mt-1.5 shrink-0 rounded-full p-1.5 text-dark-gray transition-colors hover:bg-light-grey"
+              >
+                <X className="size-5" />
+              </button>
             </div>
 
             {step === "verify" && (
@@ -441,26 +469,67 @@ export default function WriteReviewButton({
 
             {step === "select" && (
               <div className="space-y-4">
-                <p className="font-body text-b2-desktop text-midnight">
-                  Which tour did you travel with?
-                </p>
-                <div className="max-h-80 space-y-2 overflow-auto">
-                  {hubTours.map((t) => (
-                    <button
-                      key={t.slug}
-                      type="button"
-                      onClick={() => {
-                        setSelected(t);
-                        setStep("form");
-                      }}
-                      className="flex w-full items-center justify-between gap-3 rounded-md border border-light-grey px-4 py-2.5 text-left font-body text-b4-desktop text-midnight transition-colors hover:border-crimson-red hover:bg-light-grey"
-                    >
-                      <span>{t.name}</span>
-                      <span aria-hidden className="text-grey">
-                        →
-                      </span>
-                    </button>
-                  ))}
+                <div className="-mx-1 max-h-96 space-y-3 overflow-auto px-1">
+                  {hubTours.map((t) => {
+                    const head = (
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-body text-b2-desktop font-semibold text-midnight">
+                          {t.name}
+                        </span>
+                        {t.status && <StatusBadge status={t.status} />}
+                      </div>
+                    );
+                    const meta = (t.tourDate || t.tourDuration) && (
+                      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-body text-b4-desktop text-grey">
+                        {t.tourDate && (
+                          <span className="inline-flex items-center gap-1.5">
+                            <CalendarDays className="size-3.5 shrink-0" />
+                            {t.tourDate}
+                          </span>
+                        )}
+                        {t.tourDuration && (
+                          <span className="inline-flex items-center gap-1.5">
+                            <Clock className="size-3.5 shrink-0" />
+                            {t.tourDuration}
+                          </span>
+                        )}
+                      </div>
+                    );
+                    return t.started ? (
+                      <button
+                        key={t.slug}
+                        type="button"
+                        onClick={() => {
+                          setSelected({ slug: t.slug, name: t.name });
+                          setStep("form");
+                        }}
+                        className="group flex w-full items-center justify-between gap-4 rounded-lg border border-light-grey p-4 text-left transition-all hover:border-crimson-red hover:shadow-small"
+                      >
+                        <div className="min-w-0">
+                          {head}
+                          {meta}
+                        </div>
+                        <span className="inline-flex shrink-0 items-center gap-1 font-body text-b4-desktop font-semibold text-crimson-red">
+                          Review
+                          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                        </span>
+                      </button>
+                    ) : (
+                      <div
+                        key={t.slug}
+                        className="flex items-center justify-between gap-4 rounded-lg border border-light-grey bg-light-grey/40 p-4"
+                      >
+                        <div className="min-w-0">
+                          {head}
+                          {meta}
+                        </div>
+                        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white px-3 py-1 font-body text-b4-desktop text-grey">
+                          <Clock className="size-3.5" />
+                          After your tour
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

@@ -11,24 +11,9 @@
  */
 
 import { adminDb } from "@/lib/firebase-admin";
-
-/**
- * Whether a booking status makes the traveler eligible to review. Real statuses
- * are free-text ("Booking Confirmed — <date>", "Installment 2/4 — last paid …",
- * "Cancelled", …), so we match by intent: a confirmed booking, or an installment
- * plan that has made at least one payment. Cancelled bookings and not-yet-paid
- * installment plans ("Installment 0/…") are excluded.
- */
-export function isEligibleStatus(status: unknown): boolean {
-  const s = String(status ?? "").trim().toLowerCase();
-  if (!s || s.includes("cancel")) return false;
-  if (s.startsWith("booking confirmed") || s === "confirmed" || s === "completed") {
-    return true;
-  }
-  // Installment plans: eligible once a payment has been made (i.e. not "0/…").
-  if (s.startsWith("installment")) return !/\b0\s*\//.test(s);
-  return false;
-}
+import { isEligibleBookingStatus } from "@/lib/booking-status";
+import { getAllTourIdentities } from "@/lib/tour-identity";
+import { hasReviewForBooking } from "@/lib/reviews-firestore";
 
 export interface VerifiedBooking {
   bookingId: string;
@@ -47,19 +32,110 @@ function normalize(s: unknown): string {
     .trim();
 }
 
-/** Does a booking's tour match the tour being reviewed? Lenient on naming. */
+/**
+ * Coerce the various date shapes a booking may store into a Date.
+ * `tourDate` is a Firestore Timestamp; `returnDate` is a "YYYY-MM-DD" string
+ * (and can be empty). Returns null when the value is missing/unparseable so the
+ * caller can fail-open. (Mirrors the tolerant toDate in
+ * admin/client/src/lib/create-bookings-from-payment.ts.)
+ */
+function toDate(v: unknown): Date | null {
+  if (!v) return null;
+  if (v instanceof Date) return isNaN(v.getTime()) ? null : v;
+  if (typeof v === "object" && typeof (v as any).toDate === "function") {
+    try {
+      const d = (v as any).toDate();
+      return d instanceof Date && !isNaN(d.getTime()) ? d : null;
+    } catch {
+      return null;
+    }
+  }
+  if (typeof v === "object" && typeof (v as any)._seconds === "number") {
+    return new Date((v as any)._seconds * 1000);
+  }
+  if (typeof v === "number") return new Date(v);
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (!t) return null;
+    const d = new Date(t);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  return null;
+}
+
+/**
+ * Has the trip started (or finished)? A review is only allowed once the tour is
+ * ongoing or done, i.e. `now >= tourDate`. Fail-open (returns true) when the
+ * booking has no parseable `tourDate`, so a data gap never blocks a legitimate
+ * reviewer.
+ */
+export function tourHasStarted(booking: RawBooking): boolean {
+  const start = toDate(booking.tourDate);
+  if (!start) return true;
+  return Date.now() >= start.getTime();
+}
+
+/** Parse a leading day-count out of a duration string ("12 days", "11 Days and 10 Nights"). */
+function durationDays(booking: RawBooking): number | null {
+  const d = booking.tourDuration;
+  if (typeof d !== "string") return null;
+  const m = d.match(/(\d+)\s*day/i) ?? d.match(/\d+/);
+  return m ? parseInt(m[0].match(/\d+/)![0], 10) : null;
+}
+
+/**
+ * When the trip ends. Prefer an explicit `returnDate`; otherwise derive it from
+ * the start date plus the parsed duration in days. Null when unknowable.
+ */
+function tourEndDate(booking: RawBooking, start: Date): Date | null {
+  const ret = toDate(booking.returnDate);
+  if (ret) return ret;
+  const days = durationDays(booking);
+  if (days == null) return null;
+  const end = new Date(start.getTime());
+  end.setDate(end.getDate() + days);
+  return end;
+}
+
+/**
+ * The tour's lifecycle phase relative to now, used for the picker badge:
+ * "Upcoming" (not started), "Ongoing" (started, not yet ended), or "Completed"
+ * (start + duration elapsed). Undefined when there's no start date to reason
+ * about. A started tour with an unknown end is treated as Completed — reviews
+ * arrive after travel, and it avoids labeling a long-past trip "Ongoing".
+ */
+export function tourPhase(
+  booking: RawBooking,
+): "Upcoming" | "Ongoing" | "Completed" | undefined {
+  const start = toDate(booking.tourDate);
+  if (!start) return undefined;
+  const now = Date.now();
+  if (now < start.getTime()) return "Upcoming";
+  const end = tourEndDate(booking, start);
+  if (!end) return "Completed";
+  return now >= end.getTime() ? "Completed" : "Ongoing";
+}
+
+/**
+ * Does a booking's tour match the tour being reviewed? Strict: exact tour-code
+ * equality (preferred) or exact normalized-name equality. No substring matching
+ * — that let a booking for one tour verify against a differently-named tour
+ * whose name contained it.
+ */
 export function bookingMatchesTour(
   booking: RawBooking,
   tour: { name?: string; code?: string },
 ): boolean {
+  // "xxx" is the placeholder written when a tour package has no code; treat it
+  // as a non-match so two code-less tours can't cross-match.
+  const bCode = normalize(booking.tourCode);
+  const tCode = normalize(tour.code);
+  if (bCode && tCode && bCode !== "xxx" && tCode !== "xxx" && bCode === tCode) {
+    return true;
+  }
   const bName = normalize(booking.tourPackageName);
   const tName = normalize(tour.name);
-  if (bName && tName && (bName === tName || bName.includes(tName) || tName.includes(bName))) {
-    return true;
-  }
-  if (tour.code && booking.tourCode && normalize(booking.tourCode) === normalize(tour.code)) {
-    return true;
-  }
+  if (bName && tName && bName === tName) return true;
   return false;
 }
 
@@ -98,11 +174,15 @@ async function findCandidateBookings(identifier: string): Promise<RawBooking[]> 
 
 export type VerifyResult =
   | { ok: true; booking: VerifiedBooking }
-  | { ok: false; reason: "not_found" | "not_confirmed" | "wrong_tour" };
+  | { ok: false; reason: "not_found" | "not_confirmed" | "wrong_tour" | "not_started" };
 
 /**
  * Verify that `identifier` maps to an eligible booking for the given tour.
  * Returns the minimal booking info needed to prefill + stamp the review.
+ *
+ * Eligibility, in order: a booking exists for the email → its status is
+ * Confirmed/Completed → it is for this tour → the trip has started (or the date
+ * is unknown) → it has a stable booking id (dedup depends on it).
  */
 export async function verifyBookingForTour(params: {
   identifier: string;
@@ -111,16 +191,26 @@ export async function verifyBookingForTour(params: {
   const candidates = await findCandidateBookings(params.identifier);
   if (candidates.length === 0) return { ok: false, reason: "not_found" };
 
-  const eligible = candidates.filter((b) => isEligibleStatus(b.bookingStatus));
+  const eligible = candidates.filter((b) => isEligibleBookingStatus(b.bookingStatus));
   if (eligible.length === 0) return { ok: false, reason: "not_confirmed" };
 
-  const match = eligible.find((b) => bookingMatchesTour(b, params.tour));
-  if (!match) return { ok: false, reason: "wrong_tour" };
+  const tourMatches = eligible.filter((b) => bookingMatchesTour(b, params.tour));
+  if (tourMatches.length === 0) return { ok: false, reason: "wrong_tour" };
+
+  // F2: only allow a review once the trip is ongoing or done. Fail-open when
+  // the date is unknown, so a data gap never blocks a legitimate reviewer.
+  const started = tourMatches.filter((b) => tourHasStarted(b));
+  if (started.length === 0) return { ok: false, reason: "not_started" };
+  const match = started[0];
+
+  // F5: dedup keys on the booking id — refuse if we can't resolve a stable one.
+  const bookingId = String(match.bookingId ?? match.id ?? "");
+  if (!bookingId) return { ok: false, reason: "not_found" };
 
   return {
     ok: true,
     booking: {
-      bookingId: String(match.bookingId ?? match.id ?? ""),
+      bookingId,
       bookingCode: String(match.bookingCode ?? ""),
       firstName: firstNameOf(match),
       nationality: match.nationality ? String(match.nationality).trim() || undefined : undefined,
@@ -132,56 +222,71 @@ export async function verifyBookingForTour(params: {
 export interface ReviewableTour {
   slug: string;
   name: string;
+  /**
+   * Whether the trip has started (or finished). Only started tours can be
+   * reviewed now; upcoming ones are shown but not yet actionable.
+   */
+  started: boolean;
+  /** Booking details, so the traveler can recognize the right trip. */
+  reservationDate?: string;
+  tourDate?: string;
+  tourDuration?: string;
+  status?: string;
 }
 
-export type ReviewableToursResult =
-  | { ok: true; firstName: string; nationality?: string; tours: ReviewableTour[] }
-  | { ok: false; reason: "not_found" | "not_confirmed" | "no_reviewable_tour" };
+function fmtDate(d: Date | null): string | undefined {
+  if (!d) return undefined;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(d);
+}
 
 /**
- * Given a booking email, return the tours the traveler can review: their
- * eligible (Confirmed/Completed) bookings mapped to catalog tours by the same
- * lenient name/code match, deduped by slug. `firstName`/`nationality` come from
- * the first eligible booking (for form prefill). Nothing here is trusted for the
- * write — the submit route re-verifies the chosen tour with `verifyBookingForTour`.
+ * Every tour this identifier has booked with an eligible (Confirmed/Completed)
+ * status that resolves to a known package and hasn't already been reviewed —
+ * whether or not the trip has started. Each carries a `started` flag: started
+ * tours can be reviewed now, upcoming ones are surfaced but not yet actionable.
+ *
+ * Used to offer a traveler who landed on the wrong tour page the list of tours
+ * they actually booked, so they can jump straight to the right one (and see
+ * which upcoming trips they'll be able to review later).
+ *
+ * Sorted started-first, so anything the traveler can act on now appears at top.
  */
-export async function findReviewableToursForEmail(
+export async function findReviewableToursForIdentifier(
   identifier: string,
-  catalog: { slug: string; name?: string; code?: string }[],
-): Promise<ReviewableToursResult> {
+): Promise<ReviewableTour[]> {
   const candidates = await findCandidateBookings(identifier);
-  if (candidates.length === 0) return { ok: false, reason: "not_found" };
+  const eligible = candidates.filter((b) => isEligibleBookingStatus(b.bookingStatus));
+  if (eligible.length === 0) return [];
 
-  const eligible = candidates.filter((b) => isEligibleStatus(b.bookingStatus));
-  if (eligible.length === 0) return { ok: false, reason: "not_confirmed" };
-
-  const bySlug = new Map<string, ReviewableTour>();
-  for (const booking of eligible) {
-    const bCode = normalize(booking.tourCode);
-    const bName = normalize(booking.tourPackageName);
-    // Prefer the most precise match so one booking doesn't fan out to every
-    // same-family variant: exact code → exact name → lenient contains.
-    let matches = bCode ? catalog.filter((t) => t.code && normalize(t.code) === bCode) : [];
-    if (matches.length === 0 && bName) {
-      matches = catalog.filter((t) => normalize(t.name) === bName);
-    }
-    if (matches.length === 0) {
-      matches = catalog.filter((t) => bookingMatchesTour(booking, { name: t.name, code: t.code }));
-    }
-    for (const t of matches) {
-      if (t.slug && !bySlug.has(t.slug)) {
-        bySlug.set(t.slug, { slug: t.slug, name: t.name ?? "" });
-      }
-    }
+  const allTours = await getAllTourIdentities();
+  const out: ReviewableTour[] = [];
+  const seen = new Set<string>();
+  for (const b of eligible) {
+    const tour = allTours.find((t) => bookingMatchesTour(b, { name: t.name, code: t.code }));
+    if (!tour || seen.has(tour.slug)) continue;
+    const bookingId = String(b.bookingId ?? b.id ?? "");
+    if (!bookingId) continue;
+    if (await hasReviewForBooking(bookingId, tour.id)) continue; // already reviewed
+    seen.add(tour.slug);
+    out.push({
+      slug: tour.slug,
+      name: tour.name,
+      started: tourHasStarted(b),
+      reservationDate: fmtDate(toDate(b.reservationDate)),
+      // Prefer a cleanly-formatted date from the Timestamp; fall back to the raw
+      // pre-formatted string only if the Timestamp won't parse.
+      tourDate:
+        fmtDate(toDate(b.tourDate)) ||
+        (typeof b.formattedDate === "string" ? b.formattedDate : undefined),
+      tourDuration: typeof b.tourDuration === "string" ? b.tourDuration : undefined,
+      status: tourPhase(b),
+    });
   }
-  const tours = Array.from(bySlug.values());
-  if (tours.length === 0) return { ok: false, reason: "no_reviewable_tour" };
-
-  const first = eligible[0];
-  return {
-    ok: true,
-    firstName: firstNameOf(first),
-    nationality: first.nationality ? String(first.nationality).trim() || undefined : undefined,
-    tours,
-  };
+  // Reviewable-now first; preserve booking order within each group.
+  out.sort((a, b) => Number(b.started) - Number(a.started));
+  return out;
 }

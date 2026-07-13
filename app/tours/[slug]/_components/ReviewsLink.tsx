@@ -31,7 +31,7 @@ export default function ReviewsLink({
       href="#reviews"
       onClick={handleClick}
       aria-label={label}
-      className="group inline-flex items-center gap-2 rounded-full border border-light-grey bg-white px-3.5 py-1.5 font-body text-b4-desktop text-midnight shadow-small transition-all hover:border-crimson-red hover:shadow-medium"
+      className="group inline-flex items-center gap-2 font-body text-b4-desktop text-midnight"
     >
       {count > 0 ? (
         <>
