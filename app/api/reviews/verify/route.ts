@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { getTourIdentityBySlug } from "@/lib/tour-identity";
-import { verifyBookingForTour } from "@/lib/booking-verify";
+import {
+  verifyBookingForTour,
+  findReviewableToursForIdentifier,
+  type ReviewableTour,
+} from "@/lib/booking-verify";
 
 export const runtime = "nodejs";
 
@@ -26,6 +30,8 @@ const REASONS: Record<string, string> = {
     "That booking isn't confirmed yet. Only confirmed or completed travelers can leave a review.",
   wrong_tour:
     "That booking is for a different tour. You can only review a tour you've booked.",
+  not_started:
+    "You can leave a review once your trip has started. Come back when you're travelling with us.",
 };
 
 export async function POST(request: Request) {
@@ -62,8 +68,24 @@ export async function POST(request: Request) {
   });
 
   if (!result.ok) {
+    // Dead-end avoidance: when the traveler can't review *this* tour — either
+    // because they didn't book it (wrong_tour) or it hasn't started yet
+    // (not_started) — offer the other tours they can review (or have booked) so
+    // they can jump straight to one instead of hitting a wall. Sorted
+    // started-first, so anything reviewable now is at the top.
+    let otherTours: ReviewableTour[] = [];
+    if (result.reason === "wrong_tour" || result.reason === "not_started") {
+      otherTours = (await findReviewableToursForIdentifier(identifier)).filter(
+        (t) => t.slug !== tourSlug,
+      );
+    }
     return NextResponse.json(
-      { ok: false, error: REASONS[result.reason] ?? "Verification failed." },
+      {
+        ok: false,
+        reason: result.reason,
+        error: REASONS[result.reason] ?? "Verification failed.",
+        otherTours,
+      },
       { status: 403 },
     );
   }

@@ -74,13 +74,16 @@ function MenuIcon({ open }: { open: boolean }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <motion.path
+        d="M4 7H20"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         animate={open ? { d: "M6 6L18 18" } : { d: "M4 7H20" }}
+        initial={false}
         transition={{ duration: 0.2 }}
       />
       <motion.path
+        d="M4 12H20"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -89,10 +92,12 @@ function MenuIcon({ open }: { open: boolean }) {
         transition={{ duration: 0.2 }}
       />
       <motion.path
+        d="M4 17H20"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         animate={open ? { d: "M6 18L18 6" } : { d: "M4 17H20" }}
+        initial={false}
         transition={{ duration: 0.2 }}
       />
     </svg>

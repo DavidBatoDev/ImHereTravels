@@ -35,3 +35,19 @@ export async function getTourIdentityBySlug(
     code: data.tourCode ?? data.code ?? undefined,
   };
 }
+
+/** All tour identities, for matching a booking's tour name/code to a slug. */
+export async function getAllTourIdentities(): Promise<TourIdentity[]> {
+  const snap = await adminDb.collection("tourPackages").get();
+  return snap.docs
+    .map((d) => {
+      const data = d.data() as Record<string, any>;
+      return {
+        id: d.id,
+        slug: (data.slug ?? "") as string,
+        name: (data.name ?? data.title ?? "") as string,
+        code: (data.tourCode ?? data.code ?? undefined) as string | undefined,
+      };
+    })
+    .filter((t) => t.slug);
+}

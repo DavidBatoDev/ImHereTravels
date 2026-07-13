@@ -390,8 +390,9 @@ export default function MarkdownEditor({
     setLinkOpen(false);
   }
 
+  // ≥44px hit area on touch (iOS/Android tap-target guidance); denser on desktop.
   const btn = (isActive: boolean) =>
-    `flex size-8 items-center justify-center rounded-sm transition-colors ${
+    `flex size-11 md:size-8 items-center justify-center rounded-sm transition-colors ${
       isActive ? "bg-light-grey text-crimson-red" : "text-dark-gray hover:bg-light-grey"
     }`;
 

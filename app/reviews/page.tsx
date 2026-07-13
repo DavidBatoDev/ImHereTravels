@@ -21,6 +21,7 @@ import {
   type TourOption,
 } from "@/app/components/reviews/reviews-filter";
 import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
+import WriteReviewHub from "@/app/components/reviews/WriteReviewHub";
 import { TRIP_STYLES } from "@/app/components/reviews/trip-styles";
 import { getAllPublishedReviews, computeCategoryAggregates } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
@@ -144,12 +145,19 @@ export default async function ReviewsHubPage({
       />
       <main className="flex-1 overflow-x-clip">
         <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 md:px-8 md:pb-24 md:pt-10">
-          <h1 className="font-display text-h1-mobile md:text-h1-desktop text-midnight">
-            Traveler Reviews
-          </h1>
-          <p className="mt-4 max-w-2xl font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
-            Real stories from verified travelers who&apos;ve explored the world with us.
-          </p>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+            <div>
+              <h1 className="font-display text-h1-mobile md:text-h1-desktop text-midnight">
+                Traveler Reviews
+              </h1>
+              <p className="mt-4 max-w-2xl font-body text-b2-mobile md:text-b2-desktop text-dark-gray">
+                Real stories from verified travelers who&apos;ve explored the world with us.
+              </p>
+            </div>
+            <div className="shrink-0 sm:pt-2">
+              <WriteReviewHub />
+            </div>
+          </div>
 
           {stats.count > 0 && (
             <div className="mt-6 rounded-lg bg-white p-6 shadow-small md:p-8">

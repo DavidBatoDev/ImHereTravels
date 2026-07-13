@@ -104,10 +104,11 @@ export async function POST(request: Request) {
     tour: { name: tour.name, code: tour.code },
   });
   if (!verification.ok) {
-    return NextResponse.json(
-      { ok: false, error: "We couldn't verify your booking for this tour." },
-      { status: 403 },
-    );
+    const error =
+      verification.reason === "not_started"
+        ? "You can leave a review once your trip has started. Come back when you're travelling with us."
+        : "We couldn't verify your booking for this tour.";
+    return NextResponse.json({ ok: false, error }, { status: 403 });
   }
 
   // One review per booking per tour.

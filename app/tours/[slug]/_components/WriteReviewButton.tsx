@@ -8,6 +8,7 @@ import {
   Video as VideoIcon,
   Loader2,
   CheckCircle2,
+  Clock,
 } from "lucide-react";
 import MarkdownEditor from "@/app/components/global/MarkdownEditor";
 import NationalitySelect from "@/app/components/reviews/NationalitySelect";
@@ -25,6 +26,15 @@ const HEADLINE_SUGGESTIONS = [
 
 type Step = "verify" | "form" | "done";
 type UploadKind = "avatar" | "photo" | "video";
+type ReviewableTour = {
+  slug: string;
+  name: string;
+  started: boolean;
+  reservationDate?: string;
+  tourDate?: string;
+  tourDuration?: string;
+  status?: string;
+};
 
 async function uploadImage(
   file: File,
@@ -92,6 +102,8 @@ export default function WriteReviewButton({
   const [identifier, setIdentifier] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState<string | null>(null);
+  // Tours this email booked, when they land on a tour they didn't book.
+  const [otherTours, setOtherTours] = useState<ReviewableTour[] | null>(null);
 
   // Form
   const [rating, setRating] = useState(0);
@@ -124,6 +136,7 @@ export default function WriteReviewButton({
     setStep("verify");
     setIdentifier("");
     setVerifyError(null);
+    setOtherTours(null);
     setConfirmClose(false);
     setRating(0);
     setCategoryRatings({});
@@ -164,19 +177,22 @@ export default function WriteReviewButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, isDirty]);
 
-  async function handleVerify(e: React.FormEvent) {
-    e.preventDefault();
+  async function runVerify(id: string) {
     setVerifying(true);
     setVerifyError(null);
+    setOtherTours(null);
     try {
       const res = await fetch("/api/reviews/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier, tourSlug }),
+        body: JSON.stringify({ identifier: id, tourSlug }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
         setVerifyError(data.error || "We couldn't verify that booking.");
+        if (Array.isArray(data.otherTours) && data.otherTours.length > 0) {
+          setOtherTours(data.otherTours);
+        }
         return;
       }
       if (data.firstName) setFirstName(data.firstName);
@@ -188,6 +204,47 @@ export default function WriteReviewButton({
       setVerifying(false);
     }
   }
+
+  function handleVerify(e: React.FormEvent) {
+    e.preventDefault();
+    runVerify(identifier);
+  }
+
+  // Send the traveler to another tour they booked and continue the review there.
+  // The intent is stashed so that page auto-opens this modal and re-verifies.
+  const REVIEW_INTENT_KEY = "imh_review_intent";
+  function goToTour(slug: string) {
+    try {
+      sessionStorage.setItem(REVIEW_INTENT_KEY, JSON.stringify({ slug, email: identifier }));
+    } catch {
+      // sessionStorage may be unavailable (private mode) — navigate anyway.
+    }
+    window.location.href = `/tours/${slug}#reviews`;
+  }
+
+  // Arriving from another tour's "pick a tour to review" step: open the modal,
+  // prefill the email, and re-verify automatically for this (correct) tour.
+  useEffect(() => {
+    let intent: { slug?: string; email?: string } | null = null;
+    try {
+      const raw = sessionStorage.getItem(REVIEW_INTENT_KEY);
+      if (raw) intent = JSON.parse(raw);
+    } catch {
+      intent = null;
+    }
+    if (!intent || intent.slug !== tourSlug) return;
+    try {
+      sessionStorage.removeItem(REVIEW_INTENT_KEY);
+    } catch {
+      // ignore
+    }
+    setOpen(true);
+    if (intent.email) {
+      setIdentifier(intent.email);
+      runVerify(intent.email);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleAvatar(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -342,7 +399,11 @@ export default function WriteReviewButton({
                     id="identifier"
                     type="email"
                     value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
+                    onChange={(e) => {
+                      setIdentifier(e.target.value);
+                      if (otherTours) setOtherTours(null);
+                      if (verifyError) setVerifyError(null);
+                    }}
                     placeholder="you@email.com"
                     className={inputCls}
                     autoFocus
@@ -351,6 +412,87 @@ export default function WriteReviewButton({
                 </div>
                 {verifyError && (
                   <p className="font-body text-b4-desktop text-crimson-red">{verifyError}</p>
+                )}
+                {otherTours && otherTours.length > 0 && (
+                  <div className="space-y-2 rounded-md border border-light-grey bg-light-grey/40 p-3">
+                    <p className="font-body text-b4-desktop font-medium text-midnight">
+                      But you&apos;ve booked{" "}
+                      {otherTours.length === 1 ? "this tour" : "these tours"} with us:
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {otherTours.map((t) => {
+                        const details = (
+                          <>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-body text-b2-desktop font-medium text-midnight">
+                                {t.name}
+                              </span>
+                              {t.status && (
+                                <span
+                                  className={`rounded-full px-2 py-0.5 font-body text-b4-desktop font-medium ${
+                                    t.status === "Completed"
+                                      ? "bg-spring-green/15 text-spring-green"
+                                      : t.status === "Ongoing"
+                                        ? "bg-vivid-orange/15 text-vivid-orange"
+                                        : "bg-grey/15 text-grey"
+                                  }`}
+                                >
+                                  {t.status}
+                                </span>
+                              )}
+                            </div>
+                            {(t.tourDate || t.tourDuration || t.reservationDate) && (
+                              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 font-body text-b4-desktop text-grey">
+                                {t.tourDate && (
+                                  <span>
+                                    <span className="text-dark-gray">Tour date:</span> {t.tourDate}
+                                  </span>
+                                )}
+                                {t.tourDuration && (
+                                  <span>
+                                    <span className="text-dark-gray">Duration:</span>{" "}
+                                    {t.tourDuration}
+                                  </span>
+                                )}
+                                {t.reservationDate && (
+                                  <span>
+                                    <span className="text-dark-gray">Reserved:</span>{" "}
+                                    {t.reservationDate}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </>
+                        );
+                        // Started trips are reviewable now; upcoming ones are shown
+                        // but not actionable until the traveler is actually travelling.
+                        return t.started ? (
+                          <button
+                            key={t.slug}
+                            type="button"
+                            onClick={() => goToTour(t.slug)}
+                            className="flex items-start justify-between gap-3 rounded-md border border-light-grey bg-white px-4 py-3 text-left transition-colors hover:border-crimson-red"
+                          >
+                            <div className="min-w-0">{details}</div>
+                            <span className="shrink-0 self-center font-body font-medium text-crimson-red">
+                              Review →
+                            </span>
+                          </button>
+                        ) : (
+                          <div
+                            key={t.slug}
+                            className="flex items-start justify-between gap-3 rounded-md border border-dashed border-light-grey bg-white/60 px-4 py-3"
+                          >
+                            <div className="min-w-0">{details}</div>
+                            <span className="flex shrink-0 items-center gap-1 self-center font-body text-b4-desktop font-medium text-grey">
+                              <Clock className="size-3.5" />
+                              After your tour
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
                 <button
                   type="submit"
