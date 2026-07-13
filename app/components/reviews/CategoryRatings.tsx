@@ -21,12 +21,48 @@ const CATEGORY_ICON: Record<CategoryKey, LucideIcon> = {
 export default function CategoryRatings({
   categories,
   columns = 1,
+  layout = "stack",
 }: {
   categories: CategoryAggregate[];
   /** 1 (default, stacked) or 2 (side-by-side grid, e.g. the hub summary card). */
   columns?: 1 | 2;
+  /** "stack" = vertical list/grid (default); "row" = horizontal wrapping row. */
+  layout?: "stack" | "row";
 }) {
   if (categories.length === 0) return null;
+
+  // Horizontal one-line-per-category row (used full-width under the hub summary).
+  if (layout === "row") {
+    return (
+      <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+        {categories.map((c) => {
+          const Icon = CATEGORY_ICON[c.key] ?? Star;
+          return (
+            <div
+              key={c.key}
+              role="group"
+              aria-label={`${c.label}: ${c.average.toFixed(1)} out of 5`}
+              className="flex items-center gap-2"
+            >
+              <span
+                aria-hidden
+                className="flex items-center gap-1.5 whitespace-nowrap font-body text-b4-desktop text-midnight"
+              >
+                <Icon className="size-3.5 shrink-0 text-crimson-red" strokeWidth={2} />
+                {c.label}
+              </span>
+              <span aria-hidden className="flex items-center gap-1.5">
+                <Stars count={c.average} size="sm" />
+                <span className="font-body text-b4-desktop font-medium text-midnight">
+                  {c.average.toFixed(1)}
+                </span>
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   // The 2-up hub panel is deliberately tighter than the design-system default:
   // smallest body token (b4, not b3), smaller stars/icons, less row spacing, and

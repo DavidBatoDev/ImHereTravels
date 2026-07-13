@@ -12,8 +12,23 @@
 
 import { adminDb } from "@/lib/firebase-admin";
 
-// Past + upcoming travelers may both review; pending/cancelled may not.
-const ELIGIBLE_STATUSES = new Set(["Confirmed", "Completed"]);
+/**
+ * Whether a booking status makes the traveler eligible to review. Real statuses
+ * are free-text ("Booking Confirmed — <date>", "Installment 2/4 — last paid …",
+ * "Cancelled", …), so we match by intent: a confirmed booking, or an installment
+ * plan that has made at least one payment. Cancelled bookings and not-yet-paid
+ * installment plans ("Installment 0/…") are excluded.
+ */
+export function isEligibleStatus(status: unknown): boolean {
+  const s = String(status ?? "").trim().toLowerCase();
+  if (!s || s.includes("cancel")) return false;
+  if (s.startsWith("booking confirmed") || s === "confirmed" || s === "completed") {
+    return true;
+  }
+  // Installment plans: eligible once a payment has been made (i.e. not "0/…").
+  if (s.startsWith("installment")) return !/\b0\s*\//.test(s);
+  return false;
+}
 
 export interface VerifiedBooking {
   bookingId: string;
@@ -96,7 +111,7 @@ export async function verifyBookingForTour(params: {
   const candidates = await findCandidateBookings(params.identifier);
   if (candidates.length === 0) return { ok: false, reason: "not_found" };
 
-  const eligible = candidates.filter((b) => ELIGIBLE_STATUSES.has(b.bookingStatus));
+  const eligible = candidates.filter((b) => isEligibleStatus(b.bookingStatus));
   if (eligible.length === 0) return { ok: false, reason: "not_confirmed" };
 
   const match = eligible.find((b) => bookingMatchesTour(b, params.tour));
@@ -111,5 +126,62 @@ export async function verifyBookingForTour(params: {
       nationality: match.nationality ? String(match.nationality).trim() || undefined : undefined,
       tourPackageName: String(match.tourPackageName ?? ""),
     },
+  };
+}
+
+export interface ReviewableTour {
+  slug: string;
+  name: string;
+}
+
+export type ReviewableToursResult =
+  | { ok: true; firstName: string; nationality?: string; tours: ReviewableTour[] }
+  | { ok: false; reason: "not_found" | "not_confirmed" | "no_reviewable_tour" };
+
+/**
+ * Given a booking email, return the tours the traveler can review: their
+ * eligible (Confirmed/Completed) bookings mapped to catalog tours by the same
+ * lenient name/code match, deduped by slug. `firstName`/`nationality` come from
+ * the first eligible booking (for form prefill). Nothing here is trusted for the
+ * write — the submit route re-verifies the chosen tour with `verifyBookingForTour`.
+ */
+export async function findReviewableToursForEmail(
+  identifier: string,
+  catalog: { slug: string; name?: string; code?: string }[],
+): Promise<ReviewableToursResult> {
+  const candidates = await findCandidateBookings(identifier);
+  if (candidates.length === 0) return { ok: false, reason: "not_found" };
+
+  const eligible = candidates.filter((b) => isEligibleStatus(b.bookingStatus));
+  if (eligible.length === 0) return { ok: false, reason: "not_confirmed" };
+
+  const bySlug = new Map<string, ReviewableTour>();
+  for (const booking of eligible) {
+    const bCode = normalize(booking.tourCode);
+    const bName = normalize(booking.tourPackageName);
+    // Prefer the most precise match so one booking doesn't fan out to every
+    // same-family variant: exact code → exact name → lenient contains.
+    let matches = bCode ? catalog.filter((t) => t.code && normalize(t.code) === bCode) : [];
+    if (matches.length === 0 && bName) {
+      matches = catalog.filter((t) => normalize(t.name) === bName);
+    }
+    if (matches.length === 0) {
+      matches = catalog.filter((t) => bookingMatchesTour(booking, { name: t.name, code: t.code }));
+    }
+    for (const t of matches) {
+      if (t.slug && !bySlug.has(t.slug)) {
+        bySlug.set(t.slug, { slug: t.slug, name: t.name ?? "" });
+      }
+    }
+  }
+  const tours = Array.from(bySlug.values());
+  if (tours.length === 0) return { ok: false, reason: "no_reviewable_tour" };
+
+  const first = eligible[0];
+  return {
+    ok: true,
+    firstName: firstNameOf(first),
+    nationality: first.nationality ? String(first.nationality).trim() || undefined : undefined,
+    tours,
   };
 }

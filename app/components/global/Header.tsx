@@ -7,45 +7,42 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 
 type NavLink = { label: string; href: string };
-type NavItem = { label: string; href: string; dropdown?: NavLink[] };
+// `href` is optional: a dropdown-only trigger (e.g. "More") has no landing page.
+type NavItem = { label: string; href?: string; dropdown?: NavLink[] };
 
-// Nav entries that are NOT built from Firebase. "Tours", "Hosted Tours" and
+// Static Destinations dropdown (not built from Firebase). "Tours" and
 // "Resident Hosts" are injected dynamically in the component (see navItems).
-const STATIC_NAV_ITEMS: NavItem[] = [
-  {
-    label: "Destinations",
-    href: "/all-destinations",
-    dropdown: [
-      { label: "All Destinations", href: "/all-destinations" },
-      { label: "Philippines", href: "/all-destinations/philippines" },
-      { label: "Maldives", href: "/all-destinations/maldives" },
-      { label: "Japan", href: "/all-destinations/japan" },
-      { label: "India", href: "/all-destinations/india" },
-      { label: "Nepal", href: "/all-destinations/nepal" },
-      { label: "Bhutan", href: "/all-destinations/bhutan" },
-      { label: "Sri Lanka", href: "/all-destinations/sri-lanka" },
-      { label: "Vietnam", href: "/all-destinations/vietnam" },
-      { label: "China", href: "/all-destinations/china" },
-      { label: "Tanzania", href: "/all-destinations/tanzania" },
-      { label: "New Zealand", href: "/all-destinations/new-zealand" },
-      { label: "Argentina", href: "/all-destinations/argentina" },
-      { label: "Brazil", href: "/all-destinations/brazil" },
-      { label: "Greece", href: "/all-destinations/greece" },
-    ],
-  },
+const DESTINATIONS_NAV: NavItem = {
+  label: "Destinations",
+  href: "/all-destinations",
+  dropdown: [
+    { label: "All Destinations", href: "/all-destinations" },
+    { label: "Philippines", href: "/all-destinations/philippines" },
+    { label: "Maldives", href: "/all-destinations/maldives" },
+    { label: "Japan", href: "/all-destinations/japan" },
+    { label: "India", href: "/all-destinations/india" },
+    { label: "Nepal", href: "/all-destinations/nepal" },
+    { label: "Bhutan", href: "/all-destinations/bhutan" },
+    { label: "Sri Lanka", href: "/all-destinations/sri-lanka" },
+    { label: "Vietnam", href: "/all-destinations/vietnam" },
+    { label: "China", href: "/all-destinations/china" },
+    { label: "Tanzania", href: "/all-destinations/tanzania" },
+    { label: "New Zealand", href: "/all-destinations/new-zealand" },
+    { label: "Argentina", href: "/all-destinations/argentina" },
+    { label: "Brazil", href: "/all-destinations/brazil" },
+    { label: "Greece", href: "/all-destinations/greece" },
+  ],
+};
+
+// Secondary links collected under a single "More" dropdown to keep the top bar
+// compact: About Us and the Travel Info pages.
+const MORE_DROPDOWN: NavLink[] = [
   { label: "About Us", href: "/about-us" },
-  { label: "Reviews", href: "/reviews" },
-  {
-    label: "Travel Info",
-    href: "/travel-information",
-    dropdown: [
-      { label: "Pre-departure Info", href: "/pre-departure" },
-      { label: "Travel Safety", href: "/travel-safety" },
-      { label: "FAQs", href: "/faqs" },
-      { label: "Contact Us", href: "/contact-us" },
-      { label: "Terms & Conditions", href: "/terms-and-conditions" },
-    ],
-  },
+  { label: "Pre-departure Info", href: "/pre-departure" },
+  { label: "Travel Safety", href: "/travel-safety" },
+  { label: "FAQs", href: "/faqs" },
+  { label: "Contact Us", href: "/contact-us" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
 ];
 
 function ChevronDown({ className = "" }: { className?: string }) {
@@ -109,8 +106,6 @@ export default function Header({
   hostLinks?: NavLink[];
 }) {
   const navItems = useMemo<NavItem[]>(() => {
-    const destinations = STATIC_NAV_ITEMS.find((i) => i.href === "/all-destinations");
-    const trailing = STATIC_NAV_ITEMS.filter((i) => i.href !== "/all-destinations");
     return [
       {
         label: "Tours",
@@ -118,9 +113,10 @@ export default function Header({
         dropdown: [{ label: "All Tours", href: "/tours" }, ...tourLinks],
       },
       { label: "Hosted Tours", href: "/hosted-tours", dropdown: hostedTourLinks },
-      ...(destinations ? [destinations] : []),
+      DESTINATIONS_NAV,
       { label: "Resident Hosts", href: "/resident-hosts", dropdown: hostLinks },
-      ...trailing,
+      { label: "Reviews", href: "/reviews" },
+      { label: "More", dropdown: MORE_DROPDOWN },
     ];
   }, [tourLinks, hostedTourLinks, hostLinks]);
 
@@ -148,8 +144,8 @@ export default function Header({
 
     return (
       <Link
-        key={item.href}
-        href={item.href}
+        key={item.href ?? item.label}
+        href={item.href ?? "#"}
         onClick={mobile ? closeMenu : undefined}
         className={className}
       >
@@ -159,6 +155,15 @@ export default function Header({
   }
 
   const isParentActive = (item: (typeof navItems)[number]) => {
+    // "More" has no landing page — active on any of its child routes (About Us,
+    // Travel Info pages).
+    if (!item.href) {
+      return (
+        item.dropdown?.some(
+          (c) => pathname === c.href || pathname.startsWith(c.href + "/"),
+        ) ?? false
+      );
+    }
     if (item.href === "/hosted-tours") {
       return pathname === item.href || isHostedTourDetail;
     }
@@ -219,16 +224,24 @@ export default function Header({
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
-          {navItems.map((item) =>
-            item.dropdown ? (
-              <div key={item.href} className="group relative">
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-                >
-                  {item.label}
-                  <ChevronDown />
-                </Link>
+          {navItems.map((item) => {
+            if (!item.dropdown) return renderNavLink(item, false);
+            const triggerCls = `flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`;
+            const label = (
+              <>
+                {item.label}
+                <ChevronDown />
+              </>
+            );
+            return (
+              <div key={item.href ?? item.label} className="group relative">
+                {item.href ? (
+                  <Link href={item.href} className={triggerCls}>
+                    {label}
+                  </Link>
+                ) : (
+                  <span className={`cursor-default ${triggerCls}`}>{label}</span>
+                )}
 
                 <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
                   <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">
@@ -245,10 +258,8 @@ export default function Header({
                   </ul>
                 </div>
               </div>
-            ) : (
-              renderNavLink(item, false)
-            ),
-          )}
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
@@ -286,40 +297,54 @@ export default function Header({
           >
             <nav className="mx-auto w-full max-w-7xl overflow-y-auto overscroll-contain px-4 pb-6 pt-2 sm:px-6 max-h-[calc(100dvh-72px)]">
               <ul className="flex flex-col divide-y divide-light-grey">
-                {navItems.map((item) =>
-                  item.dropdown ? (
-                    <li key={item.href}>
+                {navItems.map((item) => {
+                  const itemKey = item.href ?? item.label;
+                  if (!item.dropdown) {
+                    return <li key={itemKey}>{renderNavLink(item, true)}</li>;
+                  }
+                  const toggle = () =>
+                    setOpenDropdown(openDropdown === itemKey ? null : itemKey);
+                  const parentCls = `flex-1 py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`;
+                  return (
+                    <li key={itemKey}>
                       <div className="flex items-center justify-between">
-                        <Link
-                          href={item.href}
-                          onClick={closeMenu}
-                          className={`flex-1 py-4 font-body text-b2-mobile transition-colors hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`}
-                        >
-                          {item.label}
-                        </Link>
+                        {item.href ? (
+                          <Link
+                            href={item.href}
+                            onClick={closeMenu}
+                            className={parentCls}
+                          >
+                            {item.label}
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            aria-expanded={openDropdown === itemKey}
+                            onClick={toggle}
+                            className={`${parentCls} text-left`}
+                          >
+                            {item.label}
+                          </button>
+                        )}
                         <button
                           type="button"
-                          aria-label={openDropdown === item.href ? `Collapse ${item.label}` : `Expand ${item.label}`}
-                          aria-expanded={openDropdown === item.href}
-                          onClick={() =>
-                            setOpenDropdown(
-                              openDropdown === item.href ? null : item.href,
-                            )
-                          }
+                          aria-label={openDropdown === itemKey ? `Collapse ${item.label}` : `Expand ${item.label}`}
+                          aria-expanded={openDropdown === itemKey}
+                          onClick={toggle}
                           className="flex size-10 items-center justify-center rounded-full text-midnight transition-colors hover:bg-light-grey"
                         >
                           <ChevronDown
                             className={`transition-transform duration-200 ${
-                              openDropdown === item.href ? "rotate-180" : ""
+                              openDropdown === itemKey ? "rotate-180" : ""
                             }`}
                           />
                         </button>
                       </div>
 
                       <AnimatePresence initial={false}>
-                        {openDropdown === item.href && (
+                        {openDropdown === itemKey && (
                           <motion.ul
-                            key={`${item.href}-sub`}
+                            key={`${itemKey}-sub`}
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
@@ -341,10 +366,8 @@ export default function Header({
                         )}
                       </AnimatePresence>
                     </li>
-                  ) : (
-                    <li key={item.href}>{renderNavLink(item, true)}</li>
-                  ),
-                )}
+                  );
+                })}
               </ul>
             </nav>
           </motion.div>

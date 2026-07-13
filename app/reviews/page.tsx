@@ -8,6 +8,7 @@ import CategoryRatings from "@/app/components/reviews/CategoryRatings";
 import ReviewsFilterBar from "@/app/components/reviews/ReviewsFilterBar";
 import ReviewsPager from "@/app/components/reviews/ReviewsPager";
 import TripStyleRail from "@/app/components/reviews/TripStyleRail";
+import WriteReviewButton from "@/app/tours/[slug]/_components/WriteReviewButton";
 import {
   DEFAULT_SORT,
   DEFAULT_SOURCE,
@@ -24,7 +25,20 @@ import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import { TRIP_STYLES } from "@/app/components/reviews/trip-styles";
 import { getAllPublishedReviews, computeCategoryAggregates } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
-import type { PublicReview } from "@/types/review";
+import type { PublicReview, CategoryAggregate } from "@/types/review";
+
+// ⚠️ TEMP MOCKUP — remove before handoff. Preview-only category averages so the
+// category-ratings row is visible in the summary card. The live reviews are all
+// TourRadar imports (no per-category scores), so `computeCategoryAggregates`
+// returns []. Delete this constant + the fallback in the card once first-party
+// category reviews exist.
+const MOCK_CATEGORY_PREVIEW: CategoryAggregate[] = [
+  { key: "guide", label: "Tour Guide", average: 5.0, count: 1 },
+  { key: "experience", label: "Experience", average: 4.9, count: 1 },
+  { key: "value", label: "Value", average: 4.7, count: 1 },
+  { key: "food", label: "Food", average: 4.8, count: 1 },
+  { key: "accommodation", label: "Accommodation", average: 4.6, count: 1 },
+];
 
 // Company-level TourRadar "Operator Reviews" widget (from the Widget Center).
 // Set to the iframe src URL (or full embed snippet) to show it on the hub.
@@ -153,27 +167,47 @@ export default async function ReviewsHubPage({
 
           {stats.count > 0 && (
             <div className="mt-6 rounded-lg bg-white p-6 shadow-small md:p-8">
-              {/* No column gap: the divider sits on the exact 50/50 boundary, and
-                  equal padding on each side (pr-10 | pl-10) centers it visually. */}
-              <div
-                className={`grid gap-8 ${
-                  summaryCategories.length > 0
-                    ? "lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-light-grey"
-                    : ""
-                }`}
-              >
+              {/* Top: rating summary (left) + write-a-review CTA (right), split by a
+                  centered vertical divider (equal pr-10 | pl-10 padding). */}
+              <div className="grid gap-8 lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-light-grey">
                 {/* Left: average + distribution bars, with trust/freshness facts. */}
                 <div className="lg:pr-10">
                   <RatingBreakdown reviews={filtered} />
                   <ReviewInsights reviews={filtered} showHighlights={false} />
                 </div>
-                {/* Right: per-category ratings, 2-up, top-aligned with the left
-                    column (first category row level with the rating number). */}
-                {summaryCategories.length > 0 && (
-                  <div className="lg:pl-10">
-                    <CategoryRatings categories={summaryCategories} columns={2} />
+                {/* Right: invite the traveler to contribute their own review. */}
+                <div className="flex flex-col justify-center gap-4 lg:pl-10">
+                  <div>
+                    <h2 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                      Write your Experience
+                    </h2>
+                    <p className="mt-2 max-w-md font-body text-b4-mobile md:text-b4-desktop text-grey">
+                      Share your story and help fellow travelers choose their next
+                      adventure. Every voice adds to a community where each
+                      experience counts.
+                    </p>
                   </div>
-                )}
+                  <WriteReviewButton
+                    hub
+                    triggerClassName="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium"
+                  />
+                </div>
+              </div>
+
+              {/* Bottom: what travelers love + per-category ratings, full width.
+                  ⚠️ TEMP: categories fall back to MOCK_CATEGORY_PREVIEW so the row
+                  is visible while the live (TourRadar) data carries no category
+                  scores — remove the fallback + the mock constant before handoff. */}
+              <div className="mt-6 border-t border-light-grey pt-6">
+                <ReviewInsights reviews={filtered} showFacts={false} />
+                <div className="mt-4">
+                  <CategoryRatings
+                    categories={
+                      summaryCategories.length > 0 ? summaryCategories : MOCK_CATEGORY_PREVIEW
+                    }
+                    layout="row"
+                  />
+                </div>
               </div>
             </div>
           )}

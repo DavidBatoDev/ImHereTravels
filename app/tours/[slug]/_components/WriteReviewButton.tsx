@@ -8,6 +8,8 @@ import {
   Video as VideoIcon,
   Loader2,
   CheckCircle2,
+  Camera,
+  Sparkles,
 } from "lucide-react";
 import MarkdownEditor from "@/app/components/global/MarkdownEditor";
 import NationalitySelect from "@/app/components/reviews/NationalitySelect";
@@ -23,7 +25,7 @@ const HEADLINE_SUGGESTIONS = [
   "Worth every penny",
 ];
 
-type Step = "verify" | "form" | "done";
+type Step = "verify" | "select" | "form" | "done";
 type UploadKind = "avatar" | "photo" | "video";
 
 async function uploadImage(
@@ -41,38 +43,64 @@ async function uploadImage(
   return data.url as string;
 }
 
+const RATING_WORDS = ["Poor", "Fair", "Good", "Great", "Excellent"] as const;
+
 function StarInput({
   value,
   onChange,
+  size = "md",
+  showWord = false,
 }: {
   value: number;
   onChange: (n: number) => void;
+  /** "sm" per-category rows · "md" default · "lg" the headline rating. */
+  size?: "sm" | "md" | "lg";
+  /** Show the rating word (Poor…Excellent) under the stars. */
+  showWord?: boolean;
 }) {
   const [hover, setHover] = useState(0);
+  const current = hover || value;
+  const starSize =
+    size === "sm" ? "size-5" : size === "lg" ? "size-9 sm:size-10" : "size-7";
   return (
-    <div className="flex gap-1" role="radiogroup" aria-label="Rating">
-      {[1, 2, 3, 4, 5].map((n) => {
-        const active = (hover || value) >= n;
-        return (
-          <button
-            key={n}
-            type="button"
-            role="radio"
-            aria-checked={value === n}
-            aria-label={`${n} star${n > 1 ? "s" : ""}`}
-            onMouseEnter={() => setHover(n)}
-            onMouseLeave={() => setHover(0)}
-            onClick={() => onChange(n)}
-            className="p-0.5"
-          >
-            <Star
-              className={`size-8 transition-colors ${
-                active ? "fill-crimson-red text-crimson-red" : "fill-transparent text-grey"
-              }`}
-            />
-          </button>
-        );
-      })}
+    <div className={showWord ? "flex flex-col items-center gap-2.5" : ""}>
+      <div
+        className={`flex ${size === "lg" ? "gap-1.5" : "gap-0.5"}`}
+        role="radiogroup"
+        aria-label="Rating"
+      >
+        {[1, 2, 3, 4, 5].map((n) => {
+          const active = current >= n;
+          return (
+            <button
+              key={n}
+              type="button"
+              role="radio"
+              aria-checked={value === n}
+              aria-label={`${n} star${n > 1 ? "s" : ""}`}
+              onMouseEnter={() => setHover(n)}
+              onMouseLeave={() => setHover(0)}
+              onClick={() => onChange(n)}
+              className="p-0.5 transition-transform hover:scale-110"
+            >
+              <Star
+                className={`${starSize} transition-colors ${
+                  active ? "fill-crimson-red text-crimson-red" : "fill-transparent text-grey"
+                }`}
+              />
+            </button>
+          );
+        })}
+      </div>
+      {showWord && (
+        <p className="font-body text-b2-desktop font-medium text-midnight">
+          {current ? (
+            RATING_WORDS[current - 1]
+          ) : (
+            <span className="font-normal text-grey">Tap a star to rate</span>
+          )}
+        </p>
+      )}
     </div>
   );
 }
@@ -80,10 +108,18 @@ function StarInput({
 export default function WriteReviewButton({
   tourSlug,
   tourName,
+  hub = false,
+  triggerClassName,
 }: {
-  tourSlug: string;
-  tourName: string;
+  /** Tour mode: fixed tour to review (per-tour page). */
+  tourSlug?: string;
+  tourName?: string;
+  /** Hub mode: no fixed tour — the traveler's email resolves which tours they can review. */
+  hub?: boolean;
+  /** Override the trigger button's styling (e.g. to match the hub card CTA). */
+  triggerClassName?: string;
 }) {
+  const hubMode = hub;
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify");
   const [confirmClose, setConfirmClose] = useState(false);
@@ -92,6 +128,13 @@ export default function WriteReviewButton({
   const [identifier, setIdentifier] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [verifyError, setVerifyError] = useState<string | null>(null);
+  // The tour being reviewed. Fixed from props on a tour page; chosen after the
+  // email lookup on the hub.
+  const [selected, setSelected] = useState<{ slug: string; name: string } | null>(
+    tourSlug && tourName ? { slug: tourSlug, name: tourName } : null,
+  );
+  // Hub mode: the tours the traveler's email is eligible to review.
+  const [hubTours, setHubTours] = useState<{ slug: string; name: string }[]>([]);
 
   // Form
   const [rating, setRating] = useState(0);
@@ -125,6 +168,8 @@ export default function WriteReviewButton({
     setIdentifier("");
     setVerifyError(null);
     setConfirmClose(false);
+    setHubTours([]);
+    setSelected(tourSlug && tourName ? { slug: tourSlug, name: tourName } : null);
     setRating(0);
     setCategoryRatings({});
     setFirstName("");
@@ -169,19 +214,47 @@ export default function WriteReviewButton({
     setVerifying(true);
     setVerifyError(null);
     try {
-      const res = await fetch("/api/reviews/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier, tourSlug }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        setVerifyError(data.error || "We couldn't verify that booking.");
-        return;
+      if (hubMode) {
+        // Look the traveler up by email and surface the tours they can review.
+        const res = await fetch("/api/reviews/my-bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identifier }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          setVerifyError(data.error || "We couldn't find your bookings.");
+          return;
+        }
+        if (data.firstName) setFirstName(data.firstName);
+        if (data.nationality) setNationality(data.nationality);
+        const tours = (data.tours ?? []) as { slug: string; name: string }[];
+        if (tours.length === 0) {
+          setVerifyError("We couldn't match your booking to a reviewable tour.");
+          return;
+        }
+        setHubTours(tours);
+        if (tours.length === 1) {
+          setSelected(tours[0]);
+          setStep("form");
+        } else {
+          setStep("select");
+        }
+      } else {
+        const res = await fetch("/api/reviews/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identifier, tourSlug }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          setVerifyError(data.error || "We couldn't verify that booking.");
+          return;
+        }
+        if (data.firstName) setFirstName(data.firstName);
+        if (data.nationality) setNationality(data.nationality);
+        setStep("form");
       }
-      if (data.firstName) setFirstName(data.firstName);
-      if (data.nationality) setNationality(data.nationality);
-      setStep("form");
     } catch {
       setVerifyError("Something went wrong. Please try again.");
     } finally {
@@ -196,7 +269,7 @@ export default function WriteReviewButton({
     setBusy("avatar");
     setFormError(null);
     try {
-      const url = await uploadImage(file, "avatar", tourSlug);
+      const url = await uploadImage(file, "avatar", selected?.slug ?? "");
       setAvatar(url);
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Upload failed.");
@@ -215,7 +288,7 @@ export default function WriteReviewButton({
     setFormError(null);
     try {
       for (const file of files.slice(0, room)) {
-        const url = await uploadImage(file, "photo", tourSlug);
+        const url = await uploadImage(file, "photo", selected?.slug ?? "");
         setPhotos((prev) => [...prev, url]);
       }
     } catch (err) {
@@ -232,7 +305,7 @@ export default function WriteReviewButton({
     setBusy("video");
     setFormError(null);
     try {
-      const url = await uploadImage(file, "video", tourSlug);
+      const url = await uploadImage(file, "video", selected?.slug ?? "");
       setVideoUrl(url);
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Upload failed.");
@@ -247,6 +320,7 @@ export default function WriteReviewButton({
     if (rating < 1) return setFormError("Please choose a star rating.");
     if (body.trim().length < 4) return setFormError("Please write a short review.");
     if (!firstName.trim()) return setFormError("Please enter your first name.");
+    if (!selected) return setFormError("Please pick which tour you travelled with.");
 
     setSubmitting(true);
     try {
@@ -255,7 +329,7 @@ export default function WriteReviewButton({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           identifier,
-          tourSlug,
+          tourSlug: selected.slug,
           rating,
           categoryRatings,
           title: title.trim() || undefined,
@@ -282,17 +356,17 @@ export default function WriteReviewButton({
   }
 
   const inputCls =
-    "w-full rounded-md border border-light-grey bg-white px-4 py-3 font-body text-b2-desktop text-midnight outline-none focus:border-crimson-red placeholder:text-grey";
-  const labelCls = "mb-1.5 block font-sans text-h6-desktop font-bold text-midnight";
+    "w-full rounded-md border border-light-grey bg-white px-3.5 py-2.5 font-body text-b4-desktop text-midnight outline-none transition-colors placeholder:text-grey focus:border-crimson-red focus:ring-4 focus:ring-crimson-red/10";
+  const labelCls = "mb-1.5 block font-body text-b4-desktop font-semibold text-midnight";
   const pillButtonCls =
-    "inline-flex items-center justify-center gap-2 rounded-full bg-crimson-red px-6 py-3 font-body text-b2-desktop font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium disabled:opacity-50";
+    "inline-flex items-center justify-center gap-2 rounded-full bg-crimson-red px-6 py-2.5 font-body text-b4-desktop font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium disabled:opacity-50";
 
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={pillButtonCls}
+        className={triggerClassName ?? pillButtonCls}
       >
         Write a review
       </button>
@@ -306,33 +380,35 @@ export default function WriteReviewButton({
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label={`Write a review for ${tourName}`}
-            className="no-scrollbar relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-lg bg-white p-6 shadow-xlarge md:rounded-lg md:p-8"
+            aria-label={selected ? `Write a review for ${selected.name}` : "Write a review"}
+            className="no-scrollbar relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-lg bg-white p-5 shadow-xlarge md:rounded-lg md:p-6"
           >
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <h3 className="font-sans text-h4-mobile md:text-h4-desktop text-midnight">
-                  Review {tourName}
+            <div className="-mx-5 mb-6 border-b border-light-grey px-5 pb-4 md:-mx-6 md:px-6">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="min-w-0 font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                  {selected ? `Review ${selected.name}` : "Write a review"}
                 </h3>
-                <p className="mt-1 font-body text-b4-desktop text-grey">
-                  Reviews are from verified travelers only.
-                </p>
+                <button
+                  type="button"
+                  onClick={requestClose}
+                  aria-label="Close"
+                  className="-mr-1.5 -mt-1.5 shrink-0 rounded-full p-1.5 text-dark-gray transition-colors hover:bg-light-grey"
+                >
+                  <X className="size-5" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={requestClose}
-                aria-label="Close"
-                className="shrink-0 rounded-full p-1.5 text-dark-gray hover:bg-light-grey"
-              >
-                <X className="size-5" />
-              </button>
+              <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-spring-green/10 px-3 py-1 font-body text-b4-desktop font-medium text-spring-green">
+                <CheckCircle2 className="size-3.5" />
+                Verified travelers only
+              </span>
             </div>
 
             {step === "verify" && (
               <form onSubmit={handleVerify} className="space-y-4">
                 <p className="font-body text-b2-desktop text-midnight">
-                  Enter the email address you booked with so we can confirm you travelled
-                  with us.
+                  {hubMode
+                    ? "Enter the email you booked with and we'll pull up the tours you can review."
+                    : "Enter the email address you booked with so we can confirm you travelled with us."}
                 </p>
                 <div>
                   <label htmlFor="identifier" className={labelCls}>
@@ -358,13 +434,39 @@ export default function WriteReviewButton({
                   className={`w-full ${pillButtonCls}`}
                 >
                   {verifying && <Loader2 className="size-4 animate-spin" />}
-                  {verifying ? "Verifying…" : "Verify booking"}
+                  {verifying ? "Checking…" : hubMode ? "Find my tours" : "Verify booking"}
                 </button>
               </form>
             )}
 
+            {step === "select" && (
+              <div className="space-y-4">
+                <p className="font-body text-b2-desktop text-midnight">
+                  Which tour did you travel with?
+                </p>
+                <div className="max-h-80 space-y-2 overflow-auto">
+                  {hubTours.map((t) => (
+                    <button
+                      key={t.slug}
+                      type="button"
+                      onClick={() => {
+                        setSelected(t);
+                        setStep("form");
+                      }}
+                      className="flex w-full items-center justify-between gap-3 rounded-md border border-light-grey px-4 py-2.5 text-left font-body text-b4-desktop text-midnight transition-colors hover:border-crimson-red hover:bg-light-grey"
+                    >
+                      <span>{t.name}</span>
+                      <span aria-hidden className="text-grey">
+                        →
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {step === "form" && (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Honeypot — hidden from users, catches bots. */}
                 <input
                   type="text"
@@ -375,28 +477,106 @@ export default function WriteReviewButton({
                   className="hidden"
                 />
 
-                <div>
-                  <span className={labelCls}>Your rating</span>
-                  <StarInput value={rating} onChange={setRating} />
+                {/* Overall experience — the headline rating, elevated. */}
+                <div className="rounded-lg bg-light-grey/50 p-6 text-center">
+                  <p className="font-body text-b2-mobile md:text-b2-desktop text-grey">
+                    How was your overall experience?
+                  </p>
+                  <div className="mt-4 flex justify-center">
+                    <StarInput size="lg" showWord value={rating} onChange={setRating} />
+                  </div>
                 </div>
 
+                {/* Profile photo + first name + nationality */}
+                <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+                  <div className="flex shrink-0 flex-col items-center gap-1.5">
+                    <div className="relative">
+                      <div className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-light-grey">
+                        {avatar ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={avatar} alt="" className="size-full object-cover" />
+                        ) : (
+                          <span className="font-sans text-h5-desktop font-bold text-grey">
+                            {firstName.charAt(0).toUpperCase() || "?"}
+                          </span>
+                        )}
+                      </div>
+                      {avatar ? (
+                        <button
+                          type="button"
+                          aria-label="Remove profile photo"
+                          onClick={() => setAvatar(null)}
+                          className="absolute -bottom-1 -right-1 flex size-7 items-center justify-center rounded-full bg-crimson-red text-white shadow-small transition-colors hover:bg-light-red"
+                        >
+                          <X className="size-4" />
+                        </button>
+                      ) : (
+                        <label
+                          aria-label="Add profile photo"
+                          className="absolute -bottom-1 -right-1 flex size-7 cursor-pointer items-center justify-center rounded-full bg-crimson-red text-white shadow-small transition-colors hover:bg-light-red"
+                        >
+                          {busy === "avatar" ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            <Camera className="size-4" />
+                          )}
+                          <input type="file" accept="image/*" className="hidden" onChange={handleAvatar} />
+                        </label>
+                      )}
+                    </div>
+                    <span className="font-body text-b4-desktop text-grey">Photo</span>
+                  </div>
+
+                  <div className="grid w-full flex-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="firstName" className={labelCls}>
+                        First name
+                      </label>
+                      <input
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className={inputCls}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="nationality" className={labelCls}>
+                        Nationality <span className="font-normal text-grey">(optional)</span>
+                      </label>
+                      <NationalitySelect
+                        id="nationality"
+                        value={nationality}
+                        onChange={setNationality}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <hr className="border-light-grey" />
+
+                {/* Rate by category */}
                 <div>
-                  <span className={labelCls}>
-                    Rate by category{" "}
-                    <span className="font-body text-b4-desktop font-normal text-grey">
-                      (optional)
+                  <div className="mb-3">
+                    <span className="font-body text-b4-desktop font-semibold text-midnight">
+                      Rate by category{" "}
+                      <span className="font-normal text-grey">(optional)</span>
                     </span>
-                  </span>
-                  <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                    <p className="mt-0.5 font-body text-b4-desktop text-grey">
+                      Help others know what stood out
+                    </p>
+                  </div>
+                  <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
                     {REVIEW_CATEGORIES.map((cat) => (
                       <div
                         key={cat.key}
                         className="flex items-center justify-between gap-3"
                       >
-                        <span className="font-body text-b2-desktop text-midnight">
+                        <span className="font-body text-b4-desktop text-midnight">
                           {cat.label}
                         </span>
                         <StarInput
+                          size="sm"
                           value={categoryRatings[cat.key] ?? 0}
                           onChange={(n) =>
                             setCategoryRatings((prev) => ({ ...prev, [cat.key]: n }))
@@ -407,30 +587,7 @@ export default function WriteReviewButton({
                   </div>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="firstName" className={labelCls}>
-                      First name
-                    </label>
-                    <input
-                      id="firstName"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className={inputCls}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="nationality" className={labelCls}>
-                      Nationality <span className="font-normal text-grey">(optional)</span>
-                    </label>
-                    <NationalitySelect
-                      id="nationality"
-                      value={nationality}
-                      onChange={setNationality}
-                    />
-                  </div>
-                </div>
+                <hr className="border-light-grey" />
 
                 <div>
                   <label htmlFor="title" className={labelCls}>
@@ -444,20 +601,28 @@ export default function WriteReviewButton({
                     maxLength={120}
                     className={inputCls}
                   />
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="font-body text-b4-desktop text-grey">
+                  <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1 font-body text-b4-desktop text-grey">
+                      <Sparkles className="size-3.5" />
                       Need inspiration?
                     </span>
-                    {HEADLINE_SUGGESTIONS.map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => setTitle((t) => (t.trim() ? t : s))}
-                        className="rounded-full bg-light-grey px-3 py-1 font-body text-b4-desktop text-midnight transition-colors hover:bg-light-grey/70"
-                      >
-                        {s}
-                      </button>
-                    ))}
+                    {HEADLINE_SUGGESTIONS.map((s) => {
+                      const active = title.trim() === s;
+                      return (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => setTitle(active ? "" : s)}
+                          className={`rounded-full px-3 py-1 font-body text-b4-desktop transition-colors ${
+                            active
+                              ? "bg-midnight text-white"
+                              : "bg-light-grey text-midnight hover:bg-light-grey/70"
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -469,146 +634,66 @@ export default function WriteReviewButton({
                     id="body"
                     value={body}
                     onChange={setBody}
-                    placeholder="Tell fellow travelers about your experience…"
+                    placeholder="Tell fellow travelers about your experience — the highlights, the guide, the food, and what you'd tell a friend."
                     highlighted
                   />
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  {/* Avatar */}
-                  <div>
-                    <span className={labelCls}>
-                      Profile photo <span className="font-normal text-grey">(optional)</span>
+                <hr className="border-light-grey" />
+
+                {/* Tour photos + video */}
+                <div>
+                  <div className="mb-1 flex items-baseline justify-between gap-2">
+                    <span className="font-body text-b4-desktop font-semibold text-midnight">
+                      Tour photos <span className="font-normal text-grey">(optional)</span>
                     </span>
-                    <div className="flex items-center gap-3">
-                      <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-light-grey">
-                        {avatar ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={avatar} alt="" className="size-full object-cover" />
-                        ) : (
-                          <span className="flex size-full items-center justify-center font-sans font-bold text-midnight">
-                            {firstName.charAt(0).toUpperCase() || "?"}
+                    <span className="font-body text-b4-desktop text-grey">
+                      {photos.length}/{MAX_PHOTOS}
+                    </span>
+                  </div>
+                  <p className="mb-2.5 font-body text-b4-desktop text-grey">
+                    Add up to {MAX_PHOTOS}. Your first photo becomes the cover.
+                  </p>
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {photos.map((src, i) => (
+                      <div
+                        key={src}
+                        className="group relative aspect-square overflow-hidden rounded-md bg-light-grey"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={src} alt="" className="size-full object-cover" />
+                        {i === 0 && (
+                          <span className="absolute left-1 top-1 rounded-full bg-midnight/70 px-2 py-0.5 font-body text-b4-desktop text-white">
+                            Cover
                           </span>
                         )}
+                        <button
+                          type="button"
+                          aria-label="Remove photo"
+                          onClick={() => setPhotos((p) => p.filter((_, j) => j !== i))}
+                          className="absolute right-1 top-1 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                        >
+                          <X className="size-3.5" />
+                        </button>
                       </div>
-                      <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-light-grey px-3 py-2 font-body text-b4-desktop text-dark-gray hover:bg-light-grey">
-                        {busy === "avatar" ? (
-                          <Loader2 className="size-4 animate-spin" />
+                    ))}
+                    {photos.length < MAX_PHOTOS && (
+                      <button
+                        type="button"
+                        disabled={busy === "photos"}
+                        onClick={() => photoInputRef.current?.click()}
+                        className="flex aspect-square flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-grey/40 text-grey transition-colors hover:border-crimson-red hover:text-crimson-red disabled:opacity-50"
+                      >
+                        {busy === "photos" ? (
+                          <Loader2 className="size-5 animate-spin" />
                         ) : (
-                          <ImagePlus className="size-4" />
+                          <>
+                            <ImagePlus className="size-5" />
+                            <span className="font-body text-b4-desktop">Add</span>
+                          </>
                         )}
-                        {busy === "avatar" ? "Uploading…" : avatar ? "Change" : "Upload"}
-                        <input type="file" accept="image/*" className="hidden" onChange={handleAvatar} />
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Video */}
-                  <div>
-                    <span className={labelCls}>
-                      Tour video <span className="font-normal text-grey">(optional)</span>
-                    </span>
-                    <div className="w-24">
-                      {videoUrl ? (
-                        <div className="group relative aspect-square overflow-hidden rounded-md bg-midnight">
-                          <video
-                            src={videoUrl}
-                            muted
-                            loop
-                            autoPlay
-                            playsInline
-                            className="size-full object-cover"
-                          />
-                          <button
-                            type="button"
-                            aria-label="Remove video"
-                            onClick={() => setVideoUrl(null)}
-                            className="absolute right-1 top-1 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                          >
-                            <X className="size-3.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          disabled={busy === "video"}
-                          onClick={() => videoInputRef.current?.click()}
-                          className="flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-grey/40 text-grey transition-colors hover:border-crimson-red hover:text-crimson-red"
-                        >
-                          {busy === "video" ? (
-                            <Loader2 className="size-5 animate-spin" />
-                          ) : (
-                            <>
-                              <VideoIcon className="size-5" />
-                              <span className="font-body text-b4-desktop">Add video</span>
-                            </>
-                          )}
-                        </button>
-                      )}
-                    </div>
-                    <input
-                      ref={videoInputRef}
-                      type="file"
-                      accept="video/*"
-                      className="hidden"
-                      onChange={handleVideo}
-                    />
-                  </div>
-                </div>
-
-                {/* Photos */}
-                <div>
-                  <span className={labelCls}>
-                    Tour photos <span className="font-normal text-grey">(up to {MAX_PHOTOS})</span>
-                  </span>
-                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                    {Array.from({ length: MAX_PHOTOS }).map((_, i) => {
-                      const src = photos[i];
-                      if (src) {
-                        return (
-                          <div
-                            key={src}
-                            className="group relative aspect-square overflow-hidden rounded-md bg-light-grey"
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={src} alt="" className="size-full object-cover" />
-                            <button
-                              type="button"
-                              aria-label="Remove photo"
-                              onClick={() => setPhotos((p) => p.filter((_, j) => j !== i))}
-                              className="absolute right-1 top-1 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                              <X className="size-3.5" />
-                            </button>
-                          </div>
-                        );
-                      }
-                      const isNextSlot = i === photos.length;
-                      return (
-                        <button
-                          key={`empty-${i}`}
-                          type="button"
-                          disabled={!isNextSlot || busy === "photos"}
-                          onClick={() => photoInputRef.current?.click()}
-                          className={`flex aspect-square flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed transition-colors ${
-                            isNextSlot
-                              ? "border-grey/40 text-grey hover:border-crimson-red hover:text-crimson-red"
-                              : "cursor-default border-light-grey text-light-grey"
-                          }`}
-                        >
-                          {busy === "photos" && isNextSlot ? (
-                            <Loader2 className="size-5 animate-spin" />
-                          ) : (
-                            <>
-                              <ImagePlus className="size-5" />
-                              {isNextSlot && (
-                                <span className="font-body text-b4-desktop">Add photo</span>
-                              )}
-                            </>
-                          )}
-                        </button>
-                      );
-                    })}
+                      </button>
+                    )}
                   </div>
                   <input
                     ref={photoInputRef}
@@ -620,18 +705,76 @@ export default function WriteReviewButton({
                   />
                 </div>
 
+                {/* Tour video */}
+                <div>
+                  <span className={labelCls}>
+                    Tour video <span className="font-normal text-grey">(optional)</span>
+                  </span>
+                  {videoUrl ? (
+                    <div className="group relative aspect-video w-full max-w-xs overflow-hidden rounded-md bg-midnight">
+                      <video
+                        src={videoUrl}
+                        muted
+                        loop
+                        autoPlay
+                        playsInline
+                        className="size-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        aria-label="Remove video"
+                        onClick={() => setVideoUrl(null)}
+                        className="absolute right-1.5 top-1.5 rounded-full bg-midnight/70 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                      >
+                        <X className="size-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={busy === "video"}
+                      onClick={() => videoInputRef.current?.click()}
+                      className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-dashed border-grey/40 py-4 font-body text-b4-desktop text-grey transition-colors hover:border-crimson-red hover:text-crimson-red disabled:opacity-50"
+                    >
+                      {busy === "video" ? (
+                        <Loader2 className="size-5 animate-spin" />
+                      ) : (
+                        <>
+                          <VideoIcon className="size-5" />
+                          Add a video
+                        </>
+                      )}
+                    </button>
+                  )}
+                  <input
+                    ref={videoInputRef}
+                    type="file"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={handleVideo}
+                  />
+                </div>
+
                 {formError && (
                   <p className="font-body text-b4-desktop text-crimson-red">{formError}</p>
                 )}
 
-                <button
-                  type="submit"
-                  disabled={submitting || !!busy}
-                  className={`w-full ${pillButtonCls}`}
-                >
-                  {submitting && <Loader2 className="size-4 animate-spin" />}
-                  {submitting ? "Posting…" : "Post review"}
-                </button>
+                {/* Footer — helper text + submit. */}
+                <div className="-mx-5 flex items-center justify-between gap-3 border-t border-light-grey px-5 pt-5 md:-mx-6 md:px-6">
+                  <p className="font-body text-b4-desktop text-grey">
+                    {rating < 1 || body.trim().length < 4
+                      ? "Add a star rating and a review to post."
+                      : "Looks good — ready to post."}
+                  </p>
+                  <button
+                    type="submit"
+                    disabled={submitting || !!busy}
+                    className={`shrink-0 ${pillButtonCls}`}
+                  >
+                    {submitting && <Loader2 className="size-4 animate-spin" />}
+                    {submitting ? "Posting…" : "Post review"}
+                  </button>
+                </div>
               </form>
             )}
 
