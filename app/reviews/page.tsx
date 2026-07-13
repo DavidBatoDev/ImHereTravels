@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ReviewCard from "@/app/components/reviews/ReviewCard";
@@ -5,6 +6,8 @@ import RatingBreakdown from "@/app/components/reviews/RatingBreakdown";
 import ReviewInsights from "@/app/components/reviews/ReviewInsights";
 import CategoryRatings from "@/app/components/reviews/CategoryRatings";
 import ReviewsFilterBar from "@/app/components/reviews/ReviewsFilterBar";
+import ReviewsPager from "@/app/components/reviews/ReviewsPager";
+import TripStyleRail from "@/app/components/reviews/TripStyleRail";
 import {
   DEFAULT_SORT,
   DEFAULT_SOURCE,
@@ -18,6 +21,7 @@ import {
   type TourOption,
 } from "@/app/components/reviews/reviews-filter";
 import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
+import { TRIP_STYLES } from "@/app/components/reviews/trip-styles";
 import { getAllPublishedReviews, computeCategoryAggregates } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
 import type { PublicReview } from "@/types/review";
@@ -83,7 +87,12 @@ function buildHubJsonLd(reviews: PublicReview[]) {
 export default async function ReviewsHubPage({
   searchParams,
 }: {
-  searchParams: Promise<{ tour?: string; sort?: string; q?: string; source?: string }>;
+  searchParams: Promise<{
+    tour?: string;
+    sort?: string;
+    q?: string;
+    source?: string;
+  }>;
 }) {
   const { tour, sort, q, source } = await searchParams;
   const all = await getAllPublishedReviews();
@@ -123,6 +132,7 @@ export default async function ReviewsHubPage({
   const reviews = sortReviews(filtered, activeSort);
   // Headline count is ALL reviews shown (TourRadar + verified bookers combined).
   const stats = overall(filtered);
+  const summaryCategories = computeCategoryAggregates(filtered);
 
   return (
     <>
@@ -132,7 +142,7 @@ export default async function ReviewsHubPage({
           __html: JSON.stringify(buildHubJsonLd(all.filter((r) => !isExternalSource(r.source)))),
         }}
       />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-clip">
         <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 md:px-8 md:pb-24 md:pt-10">
           <h1 className="font-display text-h1-mobile md:text-h1-desktop text-midnight">
             Traveler Reviews
@@ -142,14 +152,37 @@ export default async function ReviewsHubPage({
           </p>
 
           {stats.count > 0 && (
-            <div className="mt-6 max-w-2xl rounded-lg bg-white p-6 shadow-small md:p-8">
-              <RatingBreakdown reviews={filtered} />
-              <ReviewInsights reviews={filtered} showHighlights={false} />
-              <CategoryRatings categories={computeCategoryAggregates(filtered)} />
+            <div className="mt-6 rounded-lg bg-white p-6 shadow-small md:p-8">
+              {/* No column gap: the divider sits on the exact 50/50 boundary, and
+                  equal padding on each side (pr-10 | pl-10) centers it visually. */}
+              <div
+                className={`grid gap-8 ${
+                  summaryCategories.length > 0
+                    ? "lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-light-grey"
+                    : ""
+                }`}
+              >
+                {/* Left: average + distribution bars, with trust/freshness facts. */}
+                <div className="lg:pr-10">
+                  <RatingBreakdown reviews={filtered} />
+                  <ReviewInsights reviews={filtered} showHighlights={false} />
+                </div>
+                {/* Right: per-category ratings, 2-up, top-aligned with the left
+                    column (first category row level with the rating number). */}
+                {summaryCategories.length > 0 && (
+                  <div className="lg:pl-10">
+                    <CategoryRatings categories={summaryCategories} columns={2} />
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
-          <div className="mt-8">
+          {/* Sticky filter bar: pins at the top (the site nav auto-hides on
+              scroll-down) with a full-bleed page-coloured band, so review cards
+              scroll UNDER it and stay clipped below the search/filter controls.
+              The -mx/px pair extends the band to the section's edges. */}
+          <div className="sticky top-0 z-30 -mx-4 mt-8 bg-light-grey px-4 py-4 md:-mx-8 md:px-8">
             <ReviewsFilterBar
               tours={tours}
               totalCount={all.length}
@@ -161,50 +194,119 @@ export default async function ReviewsHubPage({
             />
           </div>
 
-          {reviews.length === 0 ? (
-            <div className="mt-16 text-center">
-              {activeQuery || activeTour || activeSource !== DEFAULT_SOURCE ? (
-                <>
-                  <p className="font-body text-b2-desktop text-dark-gray">
-                    No reviews match
-                    {activeQuery && (
+          {/* Two-column: trip-style rail (left) + review list (right). Brand
+              stickers bleed off the four corners (resident-hosts pattern); the
+              overflow-x-clip on <main> keeps the off-edge bleed from adding a
+              horizontal scrollbar. `id`/`scroll-mt` = the pager's scroll target
+              when changing pages (lands just below the sticky filter bar). */}
+          <div id="reviews-top" className="relative mt-8 scroll-mt-28">
+            <div
+              className="pointer-events-none absolute -left-12 top-28 -z-10 hidden rotate-6 lg:block"
+              aria-hidden="true"
+            >
+              <Image
+                src="/Stickers/Digital/PNG/Asterisk/Digital_Asterisk_Orange.png"
+                alt=""
+                width={130}
+                height={130}
+                className="object-contain"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute -right-16 top-130 -z-10 hidden rotate-12 lg:block"
+              aria-hidden="true"
+            >
+              <Image
+                src="/Stickers/Digital/PNG/Burst/Digital_Burst_Red.png"
+                alt=""
+                width={180}
+                height={180}
+                className="object-contain"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute left-57 bottom-270 -z-10 hidden -rotate-5 lg:block"
+              aria-hidden="true"
+            >
+              <Image
+                src="/Stickers/Digital/PNG/Clove/Digital_Clove_LightGreen.png"
+                alt=""
+                width={170}
+                height={170}
+                className="object-contain"
+              />
+            </div>
+
+
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[320px_1fr] lg:gap-10">
+              {/* Bottom-sticky sidebar: scrolls with the page until its bottom
+                  card ("Bucket-List Trips") reaches the bottom of the viewport,
+                  then pins there — so that card stays visible while the reviews
+                  keep scrolling. No inner scroll. */}
+              <div className="lg:sticky lg:bottom-8 lg:self-start">
+                <TripStyleRail styles={TRIP_STYLES} />
+              </div>
+
+              <div className="min-w-0">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h2 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                    All reviews
+                  </h2>
+                  <span className="shrink-0 font-body text-b4-desktop text-grey">
+                    {reviews.length} review{reviews.length === 1 ? "" : "s"}
+                  </span>
+                </div>
+
+                {reviews.length === 0 ? (
+                  <div className="mt-12 text-center">
+                    {activeQuery || activeTour || activeSource !== DEFAULT_SOURCE ? (
                       <>
-                        {" "}
-                        <span className="font-medium text-midnight">
-                          &ldquo;{activeQuery}&rdquo;
-                        </span>
+                        <p className="font-body text-b2-desktop text-dark-gray">
+                          No reviews match
+                          {activeQuery && (
+                            <>
+                              {" "}
+                              <span className="font-medium text-midnight">
+                                &ldquo;{activeQuery}&rdquo;
+                              </span>
+                            </>
+                          )}
+                          .
+                        </p>
+                        <Link
+                          href="/reviews"
+                          className="mt-6 inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
+                        >
+                          Clear filters
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <p className="font-body text-b2-desktop text-dark-gray">
+                          No reviews yet — check back soon.
+                        </p>
+                        <Link
+                          href="/tours"
+                          className="mt-6 inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
+                        >
+                          Browse tours
+                        </Link>
                       </>
                     )}
-                    .
-                  </p>
-                  <Link
-                    href="/reviews"
-                    className="mt-6 inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
-                  >
-                    Clear filters
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <p className="font-body text-b2-desktop text-dark-gray">
-                    No reviews yet — check back soon.
-                  </p>
-                  <Link
-                    href="/tours"
-                    className="mt-6 inline-flex items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
-                  >
-                    Browse tours
-                  </Link>
-                </>
-              )}
+                  </div>
+                ) : (
+                  <ReviewsPager
+                    // Remount (reset to page 1) whenever the filters change.
+                    key={`${activeTour ?? ""}|${activeSort}|${activeQuery}|${activeSource}`}
+                    pageSize={10}
+                    items={reviews.map((review) => (
+                      <ReviewCard key={review.id} review={review} showTour variant="row" />
+                    ))}
+                  />
+                )}
+              </div>
             </div>
-          ) : (
-            <ul className="mt-10 columns-1 gap-6 md:mt-12 md:columns-2 lg:columns-3 [&>li]:mb-6 [&>li]:break-inside-avoid">
-              {reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} showTour />
-              ))}
-            </ul>
-          )}
+          </div>
         </section>
         {!activeTour && TOURRADAR_OPERATOR_WIDGET_URL && (
           <TourRadarWidget
