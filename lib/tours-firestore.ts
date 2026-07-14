@@ -35,6 +35,7 @@ import type {
   TourReview,
   TourRelated,
   TourBookingCard,
+  TourDatePrice,
 } from "@/types/tour";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -106,6 +107,16 @@ function isoStartDate(td: RawDoc): string {
   return start.toISOString().slice(0, 10);
 }
 
+// A tour date is "past" once its end date is before the start of today, so
+// ended departures drop off the public tour page.
+function isPastDate(td: RawDoc): boolean {
+  const end = td?.endDate?.toDate?.();
+  if (!end) return false;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  return end < startOfToday;
+}
+
 // ─── Transformer ─────────────────────────────────────────────────────────────
 
 function toTour(raw: RawDoc): Tour {
@@ -145,8 +156,42 @@ function toTour(raw: RawDoc): Tour {
     (typeof raw.bookingSlug === "string" && raw.bookingSlug.trim()) ||
     raw.slug ||
     "";
+  // Per-date effective pricing: use per-date custom overrides when set so the
+  // public tour page shows the real price (and any custom reservation fee) for
+  // each departure, matching what the admin configures.
+  const dateSymbol = CURRENCY_SYMBOL[raw.pricing?.currency] ?? "";
+  const dateBasePrice =
+    raw.pricing?.discounted && raw.pricing.discounted > 0
+      ? raw.pricing.discounted
+      : raw.pricing?.original;
+  const dateBaseDeposit = raw.pricing?.deposit;
+  const perDatePrice = (d: RawDoc): TourDatePrice => {
+    const cOrig = Number(d?.customOriginal);
+    const cDisc = Number(d?.customDiscounted);
+    const cDep = Number(d?.customDeposit);
+    const hasCustomPrice =
+      (Number.isFinite(cDisc) && cDisc > 0) ||
+      (Number.isFinite(cOrig) && cOrig > 0);
+    const price =
+      Number.isFinite(cDisc) && cDisc > 0
+        ? cDisc
+        : Number.isFinite(cOrig) && cOrig > 0
+          ? cOrig
+          : dateBasePrice;
+    const info: TourDatePrice = {
+      amount: price == null ? "" : `${dateSymbol}${Number(price).toLocaleString()}`,
+      isCustom: hasCustomPrice,
+    };
+    // Surface the reservation fee only when this date overrides it, so the
+    // exception is visible without cluttering every row.
+    if (Number.isFinite(cDep) && cDep > 0 && cDep !== dateBaseDeposit) {
+      info.resFee = `${dateSymbol}${Number(cDep).toLocaleString()}`;
+    }
+    return info;
+  };
+
   const dateEntries = (raw.travelDates ?? [])
-    .filter((d: RawDoc) => d.isAvailable !== false)
+    .filter((d: RawDoc) => d.isAvailable !== false && !isPastDate(d))
     .map((d: RawDoc) => {
       const value = formatDateRange(d);
       if (!value) return null;
@@ -155,10 +200,10 @@ function toTour(raw: RawDoc): Tour {
         iso && dateLinkSlug
           ? `${RESERVATION_BOOKING_FORM_URL}?tour=${dateLinkSlug}&tourdate=${iso}`
           : "";
-      return { value, link };
+      return { value, link, price: perDatePrice(d) };
     })
     .filter(Boolean)
-    .slice(0, 3) as { value: string; link: string }[];
+    .slice(0, 3) as { value: string; link: string; price: TourDatePrice }[];
   // Always surface "Tour Dates" — when there are no available dates, KeyFacts
   // renders "To be announced" (mirrors the admin tour form's derived row).
   keyFacts.push({
@@ -166,6 +211,7 @@ function toTour(raw: RawDoc): Tour {
     label: "Tour Dates",
     values: dateEntries.map((e) => e.value),
     links: dateEntries.map((e) => e.link),
+    datePrices: dateEntries.map((e) => e.price),
   });
   // Use stored keyFacts (admin-edited) when available; fall back to derived
   if (Array.isArray(details.keyFacts) && details.keyFacts.length > 0) {

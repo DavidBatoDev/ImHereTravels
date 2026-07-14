@@ -67,25 +67,49 @@ export default function KeyFacts({ items, tourSlug }: { items: TourKeyFact[]; to
                           ?? (iso
                             ? `https://admin.imheretravels.com/reservation-booking-form?tour=${tourSlug}&tourdate=${iso}`
                             : "");
+                        const price = fact.datePrices?.[index];
                         const inner = (
                           <span className="inline-flex items-center gap-2">
                             <span
-                              className="mt-0.5 inline-block size-1.5 shrink-0 rounded-full bg-crimson-red"
+                              className="inline-block size-1.5 shrink-0 rounded-full bg-crimson-red"
                               aria-hidden="true"
                             />
                             <span>{v}</span>
                           </span>
                         );
-                        return href ? (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="transition-colors hover:text-crimson-red hover:underline underline-offset-2"
-                          >
-                            {inner}
-                          </a>
-                        ) : inner;
+                        return (
+                          <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+                            {href ? (
+                              <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="transition-colors hover:text-crimson-red hover:underline underline-offset-2"
+                              >
+                                {inner}
+                              </a>
+                            ) : (
+                              inner
+                            )}
+                            {/* Only surface a price when this date overrides the
+                                default — the base "From" price is shown in the
+                                booking card, so repeating it here is redundant. */}
+                            {price && (price.isCustom || price.resFee) ? (
+                              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                                {price.isCustom && price.amount ? (
+                                  <span className="inline-flex items-center rounded-full border border-crimson-red/20 bg-light-red/10 px-2.5 py-0.5 font-sans font-bold text-crimson-red">
+                                    {price.amount}
+                                  </span>
+                                ) : null}
+                                {price.resFee ? (
+                                  <span className="inline-flex items-center rounded-full bg-light-grey px-2 py-0.5 font-body text-b4-mobile md:text-b4-desktop font-medium text-dark-gray">
+                                    Res. fee {price.resFee}
+                                  </span>
+                                ) : null}
+                              </span>
+                            ) : null}
+                          </span>
+                        );
                       })() : (
                         v
                       )}

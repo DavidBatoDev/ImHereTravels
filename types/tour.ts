@@ -24,11 +24,22 @@ export interface TourTag {
   icon: TourIcon;
 }
 
+// Per-date pricing shown on the "Tour Dates" fact. `isCustom` marks a date that
+// overrides the tour's base price (so the UI can set it apart); `resFee` is only
+// present when the date also overrides the reservation fee.
+export interface TourDatePrice {
+  amount: string;
+  isCustom: boolean;
+  resFee?: string;
+}
+
 export interface TourKeyFact {
   icon: TourIcon;
   label: string;
   values: string[];
   links?: string[];
+  // Parallel to `values`; only populated for the "Tour Dates" fact.
+  datePrices?: TourDatePrice[];
 }
 
 export interface TourIncludedItem {
