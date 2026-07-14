@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ReviewCard from "@/app/components/reviews/ReviewCard";
 import TourReviewsSection from "@/app/components/reviews/TourReviewsSection";
 import RatingBreakdown from "@/app/components/reviews/RatingBreakdown";
@@ -92,18 +93,73 @@ export default function Testimonials({
 
   return (
     <section id="reviews" className="mx-auto w-full max-w-7xl scroll-mt-24 px-4 py-10 md:px-8 md:py-14">
-      <div className="flex items-start justify-between gap-4">
-        <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
-          {HEADING}
-        </h2>
-        <WriteReviewButton tourSlug={tourSlug} tourName={tourName} />
-      </div>
+      <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
+        {HEADING}
+      </h2>
 
+      {/* Same summary-card template as the reviews hub, for a uniform look: rating
+          breakdown + write-a-review CTA split by a vertical divider, then
+          travelers-love + per-category ratings full width below. */}
       {hasReal && (
-        <div className="mt-6 max-w-2xl rounded-lg bg-white p-6 shadow-small md:p-8">
-          <RatingBreakdown reviews={reviews!} />
-          <ReviewInsights reviews={reviews!} />
-          <CategoryRatings categories={computeCategoryAggregates(reviews!)} />
+        <div className="mt-6 rounded-lg bg-white p-6 shadow-small md:p-8">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-light-grey">
+            <div className="lg:pr-10">
+              <RatingBreakdown reviews={reviews!} />
+              <ReviewInsights reviews={reviews!} showHighlights={false} />
+            </div>
+            <div className="flex flex-col justify-center gap-4 lg:pl-10">
+              <div>
+                <h3 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+                  Write your Experience
+                </h3>
+                <p className="mt-2 max-w-md font-body text-b4-mobile md:text-b4-desktop text-grey">
+                  Share your story and help fellow travelers choose their next
+                  adventure. Every voice adds to a community where each
+                  experience counts.
+                </p>
+              </div>
+              <WriteReviewButton
+                tourSlug={tourSlug}
+                tourName={tourName}
+                triggerClassName="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6 border-t border-light-grey pt-6">
+            <ReviewInsights reviews={reviews!} showFacts={false} />
+            <div className="mt-4">
+              <CategoryRatings categories={computeCategoryAggregates(reviews!)} layout="row" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* No reviews for this tour yet — a CTA-only card (no empty rating
+          breakdown to show) inviting the first review, plus a way to browse
+          real reviews from other trips in the meantime. */}
+      {!hasReal && (
+        <div className="mt-6 rounded-lg bg-white p-6 shadow-small md:p-8">
+          <h3 className="font-sans text-h5-mobile md:text-h5-desktop text-midnight">
+            Write your Experience
+          </h3>
+          <p className="mt-2 max-w-md font-body text-b4-mobile md:text-b4-desktop text-grey">
+            Be the first to share your story and help fellow travelers choose
+            their next adventure.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <WriteReviewButton
+              tourSlug={tourSlug}
+              tourName={tourName}
+              triggerClassName="inline-flex w-fit items-center justify-center rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white shadow-small transition-all hover:bg-light-red hover:shadow-medium"
+            />
+            <Link
+              href="/reviews"
+              className="font-body text-b4-desktop font-medium text-crimson-red underline underline-offset-2 hover:text-light-red"
+            >
+              See reviews from other trips
+            </Link>
+          </div>
         </div>
       )}
 

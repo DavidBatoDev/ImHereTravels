@@ -46,3 +46,6 @@ next-env.d.ts
 # data
 data/json
 data/html
+
+# Local npm cache (should never be tracked)
+.npm-cache/

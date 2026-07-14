@@ -277,9 +277,11 @@ export async function findReviewableToursForIdentifier(
       name: tour.name,
       started: tourHasStarted(b),
       reservationDate: fmtDate(toDate(b.reservationDate)),
-      // `formattedDate` is the pre-formatted tour date; fall back to the raw Timestamp.
+      // Prefer a cleanly-formatted date from the Timestamp; fall back to the raw
+      // pre-formatted string only if the Timestamp won't parse.
       tourDate:
-        (typeof b.formattedDate === "string" && b.formattedDate) || fmtDate(toDate(b.tourDate)),
+        fmtDate(toDate(b.tourDate)) ||
+        (typeof b.formattedDate === "string" ? b.formattedDate : undefined),
       tourDuration: typeof b.tourDuration === "string" ? b.tourDuration : undefined,
       status: tourPhase(b),
     });
