@@ -17,29 +17,70 @@ export default function Itinerary({
   section: Tour["itinerary"];
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const activeIndexRef = useRef(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const rowRefs = useRef<(HTMLLIElement | null)[]>([]);
+  // True while the previously-active row is still collapsing / the newly
+  // active one is still expanding. Auto-switching is blocked until it clears,
+  // so a fast scroll can never fire a second switch mid-transition — which is
+  // what was showing two days expanded at once (the old one hadn't finished
+  // closing before the next one started opening).
+  const isTransitioning = useRef(false);
+
+  const setActiveDay = (index: number) => {
+    if (index === activeIndexRef.current) return;
+    activeIndexRef.current = index;
+    isTransitioning.current = true;
+    // Safety net: if onAnimationComplete never fires for some edge case
+    // (e.g. the row unmounts mid-transition), don't leave the lock stuck.
+    window.setTimeout(() => {
+      isTransitioning.current = false;
+    }, 700);
+    setActiveIndex(index);
+  };
 
   useEffect(() => {
-    // Trigger line: 30% from the top of the viewport.
-    // Whichever day-row's top edge is closest to this line becomes active.
-    const TRIGGER_RATIO = 0.3;
+    // Trigger line: near natural reading eye-line, not the top edge.
+    // A row opens only while its heading is in this band, so the expanded
+    // details appear while the user can still comfortably read them. Kept
+    // tight so a small scroll doesn't already have two adjacent headings
+    // both qualifying as "close enough".
+    const TRIGGER_RATIO = 0.42;
+    const ACTIVATION_BELOW_LINE_PX = 90;
+    const ACTIVATION_ABOVE_LINE_PX = 16;
 
     function onScroll() {
+      if (document.documentElement.dataset.reviewsScrollLock === "true") return;
+      if (isTransitioning.current) return;
+
+      const sectionEl = sectionRef.current;
+      if (!sectionEl) return;
+
       const triggerY = window.innerHeight * TRIGGER_RATIO;
+      const sectionBounds = sectionEl.getBoundingClientRect();
+      if (sectionBounds.top > triggerY || sectionBounds.bottom < triggerY) {
+        return;
+      }
+
       let bestIdx = 0;
       let bestDist = Infinity;
 
       rowRefs.current.forEach((el, i) => {
         if (!el) return;
         const { top } = el.getBoundingClientRect();
-        const dist = Math.abs(top - triggerY);
+        const offset = top - triggerY;
+        if (offset < -ACTIVATION_ABOVE_LINE_PX || offset > ACTIVATION_BELOW_LINE_PX) {
+          return;
+        }
+        const dist = Math.abs(offset);
         if (dist < bestDist) {
           bestDist = dist;
           bestIdx = i;
         }
       });
 
-      setActiveIndex(bestIdx);
+      if (bestDist === Infinity) return;
+      setActiveDay(bestIdx);
     }
 
     // Run once on mount so day 1 expands immediately if the section is visible.
@@ -50,7 +91,7 @@ export default function Itinerary({
   }, []);
 
   return (
-    <section className="mt-10 w-full md:mt-14">
+    <section ref={sectionRef} className="mt-10 w-full md:mt-14">
       <h2 className="font-sans text-h3-mobile md:text-h3-desktop text-midnight">
         {section.heading}
       </h2>
@@ -61,7 +102,10 @@ export default function Itinerary({
             key={day.dayNumber}
             day={day}
             open={activeIndex === i}
-            onClick={() => setActiveIndex(i)}
+            onClick={() => setActiveDay(i)}
+            onSettled={() => {
+              isTransitioning.current = false;
+            }}
             ref={(el) => {
               rowRefs.current[i] = el;
             }}
@@ -80,15 +124,17 @@ interface DayItemProps {
   day: TourDay;
   open: boolean;
   onClick: () => void;
+  onSettled: () => void;
 }
 
 const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
-  { day, open, onClick },
+  { day, open, onClick, onSettled },
   ref,
 ) {
   return (
     <motion.li
       ref={ref}
+      layout="position"
       className="py-6"
       initial={{ opacity: 0, scale: 0.96, y: 16 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -135,6 +181,7 @@ const DayItem = forwardRef<HTMLLIElement, DayItemProps>(function DayItem(
               y: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
             }}
             className="overflow-hidden"
+            onAnimationComplete={onSettled}
           >
             <div
               className={`mt-5 grid grid-cols-1 gap-x-6 gap-y-4 ${

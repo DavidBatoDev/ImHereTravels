@@ -33,29 +33,67 @@ export default function FaqAccordion({
   expandAll = null,
 }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(defaultOpen);
+  const openIndexRef = useRef<number | null>(defaultOpen);
+  const listRef = useRef<HTMLDListElement | null>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // True while a row is still collapsing/expanding. Auto-switching waits for
+  // this to clear so a fast scroll can't fire a second switch mid-transition
+  // — which is what showed two items expanded at once.
+  const isTransitioning = useRef(false);
+
+  const setOpenItem = (index: number | null) => {
+    if (index === openIndexRef.current) return;
+    openIndexRef.current = index;
+    isTransitioning.current = true;
+    // Safety net: if onAnimationComplete never fires for some edge case
+    // (e.g. the row unmounts mid-transition), don't leave the lock stuck.
+    window.setTimeout(() => {
+      isTransitioning.current = false;
+    }, 600);
+    setOpenIndex(index);
+  };
 
   useEffect(() => {
     if (!scrollActive || items.length === 0 || expandAll === true) return;
 
-    const TRIGGER_RATIO = 0.3;
+    // Kept tight so a small scroll doesn't already have two adjacent
+    // questions both qualifying as "close enough".
+    const TRIGGER_RATIO = 0.42;
+    const ACTIVATION_BELOW_LINE_PX = 90;
+    const ACTIVATION_ABOVE_LINE_PX = 16;
 
     function onScroll() {
+      if (document.documentElement.dataset.reviewsScrollLock === "true") return;
+      if (isTransitioning.current) return;
+
+      const listEl = listRef.current;
+      if (!listEl) return;
+
       const triggerY = window.innerHeight * TRIGGER_RATIO;
+      const listBounds = listEl.getBoundingClientRect();
+      if (listBounds.top > triggerY || listBounds.bottom < triggerY) {
+        return;
+      }
+
       let bestIdx = 0;
       let bestDist = Infinity;
 
       rowRefs.current.forEach((el, i) => {
         if (!el) return;
         const { top } = el.getBoundingClientRect();
-        const dist = Math.abs(top - triggerY);
+        const offset = top - triggerY;
+        if (offset < -ACTIVATION_ABOVE_LINE_PX || offset > ACTIVATION_BELOW_LINE_PX) {
+          return;
+        }
+        const dist = Math.abs(offset);
         if (dist < bestDist) {
           bestDist = dist;
           bestIdx = i;
         }
       });
 
-      setOpenIndex(bestIdx);
+      if (bestDist === Infinity) return;
+      setOpenItem(bestIdx);
     }
 
     onScroll();
@@ -64,12 +102,13 @@ export default function FaqAccordion({
   }, [items.length, scrollActive, expandAll]);
 
   return (
-    <dl>
+    <dl ref={listRef}>
       {items.map((item, i) => {
         const isOpen = expandAll != null ? expandAll : openIndex === i;
         return (
-          <div
+          <motion.div
             key={i}
+            layout="position"
             ref={(el) => {
               rowRefs.current[i] = el;
             }}
@@ -77,7 +116,7 @@ export default function FaqAccordion({
             <div className="py-2">
               <button
                 type="button"
-                onClick={() => setOpenIndex(isOpen ? null : i)}
+                onClick={() => setOpenItem(isOpen ? null : i)}
                 aria-expanded={isOpen}
                 className="flex w-full cursor-pointer items-center justify-between gap-4 py-3 text-left font-sans text-h6-mobile text-midnight md:text-h6-desktop"
               >
@@ -103,6 +142,9 @@ export default function FaqAccordion({
                       opacity: { duration: 0.25, ease: "easeOut" },
                     }}
                     className="overflow-hidden"
+                    onAnimationComplete={() => {
+                      isTransitioning.current = false;
+                    }}
                   >
                     <motion.p
                       initial={{ y: -6 }}
@@ -118,7 +160,7 @@ export default function FaqAccordion({
               </AnimatePresence>
             </div>
             {i < items.length - 1 && <div className="h-px w-full bg-[#d7d6db]" />}
-          </div>
+          </motion.div>
         );
       })}
     </dl>

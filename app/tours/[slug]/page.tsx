@@ -2,10 +2,18 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Footer from "@/app/components/global/Footer";
 import ShareButton from "./_components/ShareButton";
+import ReviewsLink from "./_components/ReviewsLink";
 export const revalidate = 3600; // Re-fetch from Firestore at most once per hour
 
 import { getAllTourSlugs, getTourBySlug, getHostedTourSlugs, getCurrentSlugForPreviousSlug } from "@/lib/tours-firestore";
+import {
+  getReviewsForTour,
+  getAggregateForTour,
+  computeReviewAggregate,
+} from "@/lib/reviews-firestore";
 import type { Tour } from "@/types/tour";
+import { isExternalSource } from "@/types/review";
+import type { PublicReview, ReviewAggregate } from "@/types/review";
 import AutoFitText from "./_components/AutoFitText";
 import Breadcrumbs from "./_components/Breadcrumbs";
 import TourGallery from "./_components/TourGallery";
@@ -20,10 +28,12 @@ import Faqs from "./_components/Faqs";
 import ThingsToKnow from "./_components/ThingsToKnow";
 import Tips from "./_components/Tips";
 import Testimonials from "./_components/Testimonials";
+import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import RelatedTours from "./_components/RelatedTours";
 import CommunityGrid from "./_components/CommunityGrid";
 import BookingCard from "./_components/BookingCard";
 import TourViewRecorder from "./_components/TourViewRecorder";
+import ReviewsAnchorScroll from "./_components/ReviewsAnchorScroll";
 import Reveal from "@/app/components/global/Reveal";
 import BookingCardReveal from "./_components/BookingCardReveal";
 
@@ -65,10 +75,58 @@ export async function generateMetadata({
   };
 }
 
-function buildTourJsonLd(tour: Tour) {
+function buildTourJsonLd(
+  tour: Tour,
+  reviews: PublicReview[],
+  aggregate: ReviewAggregate,
+) {
   const durationFact = tour.keyFacts.find((f) => f.label === "Duration");
   const routeFact = tour.keyFacts.find((f) => f.label === "Route");
   const groupFact = tour.keyFacts.find((f) => f.label === "Group Size");
+
+  // Only surface rating/review markup when we have real reviews — Google flags
+  // empty or fabricated ratings.
+  const aggregateRating =
+    aggregate.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: aggregate.average,
+            reviewCount: aggregate.count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {};
+
+  // Strip markdown to a plain-text snippet for the review body in structured data.
+  const toPlain = (md: string) =>
+    md.replace(/[*_`#>\-]/g, "").replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/\s+/g, " ").trim();
+
+  // Google's structured-data policy forbids putting third-party (Google/TourRadar)
+  // reviews into your own Review/AggregateRating markup — keep the JSON-LD
+  // first-party only. (`aggregate` is already first-party-only in reviews-firestore.ts.)
+  const firstPartyReviews = reviews.filter((r) => !isExternalSource(r.source));
+
+  const reviewLd =
+    firstPartyReviews.length > 0
+      ? {
+          review: firstPartyReviews.slice(0, 10).map((r) => ({
+            "@type": "Review",
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: r.rating,
+              bestRating: 5,
+              worstRating: 1,
+            },
+            author: { "@type": "Person", name: r.reviewerFirstName },
+            reviewBody: toPlain(r.bodyMarkdown).slice(0, 400),
+            ...(r.createdAt
+              ? { datePublished: new Date(r.createdAt).toISOString().split("T")[0] }
+              : {}),
+          })),
+        }
+      : {};
 
   return {
     "@context": "https://schema.org",
@@ -82,7 +140,11 @@ function buildTourJsonLd(tour: Tour) {
         ],
       },
       {
-        "@type": "TouristTrip",
+        // Google's review/AggregateRating rich result only recognizes a fixed
+        // allowlist of types (Product, LocalBusiness, Book, Event, ...) —
+        // "TouristTrip" alone is not on it. Multi-typing as Product too keeps
+        // every Trip-specific property while making the review markup eligible.
+        "@type": ["TouristTrip", "Product"],
         "@id": `${BASE_URL}/tours/${tour.slug}`,
         name: tour.meta.title,
         description: tour.meta.description,
@@ -91,6 +153,8 @@ function buildTourJsonLd(tour: Tour) {
           ? tour.gallery.hero
           : `${BASE_URL}${tour.gallery.hero}`,
         provider: { "@id": `${BASE_URL}/#organization` },
+        ...aggregateRating,
+        ...reviewLd,
         ...(durationFact ? { duration: durationFact.values[0] } : {}),
         ...(routeFact ? { itinerary: { "@type": "ItemList", name: routeFact.values[0] } } : {}),
         ...(groupFact ? { maximumAttendeeCapacity: parseInt(groupFact.values[0]) || undefined } : {}),
@@ -132,6 +196,18 @@ export default async function TourDetailPage({ params }: { params: Params }) {
 
   const hostedSlugs = new Set(await getHostedTourSlugs());
 
+  // Reviews now come from the dedicated `tourReviews` collection (not the legacy
+  // embedded `details.reviews[]`), so user-submitted + admin reviews share one
+  // moderated source.
+  const [reviews, aggregate] = await Promise.all([
+    getReviewsForTour(tour.slug),
+    getAggregateForTour(tour.slug),
+  ]);
+  // Combined across ALL sources (first-party + Google/TourRadar) — for the
+  // teaser link only. `aggregate` (first-party-only) still drives JSON-LD and
+  // the "verified reviews" line per Google's structured-data policy.
+  const displayAggregate = computeReviewAggregate(reviews);
+
   const instagramHref = "https://www.instagram.com/imheretravels";
   const fallbackCommunityImages = tour.gallery.thumbnails
     .map((thumb) => ({ src: thumb.src, alt: thumb.alt, href: instagramHref }))
@@ -146,10 +222,13 @@ export default async function TourDetailPage({ params }: { params: Params }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildTourJsonLd(tour)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildTourJsonLd(tour, reviews, aggregate)),
+        }}
       />
       <main className="flex-1">
         <TourViewRecorder slug={tour.slug} />
+        <ReviewsAnchorScroll />
         <Breadcrumbs
           tourName={tour.name}
           parent={
@@ -170,7 +249,13 @@ export default async function TourDetailPage({ params }: { params: Params }) {
                   >
                     {tour.name}
                   </AutoFitText>
-                  <div className="shrink-0 pt-3 md:pt-4">
+                  <div className="flex shrink-0 items-center gap-4 pt-3 md:pt-4">
+                    {!tour.comingSoon && (
+                      <ReviewsLink
+                        average={displayAggregate.average}
+                        count={displayAggregate.count}
+                      />
+                    )}
                     <ShareButton title={tour.header.title} />
                   </div>
                 </div>
@@ -275,18 +360,42 @@ export default async function TourDetailPage({ params }: { params: Params }) {
 
               <Reveal y={16} delay={60}>
                 <div className="mt-6 lg:hidden">
-                  <BookingCard booking={tour.booking} comingSoon={tour.comingSoon} />
+                  <BookingCard
+                    booking={tour.booking}
+                    comingSoon={tour.comingSoon}
+                    reviewAverage={displayAggregate.average}
+                    reviewCount={displayAggregate.count}
+                  />
                 </div>
               </Reveal>
             </div>
 
-            <BookingCardReveal booking={tour.booking} comingSoon={tour.comingSoon} />
+            <BookingCardReveal
+              booking={tour.booking}
+              comingSoon={tour.comingSoon}
+              reviewAverage={displayAggregate.average}
+              reviewCount={displayAggregate.count}
+            />
           </div>
         </div>
 
         <Reveal y={24}>
-          <Testimonials reviews={tour.reviews} />
+          <Testimonials
+            reviews={reviews}
+            aggregate={aggregate}
+            tourSlug={tour.slug}
+            tourName={tour.name}
+          />
         </Reveal>
+        {(tour.tourRadarWidgetUrl || tour.tourRadarWidgetId) && (
+          <Reveal y={24}>
+            <TourRadarWidget
+              widgetId={tour.tourRadarWidgetId}
+              widgetUrl={tour.tourRadarWidgetUrl}
+              variant="tour"
+            />
+          </Reveal>
+        )}
         {tour.relatedTours?.heading && (
           <Reveal y={24}>
             <RelatedTours section={tour.relatedTours} />

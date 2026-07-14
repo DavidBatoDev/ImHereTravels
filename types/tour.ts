@@ -98,15 +98,6 @@ export interface TourTip {
   description: string;
 }
 
-export interface TourReview {
-  rating: number; // 1–5 stars
-  date: string; // Display string, e.g. "May 2023"
-  body: string;
-  reviewerName: string;
-  reviewerLocation: string;
-  reviewerAvatar?: string; // Optional URL / storage path
-}
-
 export interface TourRelated {
   slug: string;
   image: string;
@@ -189,9 +180,10 @@ export interface Tour {
   faqs?: { heading: string; items: TourFaq[] };
   thingsToKnow?: { heading: string; items: TourThingToKnow[] };
   tips?: { heading: string; items: TourTip[] };
-  // Per-tour reviews (admin-edited). When absent/empty, the tour page falls
-  // back to generic placeholder testimonials.
-  reviews?: TourReview[];
+  // TourRadar per-tour "Tour Reviews" widget embed (from the Operator Dashboard).
+  // When set, the tour page renders a "Reviews on TourRadar" section.
+  tourRadarWidgetId?: string;
+  tourRadarWidgetUrl?: string;
   booking: TourBookingCard;
   relatedTours?: { heading: string; items: TourRelated[] };
   community?: { heading: string; images: TourCommunityImage[] };

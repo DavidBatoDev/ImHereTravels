@@ -16,9 +16,10 @@ export default function Faqs({
   useEffect(() => {
     if (allOpen !== false) return;
     function onScroll() {
+      if (document.documentElement.dataset.reviewsScrollLock === "true") return;
       setAllOpen(null);
     }
-    window.addEventListener("scroll", onScroll, { passive: true, once: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [allOpen]);
 

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/app/components/global/Header";
+import GoogleTagManager, {
+  GoogleTagManagerNoScript,
+} from "@/app/components/global/GoogleTagManager";
 import { getAllTours, getHostedTours } from "@/lib/tours-firestore";
 import { getAllHosts } from "@/lib/resident-hosts-firestore";
 
@@ -203,6 +206,8 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
+        <GoogleTagManagerNoScript />
+        <GoogleTagManager />
         <Header tourLinks={tourLinks} hostedTourLinks={hostedTourLinks} hostLinks={hostLinks} />
         {children}
       </body>

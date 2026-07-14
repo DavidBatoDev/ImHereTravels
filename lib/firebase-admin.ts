@@ -15,10 +15,9 @@
 
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
 
-function getApp() {
-  if (getApps().length > 0) return getApps()[0]!;
-
+function getServiceAccount() {
   const b64 = process.env.FIREBASE_SERVICE_ACCOUNT;
   if (!b64) {
     throw new Error(
@@ -26,12 +25,33 @@ function getApp() {
         "Set it to the base-64-encoded service-account JSON.",
     );
   }
+  return JSON.parse(Buffer.from(b64, "base64").toString("utf-8"));
+}
 
-  const serviceAccount = JSON.parse(
-    Buffer.from(b64, "base64").toString("utf-8"),
+/**
+ * Storage bucket name. Prefer the explicit FIREBASE_STORAGE_BUCKET env var; fall
+ * back to `<project-id>.firebasestorage.app` (this project's bucket — see the
+ * `firebasestorage.googleapis.com` remotePattern in next.config.ts). Override via
+ * env if the project ever moves to the legacy `<project-id>.appspot.com` naming.
+ */
+function getBucketName(serviceAccount: { project_id?: string }): string {
+  return (
+    process.env.FIREBASE_STORAGE_BUCKET ||
+    `${serviceAccount.project_id}.firebasestorage.app`
   );
+}
 
-  return initializeApp({ credential: cert(serviceAccount) });
+function getApp() {
+  if (getApps().length > 0) return getApps()[0]!;
+
+  const serviceAccount = getServiceAccount();
+  return initializeApp({
+    credential: cert(serviceAccount),
+    storageBucket: getBucketName(serviceAccount),
+  });
 }
 
 export const adminDb = getFirestore(getApp());
+
+/** Default Storage bucket for server-side uploads (review photos/avatars). */
+export const adminBucket = getStorage(getApp()).bucket();

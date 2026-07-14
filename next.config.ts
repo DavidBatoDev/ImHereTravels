@@ -17,9 +17,12 @@ const nextConfig: NextConfig = {
         pathname: "/api/mcp/asset/**",
       },
       {
+        // Any Firebase Storage bucket on this host (prod + dev projects), so
+        // review/tour images from imheretravels-a3f81 and imheretravels-dev
+        // both render through next/image.
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",
-        pathname: "/v0/b/imheretravels-a3f81.firebasestorage.app/**",
+        pathname: "/v0/b/**",
       },
       {
         protocol: "https",
@@ -30,6 +33,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i0.wp.com",
         pathname: "/imheretravels.com/**",
+      },
+      {
+        // Google reviewer avatars (Business Profile API profilePhotoUrl) are
+        // served from lh3/lh4/lh5.googleusercontent.com — hotlinked, not re-hosted.
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
       },
     ],
   },
