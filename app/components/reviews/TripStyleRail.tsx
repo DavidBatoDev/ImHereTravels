@@ -79,6 +79,15 @@ function TripStyleCard({ style }: { style: TripStyle }) {
         ? [style.images[(index + 1) % n]]
         : [];
 
+  // Shared by onLoad and the mount-time ref check below — browsers don't
+  // reliably re-fire `load` for an <img> that's already in the HTTP cache
+  // (e.g. paging back to a photo already viewed), so relying on onLoad alone
+  // leaves `portrait` stuck from whichever photo last actually fired it.
+  function applyOrientation(img: HTMLImageElement) {
+    if (img.naturalWidth && img.naturalHeight)
+      setPortrait(img.naturalHeight > img.naturalWidth);
+  }
+
   return (
     <div className="group">
       <div
@@ -110,11 +119,13 @@ function TripStyleCard({ style }: { style: TripStyle }) {
             custom={direction}
             src={style.images[index]}
             alt={`${style.label} — photo ${index + 1} of ${n}`}
-            onLoad={(e) => {
-              const img = e.currentTarget;
-              if (img.naturalWidth && img.naturalHeight)
-                setPortrait(img.naturalHeight > img.naturalWidth);
+            ref={(img) => {
+              // Fires on mount, once the <img> has the current index's src. If
+              // it's already cached, `complete` is true right away and we don't
+              // have to wait for (or miss) a load event.
+              if (img && img.complete) applyOrientation(img);
             }}
+            onLoad={(e) => applyOrientation(e.currentTarget)}
             variants={cardVariants}
             initial="enter"
             animate="center"
