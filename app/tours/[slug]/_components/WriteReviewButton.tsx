@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Star,
   X,
@@ -152,6 +153,7 @@ export default function WriteReviewButton({
   triggerClassName?: string;
 }) {
   const hubMode = hub;
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("verify");
   const [confirmClose, setConfirmClose] = useState(false);
@@ -436,6 +438,10 @@ export default function WriteReviewButton({
         return;
       }
       setStep("done");
+      // The API route already revalidated /reviews and /tours/{slug} server-side;
+      // this tells the current tab to actually re-fetch so the new review shows up
+      // once the modal closes, instead of only appearing after a hard reload.
+      router.refresh();
     } catch {
       setFormError("Something went wrong. Please try again.");
     } finally {

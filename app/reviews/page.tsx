@@ -25,20 +25,7 @@ import TourRadarWidget from "@/app/components/reviews/TourRadarWidget";
 import { TRIP_STYLES } from "@/app/components/reviews/trip-styles";
 import { getAllPublishedReviews, computeCategoryAggregates } from "@/lib/reviews-firestore";
 import { isExternalSource } from "@/types/review";
-import type { PublicReview, CategoryAggregate } from "@/types/review";
-
-// ⚠️ TEMP MOCKUP — remove before handoff. Preview-only category averages so the
-// category-ratings row is visible in the summary card. The live reviews are all
-// TourRadar imports (no per-category scores), so `computeCategoryAggregates`
-// returns []. Delete this constant + the fallback in the card once first-party
-// category reviews exist.
-const MOCK_CATEGORY_PREVIEW: CategoryAggregate[] = [
-  { key: "guide", label: "Tour Guide", average: 5.0, count: 1 },
-  { key: "experience", label: "Experience", average: 4.9, count: 1 },
-  { key: "value", label: "Value", average: 4.7, count: 1 },
-  { key: "food", label: "Food", average: 4.8, count: 1 },
-  { key: "accommodation", label: "Accommodation", average: 4.6, count: 1 },
-];
+import type { PublicReview } from "@/types/review";
 
 // Company-level TourRadar "Operator Reviews" widget (from the Widget Center).
 // Set to the iframe src URL (or full embed snippet) to show it on the hub.
@@ -195,18 +182,13 @@ export default async function ReviewsHubPage({
               </div>
 
               {/* Bottom: what travelers love + per-category ratings, full width.
-                  ⚠️ TEMP: categories fall back to MOCK_CATEGORY_PREVIEW so the row
-                  is visible while the live (TourRadar) data carries no category
-                  scores — remove the fallback + the mock constant before handoff. */}
+                  Renders nothing when the current filter has no first-party
+                  category-rated reviews (federated TourRadar/Google reviews never
+                  carry category scores) — CategoryRatings handles the empty case. */}
               <div className="mt-6 border-t border-light-grey pt-6">
                 <ReviewInsights reviews={filtered} showFacts={false} />
                 <div className="mt-4">
-                  <CategoryRatings
-                    categories={
-                      summaryCategories.length > 0 ? summaryCategories : MOCK_CATEGORY_PREVIEW
-                    }
-                    layout="row"
-                  />
+                  <CategoryRatings categories={summaryCategories} layout="row" />
                 </div>
               </div>
             </div>
