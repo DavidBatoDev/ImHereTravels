@@ -15,6 +15,15 @@ export interface TourIdentity {
   code?: string;
 }
 
+/** The `tourPackages` fields the review flow reads. */
+type TourPackageDoc = {
+  slug?: string;
+  name?: string;
+  title?: string;
+  tourCode?: string;
+  code?: string;
+};
+
 export async function getTourIdentityBySlug(
   slug: string,
 ): Promise<TourIdentity | null> {
@@ -27,7 +36,7 @@ export async function getTourIdentityBySlug(
   if (snap.empty) return null;
 
   const d = snap.docs[0];
-  const data = d.data() as Record<string, any>;
+  const data = d.data() as TourPackageDoc;
   return {
     id: d.id,
     slug: data.slug ?? slug,
@@ -36,18 +45,24 @@ export async function getTourIdentityBySlug(
   };
 }
 
-/** All tour identities, for matching a booking's tour name/code to a slug. */
+/**
+ * All reviewable tours as { id, slug, name, code }. Used to map a traveler's
+ * bookings (matched leniently by name/code) to the tours they can review. Only
+ * docs that actually carry a slug are returned (a slug is required to submit).
+ */
 export async function getAllTourIdentities(): Promise<TourIdentity[]> {
   const snap = await adminDb.collection("tourPackages").get();
-  return snap.docs
-    .map((d) => {
-      const data = d.data() as Record<string, any>;
-      return {
-        id: d.id,
-        slug: (data.slug ?? "") as string,
-        name: (data.name ?? data.title ?? "") as string,
-        code: (data.tourCode ?? data.code ?? undefined) as string | undefined,
-      };
-    })
-    .filter((t) => t.slug);
+  const out: TourIdentity[] = [];
+  for (const d of snap.docs) {
+    const data = d.data() as TourPackageDoc;
+    const slug = data.slug ?? "";
+    if (!slug) continue;
+    out.push({
+      id: d.id,
+      slug,
+      name: data.name ?? data.title ?? "",
+      code: data.tourCode ?? data.code ?? undefined,
+    });
+  }
+  return out;
 }

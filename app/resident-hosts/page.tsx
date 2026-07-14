@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
+import PageHero from "@/app/components/global/PageHero";
 import { getAllHosts } from "@/lib/resident-hosts-firestore";
 
 export const revalidate = 3600;
@@ -20,22 +21,11 @@ export default async function ResidentHostsPage() {
     <>
       <main className="flex-1">
         {/* ── Hero band ─────────────────────────────────────────────────── */}
-        <section className="bg-midnight px-4 py-14 text-white md:px-8 md:py-20">
-          <div className="mx-auto max-w-7xl">
-            <Reveal>
-              <h1 className="font-display text-h1-mobile md:text-h1-desktop">
-                Resident Hosts
-              </h1>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="mt-4 max-w-2xl font-body text-b2-mobile md:text-b2-desktop text-white/80">
-                Travel with someone you already follow. Our resident hosts lead
-                group trips designed to bring their communities together through
-                shared adventures.
-              </p>
-            </Reveal>
-          </div>
-        </section>
+        <PageHero
+          title="Resident Hosts"
+          description="Travel with someone you already follow. Our resident hosts lead group trips designed to bring their communities together through shared adventures."
+          image="/figma/join-community.jpg"
+        />
 
         {/* ── Host cards grid ───────────────────────────────────────────── */}
         <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">

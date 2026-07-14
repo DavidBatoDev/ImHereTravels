@@ -540,7 +540,7 @@ export default function MarkdownEditor({
 
       <div className="relative">
         {isEmpty && (
-          <span className="pointer-events-none absolute left-4 top-3 font-body text-b2-desktop text-grey">
+          <span className="pointer-events-none absolute left-4 top-3 font-body text-b4-desktop text-grey">
             {placeholder}
           </span>
         )}
@@ -555,7 +555,7 @@ export default function MarkdownEditor({
           onPaste={handlePaste}
           onKeyDown={handleKeyDown}
           className={[
-            "min-h-36 rounded-b-md bg-white px-4 py-3 font-body text-b2-desktop text-midnight outline-none",
+            "min-h-36 rounded-b-md bg-white px-4 py-3 font-body text-b4-desktop text-midnight outline-none",
             "[&_p]:my-0 [&_p+p]:mt-3",
             "[&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5",
             "[&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5",
