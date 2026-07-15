@@ -87,6 +87,7 @@ export default function Testimonials({
         bodyMarkdown: review.bodyMarkdown,
         // Lowercased haystack for in-section search (same recipe as the hub).
         searchText: reviewSearchText(review),
+        source: review.source,
         node: <ReviewCard review={review} />,
       }))
     : [];

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, Search } from "lucide-react";
 import SearchInput from "@/app/components/reviews/SearchInput";
 import useListboxNav from "@/app/components/reviews/useListboxNav";
@@ -90,12 +91,6 @@ export default function ReviewsFilterBar({
   const activeSourceLabel =
     SOURCE_OPTIONS.find((s) => s.value === activeSource)?.label ?? SOURCE_OPTIONS[0].label;
 
-  // Hide the source menu when every review comes from one place — a filter that
-  // can only ever return "all" or "nothing" is noise.
-  const showSourceMenu =
-    !sourceCounts ||
-    SOURCE_OPTIONS.filter((o) => o.value !== "all" && sourceCounts[o.value] > 0).length > 1;
-
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <SearchInput value={query} onChange={setQuery} className="w-full sm:max-w-xs" />
@@ -108,14 +103,12 @@ export default function ReviewsFilterBar({
           onSelect={(slug) => push({ tour: slug })}
         />
       )}
-      {showSourceMenu && (
-        <SourceMenu
-          activeSource={activeSource}
-          label={activeSourceLabel}
-          counts={sourceCounts}
-          onSelect={(source) => push({ source })}
-        />
-      )}
+      <SourceMenu
+        activeSource={activeSource}
+        label={activeSourceLabel}
+        counts={sourceCounts}
+        onSelect={(source) => push({ source })}
+      />
       <SortMenu activeSort={activeSort} label={activeSortLabel} onSelect={(sort) => push({ sort })} />
     </div>
   );
@@ -130,6 +123,7 @@ function useDropdown() {
   const ref = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const reduce = !!useReducedMotion();
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
@@ -138,7 +132,7 @@ function useDropdown() {
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
-  return { open, setOpen, ref, triggerRef, listRef };
+  return { open, setOpen, ref, triggerRef, listRef, reduce };
 }
 
 const triggerClass =
@@ -161,7 +155,7 @@ function TourMenu({
   label: string;
   onSelect: (slug: string | null) => void;
 }) {
-  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
+  const { open, setOpen, ref, triggerRef, listRef, reduce } = useDropdown();
   const [query, setQuery] = useState("");
   const hasSearch = tours.length > 6;
   const filtered = tours.filter((t) => t.name.toLowerCase().includes(query.trim().toLowerCase()));
@@ -190,47 +184,57 @@ function TourMenu({
         </span>
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div ref={listRef} className={panelClass} role="listbox">
-          {hasSearch && (
-            <div className="sticky top-0 mb-1 flex items-center gap-2 rounded-sm bg-white px-2 py-1.5">
-              <Search className="size-4 text-grey" />
-              <input
-                autoFocus
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search tours…"
-                aria-label="Search tours"
-                className="w-full bg-transparent font-body text-b4-desktop text-midnight outline-none placeholder:text-grey"
-              />
-            </div>
-          )}
-          <MenuItem
-            label={`All tours`}
-            count={totalCount}
-            selected={!activeTour}
-            onClick={() => {
-              onSelect(null);
-              setOpen(false);
-            }}
-          />
-          {filtered.map((t) => (
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={listRef}
+            role="listbox"
+            initial={reduce ? false : { opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: reduce ? 0.1 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className={`${panelClass} origin-top-left`}
+          >
+            {hasSearch && (
+              <div className="sticky top-0 mb-1 flex items-center gap-2 rounded-sm bg-white px-2 py-1.5">
+                <Search className="size-4 text-grey" />
+                <input
+                  autoFocus
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search tours…"
+                  aria-label="Search tours"
+                  className="w-full bg-transparent font-body text-b4-desktop text-midnight outline-none placeholder:text-grey"
+                />
+              </div>
+            )}
             <MenuItem
-              key={t.slug}
-              label={t.name}
-              count={t.count}
-              selected={activeTour === t.slug}
+              label={`All tours`}
+              count={totalCount}
+              selected={!activeTour}
               onClick={() => {
-                onSelect(t.slug);
+                onSelect(null);
                 setOpen(false);
               }}
             />
-          ))}
-          {filtered.length === 0 && (
-            <p className="px-3 py-2 font-body text-b4-desktop text-grey">No tours match.</p>
-          )}
-        </div>
-      )}
+            {filtered.map((t) => (
+              <MenuItem
+                key={t.slug}
+                label={t.name}
+                count={t.count}
+                selected={activeTour === t.slug}
+                onClick={() => {
+                  onSelect(t.slug);
+                  setOpen(false);
+                }}
+              />
+            ))}
+            {filtered.length === 0 && (
+              <p className="px-3 py-2 font-body text-b4-desktop text-grey">No tours match.</p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -246,7 +250,7 @@ function SourceMenu({
   counts?: Record<SourceValue, number>;
   onSelect: (source: SourceValue) => void;
 }) {
-  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
+  const { open, setOpen, ref, triggerRef, listRef, reduce } = useDropdown();
   useListboxNav({ open, listRef, triggerRef, onClose: () => setOpen(false) });
 
   return (
@@ -264,16 +268,18 @@ function SourceMenu({
         </span>
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div ref={listRef} className={panelClass} role="listbox">
-          {SOURCE_OPTIONS
-            // Drop sources with nothing behind them (e.g. Google before go-live);
-            // keep the current selection so it can always be read back.
-            .filter(
-              (s) =>
-                !counts || s.value === "all" || s.value === activeSource || counts[s.value] > 0,
-            )
-            .map((s) => (
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={listRef}
+            role="listbox"
+            initial={reduce ? false : { opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: reduce ? 0.1 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className={`${panelClass} origin-top-left`}
+          >
+            {SOURCE_OPTIONS.map((s) => (
               <MenuItem
                 key={s.value}
                 label={s.label}
@@ -285,8 +291,9 @@ function SourceMenu({
                 }}
               />
             ))}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -300,7 +307,7 @@ function SortMenu({
   label: string;
   onSelect: (sort: SortValue) => void;
 }) {
-  const { open, setOpen, ref, triggerRef, listRef } = useDropdown();
+  const { open, setOpen, ref, triggerRef, listRef, reduce } = useDropdown();
   useListboxNav({ open, listRef, triggerRef, onClose: () => setOpen(false) });
 
   return (
@@ -318,21 +325,31 @@ function SortMenu({
         </span>
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div ref={listRef} className={panelClass} role="listbox">
-          {SORT_OPTIONS.map((s) => (
-            <MenuItem
-              key={s.value}
-              label={s.label}
-              selected={activeSort === s.value}
-              onClick={() => {
-                onSelect(s.value);
-                setOpen(false);
-              }}
-            />
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={listRef}
+            role="listbox"
+            initial={reduce ? false : { opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: reduce ? 0.1 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className={`${panelClass} origin-top-right sm:origin-top-left`}
+          >
+            {SORT_OPTIONS.map((s) => (
+              <MenuItem
+                key={s.value}
+                label={s.label}
+                selected={activeSort === s.value}
+                onClick={() => {
+                  onSelect(s.value);
+                  setOpen(false);
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

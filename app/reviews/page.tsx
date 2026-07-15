@@ -312,8 +312,8 @@ export default async function ReviewsHubPage({
                   </div>
                 ) : (
                   <ReviewsPager
-                    // Remount (reset to page 1) whenever the filters change.
-                    key={`${activeTour ?? ""}|${activeSort}|${activeQuery}|${activeSource}`}
+                    // Reset to page 1 whenever the filters change.
+                    resetKey={`${activeTour ?? ""}|${activeSort}|${activeQuery}|${activeSource}`}
                     pageSize={10}
                     items={reviews.map((review) => (
                       <ReviewCard key={review.id} review={review} showTour variant="row" />

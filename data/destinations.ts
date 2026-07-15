@@ -40,16 +40,6 @@ export type DestinationHighlight = {
   description: string;
 };
 
-export type DestinationReview = {
-  stars: number;
-  date: string;
-  text: string;
-  author: string;
-  location: string;
-  tourName?: string;
-  avatar?: string;
-};
-
 export type Destination = {
   slug: string;
   name: string;
@@ -65,8 +55,6 @@ export type Destination = {
   quickFacts?: DestinationQuickFact[];
   /** Featured experience cards shown in the Highlights carousel. */
   highlights?: DestinationHighlight[];
-  /** Traveller reviews shown in the Reviews carousel. */
-  reviews?: DestinationReview[];
   faqs?: DestinationFaq[];
   community?: {
     heading: string;
@@ -101,35 +89,6 @@ const ALL_DESTINATIONS: Destination[] = [
       { icon: "beer", label: "Local Beer", value: "San Miguel" },
       { icon: "hello", label: "Say Hello", value: "Kumusta" },
       { icon: "dish", label: "Famous Dish", value: "Chicken Adobo" },
-    ],
-    reviews: [
-      {
-        stars: 5,
-        date: "May 2023",
-        text: "Had an amazing time on the trial tour! Action packed with lots of fun things on the itinerary, and a great bunch of people. Would definitely go again!",
-        author: "Flynn Deanne",
-        location: "London, United Kingdom",
-        tourName: "Philippines Sunrise",
-        avatar: "/figma/avatar-flynn.png",
-      },
-      {
-        stars: 5,
-        date: "February 2024",
-        text: "My experience has been amazing, I'll never forget it. I met extraordinary people and explored beautiful places. I definitely recommend to book a trip!",
-        author: "Manuel Madonna",
-        location: "Milan, Italy",
-        tourName: "Philippines Sunset",
-        avatar: "/figma/avatar-manuel.png",
-      },
-      {
-        stars: 5,
-        date: "July 2024",
-        text: "I enjoyed the tour! Seamless coordination of transportation and accommodation made me feel like a VIP throughout the trip. LOVED every bit of it! Highly recommend!",
-        author: "Bella Millers",
-        location: "Cagayan, Philippines",
-        tourName: "Philippines Sunrise",
-        avatar: "/figma/avatar-bella.png",
-      },
     ],
     faqs: [
       {
@@ -204,7 +163,7 @@ const ALL_DESTINATIONS: Destination[] = [
       "Japan is a country of extraordinary contrasts — ancient temples and futuristic skylines, tranquil tea ceremonies and high-speed bullet trains, world-class street food and Michelin-starred restaurants. It is a destination that consistently surprises and delights.",
       "I'm Here Travels offers two Japan adventures: a classic 10-day summer journey from Tokyo to Kyoto, and a winter edition that takes you through Tokyo, Nagano, Kyoto, and Osaka with optional skiing in Nagano.",
     ],
-    tourSlugs: ["japan-adventure", "japan-adventure-winter"],
+    tourSlugs: ["japan-summer-adventure", "japan-adventure-winter"],
   },
 
   /* ——— India ——————————————————————————————————————————————————————————— */
@@ -224,7 +183,7 @@ const ALL_DESTINATIONS: Destination[] = [
       "India is a sensory overload in the best possible way — a vast, vibrant subcontinent of ancient civilisations, diverse cuisines, sacred rivers, and epic landscapes that stretch from the Himalayas to tropical beaches.",
       "Choose from our India Discovery Tour covering the iconic Golden Triangle, or time your visit for the legendary Holi Festival and experience one of the world's most colourful and joyful celebrations alongside locals.",
     ],
-    tourSlugs: ["india-discovery-tour", "india-holi-festival-tour"],
+    tourSlugs: ["india-discovery-tour", "india-holi-festival-with-dev"],
   },
 
   /* ——— Nepal ——————————————————————————————————————————————————————————— */
@@ -283,7 +242,7 @@ const ALL_DESTINATIONS: Destination[] = [
       "Sri Lanka packs an astonishing amount of diversity into a small island. Ancient rock fortresses, spice-scented colonial cities, misty tea-covered highlands, wildlife reserves roamed by elephants and leopards, and golden beaches lapped by warm Indian Ocean waters.",
       "The Sri Lanka Wander tour takes you through the cultural triangle, into the hill country, and down to the coast — giving you a genuine taste of everything this incredible island has to offer.",
     ],
-    tourSlugs: ["sri-langka-wander-tour"],
+    tourSlugs: ["sri-lanka-wander-tour-wild-east", "sri-lanka-wander-tour-coastal-coast"],
   },
 
   /* ——— Vietnam ——————————————————————————————————————————————————————————— */

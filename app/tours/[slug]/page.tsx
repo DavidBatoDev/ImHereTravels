@@ -379,14 +379,22 @@ export default async function TourDetailPage({ params }: { params: Params }) {
           </div>
         </div>
 
-        <Reveal y={24}>
-          <Testimonials
-            reviews={reviews}
-            aggregate={aggregate}
-            tourSlug={tour.slug}
-            tourName={tour.name}
-          />
-        </Reveal>
+        {/* Not Reveal-wrapped (unlike the sections above): the reviews section is a
+            common direct-link/anchor-jump target (ReviewsLink, review card "from
+            {tour}" links, shared "#reviews" URLs), which lands here without ever
+            scrolling gradually past it. Reveal's whileInView fade-in is driven by
+            an IntersectionObserver crossing a threshold as the page scrolls, and
+            an instant jump straight to a section that far down the page doesn't
+            reliably cross that threshold — leaving the section stuck at its
+            hidden (opacity: 0) state indefinitely. Rendering it plain avoids that
+            failure mode entirely, matching the hub and destination pages, which
+            never wrap their reviews section in Reveal either. */}
+        <Testimonials
+          reviews={reviews}
+          aggregate={aggregate}
+          tourSlug={tour.slug}
+          tourName={tour.name}
+        />
         {(tour.tourRadarWidgetUrl || tour.tourRadarWidgetId) && (
           <Reveal y={24}>
             <TourRadarWidget

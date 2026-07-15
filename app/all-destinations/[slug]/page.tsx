@@ -7,7 +7,7 @@ import Reveal from "@/app/components/global/Reveal";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import FaqAccordion from "@/app/faqs/_components/FaqAccordion";
 import HighlightsSection from "./_components/HighlightsSection";
-import ReviewsSection from "./_components/ReviewsSection";
+import DestinationReviewsSection from "./_components/DestinationReviewsSection";
 import {
   getDestinationBySlug,
   getAllDestinationSlugs,
@@ -15,6 +15,8 @@ import {
   type Destination,
 } from "@/data/destinations";
 import { getTourBySlug } from "@/lib/tours-firestore";
+import { getReviewsForTours } from "@/lib/reviews-firestore";
+import type { TourOption } from "@/app/components/reviews/reviews-filter";
 import type { Tour } from "@/types/tour";
 
 const BASE_URL = "https://www.imheretravels.com";
@@ -137,9 +139,25 @@ export default async function DestinationPage({
   const destination = getDestinationBySlug(slug);
   if (!destination) notFound();
 
-  const tours = (
-    await Promise.all(destination.tourSlugs.map((s) => getTourBySlug(s)))
-  ).filter((t): t is Tour => t !== undefined);
+  const [tours, reviews] = await Promise.all([
+    Promise.all(destination.tourSlugs.map((s) => getTourBySlug(s))).then((ts) =>
+      ts.filter((t): t is Tour => t !== undefined),
+    ),
+    getReviewsForTours(destination.tourSlugs),
+  ]);
+
+  // Tour filter options for the reviews section — only tours that actually
+  // have a review, so there's never a chip that filters to an empty grid.
+  const reviewTourMap = new Map<string, TourOption>();
+  for (const r of reviews) {
+    if (!r.tourSlug || !r.tourName) continue;
+    const existing = reviewTourMap.get(r.tourSlug);
+    if (existing) existing.count += 1;
+    else reviewTourMap.set(r.tourSlug, { slug: r.tourSlug, name: r.tourName, count: 1 });
+  }
+  const reviewTours = Array.from(reviewTourMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
 
   // Derive highlights by merging tripHighlights from every related tour.
   // Falls back to destination.highlights (manual override) if no tour highlights exist.
@@ -313,16 +331,13 @@ export default async function DestinationPage({
           />
         )}
 
-        {/* ── Reviews carousel ─────────────────────────────────────────── */}
-        {destination.reviews && destination.reviews.length > 0 && (
-          <section className="bg-light-grey">
-            <ReviewsSection
-              heading={`${destination.name} Tour Reviews`}
-              items={destination.reviews}
-              slug={destination.slug}
-            />
-          </section>
-        )}
+        {/* ── Reviews ──────────────────────────────────────────────────── */}
+        <DestinationReviewsSection
+          reviews={reviews}
+          tours={reviewTours}
+          destinationName={destination.name}
+          destinationSlug={destination.slug}
+        />
 
         {/* ── Community / Instagram grid ────────────────────────────────── */}
         {destination.community && (

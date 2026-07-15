@@ -198,7 +198,7 @@ export default async function RootLayout({
     .map((h) => ({ label: h.pageTitle, href: `/resident-hosts/${h.slug}` }));
 
   return (
-    <html lang="en" className="antialiased">
+    <html lang="en" className="antialiased" data-scroll-behavior="smooth">
       <head>
         <script
           type="application/ld+json"

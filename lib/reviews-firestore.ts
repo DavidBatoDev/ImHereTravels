@@ -148,6 +148,16 @@ export const getAggregateForTour = cache(
   },
 );
 
+/** Published reviews across a set of tours (e.g. every tour in a destination), newest
+ *  first. Fans out to the per-tour cache rather than a Firestore `in` query, so it
+ *  isn't bounded by the 10-value `in` limit and reuses `getReviewsForTour`'s cache
+ *  when the same tour is also rendered standalone in the same request. */
+export async function getReviewsForTours(tourSlugs: string[]): Promise<PublicReview[]> {
+  if (tourSlugs.length === 0) return [];
+  const perTour = await Promise.all(tourSlugs.map(getReviewsForTour));
+  return perTour.flat().sort(byNewest);
+}
+
 /** All published reviews across tours (community hub), newest first. */
 export const getAllPublishedReviews = cache(
   async (): Promise<PublicReview[]> => {
