@@ -11,7 +11,12 @@ function toEmbedUrl(raw?: string): string {
     const m = s.match(/src=["']([^"']+)["']/i);
     if (m) s = m[1];
   }
-  if (s.includes("/maps/embed")) return s;
+  // Already a frameable URL — either the `/maps/embed/...` API form, or the
+  // keyless `?...&output=embed` form (which also covers multi-waypoint
+  // directions URLs like `?saddr=A&daddr=B+to:C&output=embed`). Falling
+  // through to the coords/place matching below would otherwise re-wrap an
+  // already-valid embed URL as a literal `q=` search query, mangling it.
+  if (s.includes("/maps/embed") || s.includes("output=embed")) return s;
   const coords =
     s.match(/@(-?\d+\.\d+),(-?\d+\.\d+)(?:,(\d+(?:\.\d+)?)z)?/) ||
     s.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
