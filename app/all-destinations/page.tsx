@@ -5,8 +5,10 @@ import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import PageHero from "@/app/components/global/PageHero";
-import { getAllDestinations } from "@/data/destinations";
+import { getAllDestinations } from "@/lib/destinations-firestore";
 import { getAllTours } from "@/lib/tours-firestore";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "All Destinations — I'm Here Travels",
@@ -21,8 +23,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AllDestinationsPage() {
-  const destinations = getAllDestinations();
-  const featuredTours = (await getAllTours()).slice(0, 6);
+  const [destinations, allTours] = await Promise.all([
+    getAllDestinations(),
+    getAllTours(),
+  ]);
+  const featuredTours = allTours.slice(0, 6);
 
   return (
     <>

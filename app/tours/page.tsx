@@ -6,7 +6,7 @@ import { getAllTours, getHostedTourSlugs } from "@/lib/tours-firestore";
 import {
   getAllDestinations,
   getDestinationBySlug,
-} from "@/data/destinations";
+} from "@/lib/destinations-firestore";
 import type { Tour } from "@/types/tour";
 import TourCard from "./_components/TourCard";
 import ToursFilterBar from "./_components/ToursFilterBar";
@@ -113,7 +113,7 @@ export default async function ToursPage({
 
   const hostedSlugs = new Set(await getHostedTourSlugs());
   const allTours = (await getAllTours()).filter((tour) => !hostedSlugs.has(tour.slug));
-  const allDestinations = getAllDestinations();
+  const allDestinations = await getAllDestinations();
 
   // Validate destination param — ignore unknown slugs
   const validDest =
@@ -124,7 +124,7 @@ export default async function ToursPage({
   // Filter
   let filtered = allTours;
   if (validDest) {
-    const dest = getDestinationBySlug(validDest)!;
+    const dest = (await getDestinationBySlug(validDest))!;
     filtered = allTours.filter((t) => dest.tourSlugs.includes(t.slug));
   }
 

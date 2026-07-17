@@ -51,6 +51,10 @@ export type Destination = {
   description: string[];
   /** Tour slugs (keys in `data/tours.ts`) that belong to this destination. */
   tourSlugs: string[];
+  /** Review ids hidden on this destination page only (never affects global status). */
+  hiddenReviewIds?: string[];
+  /** Review ids added to this destination page from any tour. */
+  featuredReviewIds?: string[];
   /** Quick-glance facts shown below the hero (currency, beer, greeting, dish). */
   quickFacts?: DestinationQuickFact[];
   /** Featured experience cards shown in the Highlights carousel. */

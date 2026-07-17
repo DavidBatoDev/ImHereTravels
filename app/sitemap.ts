@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllTourSlugs } from "@/lib/tours-firestore";
 import { getAllHostSlugs } from "@/lib/resident-hosts-firestore";
-import { getAllDestinationSlugs } from "@/data/destinations";
+import { getAllDestinationSlugs } from "@/lib/destinations-firestore";
 
 const BASE_URL = "https://www.imheretravels.com";
 
@@ -115,7 +115,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   /* ── Destination pages ────────────────────────────────────────────────── */
-  const destinationPages: MetadataRoute.Sitemap = getAllDestinationSlugs().map(
+  const destinationSlugs = await getAllDestinationSlugs();
+  const destinationPages: MetadataRoute.Sitemap = destinationSlugs.map(
     (slug) => ({
       url: `${BASE_URL}/all-destinations/${slug}`,
       lastModified: now,

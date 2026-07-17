@@ -8,16 +8,18 @@ import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
 import FaqAccordion from "@/app/faqs/_components/FaqAccordion";
 import HighlightsSection from "./_components/HighlightsSection";
 import DestinationReviewsSection from "./_components/DestinationReviewsSection";
+import { QuickFactIcon } from "./_components/QuickFactIcon";
 import {
   getDestinationBySlug,
   getAllDestinationSlugs,
-  type DestinationQuickFact,
-  type Destination,
-} from "@/data/destinations";
+} from "@/lib/destinations-firestore";
+import type { DestinationQuickFact, Destination } from "@/data/destinations";
 import { getTourBySlug } from "@/lib/tours-firestore";
-import { getReviewsForTours } from "@/lib/reviews-firestore";
+import { getReviewsForTours, getAllPublishedReviews } from "@/lib/reviews-firestore";
 import type { TourOption } from "@/app/components/reviews/reviews-filter";
 import type { Tour } from "@/types/tour";
+
+export const revalidate = 3600;
 
 const BASE_URL = "https://www.imheretravels.com";
 
@@ -65,8 +67,8 @@ function buildDestinationJsonLd(destination: Destination) {
 /* Static generation                                                           */
 /* -------------------------------------------------------------------------- */
 
-export function generateStaticParams() {
-  return getAllDestinationSlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  return (await getAllDestinationSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -75,7 +77,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const destination = getDestinationBySlug(slug);
+  const destination = await getDestinationBySlug(slug);
   if (!destination) return {};
   return {
     title: destination.meta.title,
@@ -90,43 +92,6 @@ export async function generateMetadata({
 }
 
 /* -------------------------------------------------------------------------- */
-/* Quick-fact icon                                                              */
-/* -------------------------------------------------------------------------- */
-
-function QuickFactIcon({ icon }: { icon: string }) {
-  const cls = "size-5 shrink-0";
-  if (icon === "currency")
-    return (
-      <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M9 14.5c0 1.1.9 2 2 2h2a2 2 0 0 0 0-4h-2a2 2 0 0 1 0-4h2c1.1 0 2 .9 2 2M12 7v2m0 8v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    );
-  if (icon === "beer")
-    return (
-      <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M5 8h11l-1.5 10H6.5L5 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M8 8V6a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M16 10h2a2 2 0 0 1 0 4h-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    );
-  if (icon === "hello")
-    return (
-      <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M8 11V6a1.5 1.5 0 0 1 3 0v4m0 0V5a1.5 1.5 0 0 1 3 0v5m0 0V7a1.5 1.5 0 0 1 3 0v5l.5 3A4 4 0 0 1 13.5 19H12a5 5 0 0 1-5-5v-3a1.5 1.5 0 0 1 3 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
-  // dish
-  return (
-    <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <ellipse cx="12" cy="16" rx="8" ry="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M4.5 16C4.5 11.5 7.5 8 12 8s7.5 3.5 7.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12 8V5m-2 0h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
 /* Page                                                                        */
 /* -------------------------------------------------------------------------- */
 
@@ -136,15 +101,30 @@ export default async function DestinationPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const destination = getDestinationBySlug(slug);
+  const destination = await getDestinationBySlug(slug);
   if (!destination) notFound();
 
-  const [tours, reviews] = await Promise.all([
+  const [tours, linkedReviews] = await Promise.all([
     Promise.all(destination.tourSlugs.map((s) => getTourBySlug(s))).then((ts) =>
       ts.filter((t): t is Tour => t !== undefined),
     ),
     getReviewsForTours(destination.tourSlugs),
   ]);
+
+  // Per-destination review overrides: add featured reviews (from any tour) and
+  // drop hidden ones — scoped to this page, never touching global review status.
+  const featuredIds = destination.featuredReviewIds ?? [];
+  const featured = featuredIds.length
+    ? (await getAllPublishedReviews()).filter((r) => featuredIds.includes(r.id))
+    : [];
+  const hiddenIds = new Set(destination.hiddenReviewIds ?? []);
+  const reviewMap = new Map<string, (typeof linkedReviews)[number]>();
+  for (const r of [...linkedReviews, ...featured]) {
+    if (!hiddenIds.has(r.id)) reviewMap.set(r.id, r);
+  }
+  const reviews = Array.from(reviewMap.values()).sort(
+    (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0),
+  );
 
   // Tour filter options for the reviews section — only tours that actually
   // have a review, so there's never a chip that filters to an empty grid.
