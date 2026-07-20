@@ -56,7 +56,11 @@ export default function ImageWithSkeleton({
 }: ImageWithSkeletonProps) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState(src);
+  // An empty/blank src must never reach next/image (it warns and re-downloads
+  // the whole page). Treat it like a load failure and start from the fallback.
+  const isBlank = (v: ImageProps["src"]) =>
+    v == null || (typeof v === "string" && v.trim() === "");
+  const [currentSrc, setCurrentSrc] = useState(isBlank(src) ? fallbackSrc : src);
 
   // Cached-image guard: with `unoptimized` next/image, a warm-cache image can be
   // `complete` before React attaches onLoad, so onLoad may never fire and the
@@ -64,6 +68,9 @@ export default function ImageWithSkeleton({
   // clones). Settle it after commit if the <img> is already decoded.
   useEffect(() => {
     const img = imgRef.current;
+    // Intentional post-commit sync: we can only read the <img> decode state
+    // after it mounts, so this settle-once cannot move out of an effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (img?.complete && img.naturalWidth > 0) setLoaded(true);
   }, [currentSrc]);
 

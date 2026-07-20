@@ -4,8 +4,11 @@ import Header from "@/app/components/global/Header";
 import GoogleTagManager, {
   GoogleTagManagerNoScript,
 } from "@/app/components/global/GoogleTagManager";
+import ConsentModeDefault from "@/app/components/global/ConsentModeDefault";
+import ConsentBanner from "@/app/components/global/ConsentBanner";
 import { getAllTours, getHostedTours } from "@/lib/tours-firestore";
 import { getAllHosts } from "@/lib/resident-hosts-firestore";
+import { getAllDestinations } from "@/lib/destinations-firestore";
 
 const BASE_URL = "https://www.imheretravels.com";
 
@@ -170,10 +173,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [tours, hostedTours, hosts] = await Promise.all([
+  const [tours, hostedTours, hosts, destinations] = await Promise.all([
     getAllTours(),
     getHostedTours(),
     getAllHosts(),
+    getAllDestinations(),
   ]);
 
   const byName = (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name);
@@ -197,9 +201,18 @@ export default async function RootLayout({
     .sort((a, b) => a.displayName.localeCompare(b.displayName))
     .map((h) => ({ label: h.pageTitle, href: `/resident-hosts/${h.slug}` }));
 
+  // Destinations dropdown — driven by the active `destinations` collection
+  // (already ordered by the CMS `order` field). Mirrors the /all-destinations grid.
+  const destinationLinks = destinations.map((d) => ({
+    label: d.name,
+    href: `/all-destinations/${d.slug}`,
+  }));
+
   return (
     <html lang="en" className="antialiased" data-scroll-behavior="smooth">
       <head>
+        {/* Consent Mode defaults — must run before GTM so tags stay dormant until consent. */}
+        <ConsentModeDefault />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -208,8 +221,14 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col">
         <GoogleTagManagerNoScript />
         <GoogleTagManager />
-        <Header tourLinks={tourLinks} hostedTourLinks={hostedTourLinks} hostLinks={hostLinks} />
+        <Header
+          tourLinks={tourLinks}
+          hostedTourLinks={hostedTourLinks}
+          hostLinks={hostLinks}
+          destinationLinks={destinationLinks}
+        />
         {children}
+        <ConsentBanner />
       </body>
     </html>
   );

@@ -16,30 +16,6 @@ type NavItem = { label: string; href?: string; dropdown?: DropdownEntry[] };
 
 const isSection = (entry: DropdownEntry): entry is NavSection => "section" in entry;
 
-// Static Destinations dropdown (not built from Firebase). "Tours" and
-// "Resident Hosts" are injected dynamically in the component (see navItems).
-const DESTINATIONS_NAV: NavItem = {
-  label: "Destinations",
-  href: "/all-destinations",
-  dropdown: [
-    { label: "All Destinations", href: "/all-destinations" },
-    { label: "Philippines", href: "/all-destinations/philippines" },
-    { label: "Maldives", href: "/all-destinations/maldives" },
-    { label: "Japan", href: "/all-destinations/japan" },
-    { label: "India", href: "/all-destinations/india" },
-    { label: "Nepal", href: "/all-destinations/nepal" },
-    { label: "Bhutan", href: "/all-destinations/bhutan" },
-    { label: "Sri Lanka", href: "/all-destinations/sri-lanka" },
-    { label: "Vietnam", href: "/all-destinations/vietnam" },
-    { label: "China", href: "/all-destinations/china" },
-    { label: "Tanzania", href: "/all-destinations/tanzania" },
-    { label: "New Zealand", href: "/all-destinations/new-zealand" },
-    { label: "Argentina", href: "/all-destinations/argentina" },
-    { label: "Brazil", href: "/all-destinations/brazil" },
-    { label: "Greece", href: "/all-destinations/greece" },
-  ],
-};
-
 // Secondary links collected under a single "More" dropdown to keep the top bar
 // compact: About Us and the Travel Info pages.
 const MORE_DROPDOWN: NavLink[] = [
@@ -111,10 +87,12 @@ export default function Header({
   tourLinks = [],
   hostedTourLinks = [],
   hostLinks = [],
+  destinationLinks = [],
 }: {
   tourLinks?: NavLink[];
   hostedTourLinks?: NavLink[];
   hostLinks?: NavLink[];
+  destinationLinks?: NavLink[];
 }) {
   const navItems = useMemo<NavItem[]>(() => {
     return [
@@ -136,11 +114,20 @@ export default function Header({
           ...hostLinks,
         ],
       },
-      DESTINATIONS_NAV,
+      {
+        label: "Destinations",
+        href: "/all-destinations",
+        // Driven by the active `destinations` collection (CMS-ordered); falls
+        // back to just "All Destinations" if none load.
+        dropdown: [
+          { label: "All Destinations", href: "/all-destinations" },
+          ...destinationLinks,
+        ],
+      },
       { label: "Reviews", href: "/reviews" },
       { label: "More", dropdown: MORE_DROPDOWN },
     ];
-  }, [tourLinks, hostedTourLinks, hostLinks]);
+  }, [tourLinks, hostedTourLinks, hostLinks, destinationLinks]);
 
   // Paths of hosted-tour detail pages — drives active-state of the parent nav.
   const hostedTourDetailPaths = useMemo(

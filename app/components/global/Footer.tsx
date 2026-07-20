@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CookieSettingsLink from "@/app/components/global/CookieSettingsLink";
 
 function TikTokIcon() {
   return (
@@ -185,6 +186,7 @@ export default function Footer() {
               >
                 Privacy Policy
               </Link>
+              <CookieSettingsLink className="font-body text-b2-mobile text-white/80 hover:text-white transition-colors whitespace-nowrap" />
             </div>
           </div>
         </div>

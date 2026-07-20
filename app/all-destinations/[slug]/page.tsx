@@ -15,7 +15,7 @@ import {
 } from "@/lib/destinations-firestore";
 import type { DestinationQuickFact, Destination } from "@/data/destinations";
 import { getTourBySlug } from "@/lib/tours-firestore";
-import { getReviewsForTours, getAllPublishedReviews } from "@/lib/reviews-firestore";
+import { getReviewsForTours } from "@/lib/reviews-firestore";
 import type { TourOption } from "@/app/components/reviews/reviews-filter";
 import type { Tour } from "@/types/tour";
 
@@ -111,20 +111,13 @@ export default async function DestinationPage({
     getReviewsForTours(destination.tourSlugs),
   ]);
 
-  // Per-destination review overrides: add featured reviews (from any tour) and
-  // drop hidden ones — scoped to this page, never touching global review status.
-  const featuredIds = destination.featuredReviewIds ?? [];
-  const featured = featuredIds.length
-    ? (await getAllPublishedReviews()).filter((r) => featuredIds.includes(r.id))
-    : [];
+  // Per-destination review override: drop reviews hidden on this page — scoped
+  // to this destination, never touching global review status. (Globally-hidden
+  // reviews are already excluded by getReviewsForTours' published-only query.)
   const hiddenIds = new Set(destination.hiddenReviewIds ?? []);
-  const reviewMap = new Map<string, (typeof linkedReviews)[number]>();
-  for (const r of [...linkedReviews, ...featured]) {
-    if (!hiddenIds.has(r.id)) reviewMap.set(r.id, r);
-  }
-  const reviews = Array.from(reviewMap.values()).sort(
-    (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0),
-  );
+  const reviews = linkedReviews
+    .filter((r) => !hiddenIds.has(r.id))
+    .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
 
   // Tour filter options for the reviews section — only tours that actually
   // have a review, so there's never a chip that filters to an empty grid.
