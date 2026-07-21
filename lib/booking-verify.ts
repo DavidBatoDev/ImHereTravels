@@ -14,6 +14,10 @@ import { adminDb } from "@/lib/firebase-admin";
 import { isEligibleBookingStatus } from "@/lib/booking-status";
 import { getAllTourIdentities } from "@/lib/tour-identity";
 import { hasReviewForBooking } from "@/lib/reviews-firestore";
+import { bookingMatchesTour, type TourMatchTarget } from "@/lib/booking-tour-match";
+
+// Re-exported so existing importers of this module keep working.
+export { bookingMatchesTour } from "@/lib/booking-tour-match";
 
 export interface VerifiedBooking {
   bookingId: string;
@@ -24,13 +28,6 @@ export interface VerifiedBooking {
 }
 
 type RawBooking = Record<string, any>;
-
-function normalize(s: unknown): string {
-  return String(s ?? "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
 
 /**
  * Coerce the various date shapes a booking may store into a Date.
@@ -116,29 +113,6 @@ export function tourPhase(
   return now >= end.getTime() ? "Completed" : "Ongoing";
 }
 
-/**
- * Does a booking's tour match the tour being reviewed? Strict: exact tour-code
- * equality (preferred) or exact normalized-name equality. No substring matching
- * — that let a booking for one tour verify against a differently-named tour
- * whose name contained it.
- */
-export function bookingMatchesTour(
-  booking: RawBooking,
-  tour: { name?: string; code?: string },
-): boolean {
-  // "xxx" is the placeholder written when a tour package has no code; treat it
-  // as a non-match so two code-less tours can't cross-match.
-  const bCode = normalize(booking.tourCode);
-  const tCode = normalize(tour.code);
-  if (bCode && tCode && bCode !== "xxx" && tCode !== "xxx" && bCode === tCode) {
-    return true;
-  }
-  const bName = normalize(booking.tourPackageName);
-  const tName = normalize(tour.name);
-  if (bName && tName && bName === tName) return true;
-  return false;
-}
-
 function firstNameOf(b: RawBooking): string {
   if (b.firstName) return String(b.firstName).trim();
   if (b.fullName) return String(b.fullName).trim().split(/\s+/)[0] ?? "";
@@ -186,7 +160,8 @@ export type VerifyResult =
  */
 export async function verifyBookingForTour(params: {
   identifier: string;
-  tour: { name?: string; code?: string };
+  /** Pass `id` wherever it's known — it's the only key that survives a rename. */
+  tour: TourMatchTarget;
 }): Promise<VerifyResult> {
   const candidates = await findCandidateBookings(params.identifier);
   if (candidates.length === 0) return { ok: false, reason: "not_found" };
@@ -266,7 +241,9 @@ export async function findReviewableToursForIdentifier(
   const out: ReviewableTour[] = [];
   const seen = new Set<string>();
   for (const b of eligible) {
-    const tour = allTours.find((t) => bookingMatchesTour(b, { name: t.name, code: t.code }));
+    const tour = allTours.find((t) =>
+      bookingMatchesTour(b, { id: t.id, name: t.name, code: t.code }),
+    );
     if (!tour || seen.has(tour.slug)) continue;
     const bookingId = String(b.bookingId ?? b.id ?? "");
     if (!bookingId) continue;

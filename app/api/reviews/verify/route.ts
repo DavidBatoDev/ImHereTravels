@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 
   const result = await verifyBookingForTour({
     identifier,
-    tour: { name: tour.name, code: tour.code },
+    tour: { id: tour.id, name: tour.name, code: tour.code },
   });
 
   if (!result.ok) {

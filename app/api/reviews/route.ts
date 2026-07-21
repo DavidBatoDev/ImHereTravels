@@ -101,7 +101,7 @@ export async function POST(request: Request) {
   // Re-verify the booking server-side — never trust the client's earlier check.
   const verification = await verifyBookingForTour({
     identifier,
-    tour: { name: tour.name, code: tour.code },
+    tour: { id: tour.id, name: tour.name, code: tour.code },
   });
   if (!verification.ok) {
     const error =

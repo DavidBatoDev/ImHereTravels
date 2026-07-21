@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 type NavLink = { label: string; href: string };
@@ -139,6 +139,12 @@ export default function Header({
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  // Desktop dropdowns are hover-driven but controlled (not CSS `group-hover`):
+  // a close is delayed briefly so a diagonal cursor path within the same item
+  // doesn't drop it, but exactly one dropdown is ever open at a time so a
+  // fading-out panel can't visually overlap a newly-opened neighbor.
+  const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null);
+  const desktopCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { scrollY } = useScroll();
   const pathname = usePathname();
   const isHostedTourDetail = hostedTourDetailPaths.includes(pathname);
@@ -211,6 +217,25 @@ export default function Header({
     setOpenDropdown(null);
   };
 
+  const openDesktopDropdownNow = (key: string) => {
+    if (desktopCloseTimer.current) {
+      clearTimeout(desktopCloseTimer.current);
+      desktopCloseTimer.current = null;
+    }
+    setOpenDesktopDropdown(key);
+  };
+
+  const scheduleCloseDesktopDropdown = () => {
+    if (desktopCloseTimer.current) clearTimeout(desktopCloseTimer.current);
+    desktopCloseTimer.current = setTimeout(() => setOpenDesktopDropdown(null), 200);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (desktopCloseTimer.current) clearTimeout(desktopCloseTimer.current);
+    };
+  }, []);
+
   return (
     <motion.header
       initial={{ y: 0 }}
@@ -240,15 +265,29 @@ export default function Header({
         <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
           {navItems.map((item) => {
             if (!item.dropdown) return renderNavLink(item, false);
-            const triggerCls = `flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red group-hover:text-crimson-red ${isParentActive(item) ? "text-crimson-red underline underline-offset-4 decoration-2" : "text-midnight"}`;
+            const itemKey = item.href ?? item.label;
+            const isOpen = openDesktopDropdown === itemKey;
+            const activeCls = isParentActive(item)
+              ? "text-crimson-red underline underline-offset-4 decoration-2"
+              : isOpen
+                ? "text-crimson-red"
+                : "text-midnight";
+            const triggerCls = `flex items-center gap-1 font-body text-b4-desktop transition-colors hover:text-crimson-red ${activeCls}`;
             const label = (
               <>
                 {item.label}
-                <ChevronDown />
+                <ChevronDown
+                  className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                />
               </>
             );
             return (
-              <div key={item.href ?? item.label} className="group relative">
+              <div
+                key={itemKey}
+                className="relative"
+                onMouseEnter={() => openDesktopDropdownNow(itemKey)}
+                onMouseLeave={scheduleCloseDesktopDropdown}
+              >
                 {item.href ? (
                   <Link href={item.href} className={triggerCls}>
                     {label}
@@ -257,7 +296,9 @@ export default function Header({
                   <span className={`cursor-default ${triggerCls}`}>{label}</span>
                 )}
 
-                <div className="invisible absolute left-0 top-full pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                <div
+                  className={`absolute left-0 top-full pt-3 transition-all duration-150 ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
+                >
                   <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">
                     {item.dropdown.map((child, i) =>
                       isSection(child) ? (
