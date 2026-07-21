@@ -14,6 +14,13 @@ import {
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 /**
+ * "Has the client hydrated yet?" — server renders false, client renders true.
+ * A no-op subscribe is correct here: the value flips exactly once, at
+ * hydration, and never changes again.
+ */
+const noopSubscribe = () => () => {};
+
+/**
  * Cookie-consent banner gating Google Consent Mode, built for EU/UK (GDPR/PECR) rules.
  *
  * Behaviour:
@@ -31,8 +38,32 @@ export default function ConsentBanner() {
   const choice = useSyncExternalStore(subscribe, getChoice, () => null);
   const panelOpen = useSyncExternalStore(subscribe, isPanelOpen, () => false);
 
+  /**
+   * The decision lives in a cookie that only `getChoice()` (client-side,
+   * `document.cookie`) can read here — the server snapshot has to answer
+   * "unknown", which looks identical to "no choice yet".
+   *
+   * Rendering optimistically therefore baked the banner into the SSR HTML for
+   * EVERY visitor, so anyone who had already accepted saw it flash on each
+   * page load until hydration removed it.
+   *
+   * Reading the cookie on the server would fix it at the source, but this
+   * component lives in the root layout — calling `cookies()` there opts the
+   * whole site out of static rendering (`revalidate = 3600`). Not a trade
+   * worth making for a banner.
+   *
+   * So: render nothing until hydrated. Returning visitors never see a flash,
+   * and first-time visitors get the banner a frame later, which is standard
+   * for consent UI.
+   */
+  const hydrated = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+
   // Auto-show only before a decision; after that, only when explicitly re-opened.
-  const visible = panelOpen || choice === null;
+  const visible = hydrated && (panelOpen || choice === null);
   if (!GTM_ID || !visible) return null;
 
   // If a choice already exists, the banner is up because the visitor re-opened it to manage

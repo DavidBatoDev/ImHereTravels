@@ -39,7 +39,15 @@ export default async function ResidentHostsPage() {
 
           <ul className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {hosts.map((host, i) => {
-              const cardImage = host.heroImages?.[0] ?? host.heroImage;
+              // The card is about the person, so lead with their profile photo
+              // (the same portrait used on their page, matching their Instagram
+              // avatar). Fall back to the hero for hosts without one.
+              const cardImage =
+                host.profileImage ?? host.heroImages?.[0] ?? host.heroImage;
+              // Profile photos are square (1080x1080, straight off Instagram).
+              // A 4:3 frame would crop a quarter of the height away, so give
+              // them a square frame and show the whole photo.
+              const isProfilePhoto = Boolean(host.profileImage);
               const showComingSoonPlaceholder = host.comingSoon && !cardImage;
 
               return (
@@ -48,11 +56,15 @@ export default async function ResidentHostsPage() {
                     href={`/resident-hosts/${host.slug}`}
                     className="group flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-small transition-shadow hover:shadow-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson-red"
                   >
-                    <div className="relative aspect-4/3 w-full overflow-hidden">
+                    <div
+                      className={`relative w-full overflow-hidden ${
+                        isProfilePhoto ? "aspect-square" : "aspect-4/3"
+                      }`}
+                    >
                       {cardImage ? (
                         <ImageWithSkeleton
                           src={cardImage}
-                          alt={host.heroImageAlt}
+                          alt={isProfilePhoto ? host.displayName : host.heroImageAlt}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
