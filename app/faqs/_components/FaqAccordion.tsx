@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Item = { q: string; a: string };
 
@@ -11,6 +11,39 @@ type FaqAccordionProps = {
   scrollActive?: boolean;
   expandAll?: boolean | null;
 };
+
+// Answers may contain a lightweight `[text](url)` markdown link (e.g. to
+// WhatsApp or Contact Us) — split on it and render an actual <a> in place.
+const LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function renderAnswer(text: string) {
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  LINK_PATTERN.lastIndex = 0;
+  while ((match = LINK_PATTERN.exec(text))) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+    const [, label, href] = match;
+    nodes.push(
+      <a
+        key={match.index}
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+        className="underline underline-offset-2 hover:text-crimson-red"
+      >
+        {label}
+      </a>,
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+  return nodes;
+}
 
 function ChevronDown() {
   return (
@@ -153,7 +186,7 @@ export default function FaqAccordion({
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="pt-2 pb-4 whitespace-pre-line font-body text-b2-mobile text-midnight md:text-b2-desktop"
                     >
-                      {item.a}
+                      {renderAnswer(item.a)}
                     </motion.p>
                   </motion.div>
                 )}

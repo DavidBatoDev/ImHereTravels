@@ -47,7 +47,7 @@ export const faqCategories = [
       },
       {
         q: "How much is the pre-night's accommodation?",
-        a: "Around £25. Contact us to arrange.",
+        a: "Around £30. Contact us to arrange.",
       },
       {
         q: "What is the currency?",
@@ -55,7 +55,7 @@ export const faqCategories = [
       },
       {
         q: "Is travel insurance required?",
-        a: "Yes, it's compulsory. We recommend Travel Nomads but alternatives are accepted.",
+        a: "Not required, but highly recommended. We recommend Travel Nomads but alternatives are accepted.",
       },
       {
         q: "How many people are on each tour?",
@@ -92,7 +92,7 @@ export const faqCategories = [
     items: [
       {
         q: "What's included?",
-        a: "Accommodation, transport, activities, airport transfer (excluding Japan), some meals, and a group leader throughout.",
+        a: "Accommodation, transport, activities, an arrival airport transfer only (no return transfer), some meals, and a group leader throughout.",
       },
       {
         q: "What's not included?",
@@ -105,19 +105,19 @@ export const faqCategories = [
     items: [
       {
         q: "When should I arrive for my tour?",
-        a: "Best to arrive on the actual start date. The group meets for a welcome dinner around 7pm.",
+        a: "Best to arrive on the actual start date. The group meets for a meet and greet dinner around 7pm.",
       },
       {
         q: "Where can I update my arrival information?",
-        a: "Log into the Manage My Booking area of the website.",
+        a: "Message us on [WhatsApp](https://api.whatsapp.com/send?phone=639982476847) with your arrival details.",
       },
       {
         q: "When do I have to make payment?",
-        a: "Full payment is required at least 30 days before the start date. A deposit of £200/$400 secures your place if booking earlier.",
+        a: "Full payment is required at least 60 days (2 months) before the start date. A deposit of £200/$400 secures your place if booking earlier.",
       },
       {
         q: "Can I pay in installments?",
-        a: "Yes, installments of £200/$400 can be made via the Manage My Booking area.",
+        a: "Yes, installments of £200/$400 can be arranged by messaging us on [WhatsApp](https://api.whatsapp.com/send?phone=639982476847).",
       },
       {
         q: "How can I make multiple bookings?",
@@ -130,11 +130,11 @@ export const faqCategories = [
     items: [
       {
         q: "When should I arrive for my tour?",
-        a: "On the actual start date; the welcome dinner is around 7pm. Early arrival is possible.",
+        a: "On the actual start date; the meet and greet dinner is around 7pm. Early arrival is possible.",
       },
       {
         q: "Where can I update my arrival information?",
-        a: "Via the Manage My Booking area of the website.",
+        a: "Message us on [WhatsApp](https://api.whatsapp.com/send?phone=639982476847) with your arrival details.",
       },
       {
         q: "Which airport do I need to fly into?",
@@ -147,7 +147,7 @@ export const faqCategories = [
     items: [
       {
         q: "Can I book pre-tour accommodation?",
-        a: "Yes, via the Manage My Booking area of the website.",
+        a: "Yes, message us on [WhatsApp](https://api.whatsapp.com/send?phone=639982476847) to arrange it.",
       },
       {
         q: "Can I book post-tour accommodation?",
@@ -164,7 +164,7 @@ export const faqCategories = [
     items: [
       {
         q: "How do I organise my airport transfer?",
-        a: "All tours (except Japan) include an arrival airport transfer. Log into Manage My Booking with your flight details. The return transfer is not included, but the group leader can help arrange it.",
+        a: "All tours include an arrival airport pick-up. Message us on [WhatsApp](https://api.whatsapp.com/send?phone=639982476847) with your flight details. The return drop-off is not included on any tour, but the group leader can help arrange it.",
       },
     ],
   },
@@ -177,7 +177,7 @@ export const faqCategories = [
       },
       {
         q: "When should I book my flight to arrive?",
-        a: "Aim to arrive on the actual start date; the group meets for a welcome dinner around 7pm.",
+        a: "Aim to arrive on the actual start date; the group meets for a meet and greet dinner around 7pm.",
       },
     ],
   },
@@ -185,8 +185,8 @@ export const faqCategories = [
     heading: "Travel Insurance",
     items: [
       {
-        q: "Is travel insurance compulsory?",
-        a: "Yes. Proof of your policy must be shown to the group leader upon arrival.",
+        q: "Is travel insurance required?",
+        a: "Not required, but highly recommended. We recommend Travel Nomads but alternatives are accepted.",
       },
     ],
   },
