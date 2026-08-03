@@ -38,6 +38,23 @@ export default function PersonalizedToursForm() {
     e.preventDefault();
     setErrorMessage("");
 
+    const requiredFilled =
+      form.destination.trim() &&
+      form.travelDate.trim() &&
+      form.tripLength.trim() &&
+      form.travellers.trim() &&
+      form.tourVision.trim() &&
+      form.firstName.trim() &&
+      form.lastName.trim() &&
+      form.country.trim() &&
+      form.email.trim();
+
+    if (!requiredFilled) {
+      setStatus("error");
+      setErrorMessage("Please fill in all required fields.");
+      return;
+    }
+
     if (!form.acceptedPrivacy) {
       setStatus("error");
       setErrorMessage("Please accept our privacy policy to continue.");
