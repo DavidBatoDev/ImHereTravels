@@ -7,6 +7,8 @@ import {
   personalizedToursCountries,
 } from "@/data/personalizedTours";
 import { trackEvent } from "@/lib/analytics/track";
+import DatePicker from "./_components/DatePicker";
+import CountrySelect from "./_components/CountrySelect";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -108,13 +110,10 @@ export default function PersonalizedToursForm() {
       {/* Travel date */}
       <div className="flex flex-col gap-2">
         <label className={labelClass}>{fields.travelDate.label}</label>
-        <input
-          type="text"
-          required
+        <DatePicker
           value={form.travelDate}
-          onChange={(e) => update("travelDate", e.target.value)}
+          onChange={(value) => update("travelDate", value)}
           placeholder={fields.travelDate.placeholder}
-          className={inputClass}
         />
       </div>
 
@@ -148,13 +147,22 @@ export default function PersonalizedToursForm() {
       {/* Budget */}
       <div className="flex flex-col gap-2">
         <label className={labelClass}>{fields.budgetPerPerson.label}</label>
-        <input
-          type="text"
-          value={form.budgetPerPerson}
-          onChange={(e) => update("budgetPerPerson", e.target.value)}
-          placeholder={fields.budgetPerPerson.placeholder}
-          className={inputClass}
-        />
+        <div className="flex items-center rounded-sm border-[1.5px] border-grey/60 focus-within:border-midnight">
+          <span className="pl-4 font-body text-b2-mobile text-midnight md:text-b2-desktop">
+            £
+          </span>
+          <input
+            type="text"
+            inputMode="numeric"
+            value={form.budgetPerPerson}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/\D/g, "");
+              update("budgetPerPerson", digits ? Number(digits).toLocaleString("en-GB") : "");
+            }}
+            placeholder={fields.budgetPerPerson.placeholder}
+            className="w-full rounded-sm bg-transparent px-2 py-3 font-body text-b2-mobile text-midnight outline-none placeholder:text-grey md:text-b2-desktop"
+          />
+        </div>
       </div>
 
       {/* Tour vision */}
