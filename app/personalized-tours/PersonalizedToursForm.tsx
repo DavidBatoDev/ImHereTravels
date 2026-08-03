@@ -6,6 +6,7 @@ import {
   personalizedToursForm,
   personalizedToursCountries,
 } from "@/data/personalizedTours";
+import { trackEvent } from "@/lib/analytics/track";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -56,6 +57,7 @@ export default function PersonalizedToursForm() {
         throw new Error(data?.error || "Failed to send inquiry");
       }
       setStatus("success");
+      trackEvent("form_submission", { form_name: "personalized_tours" });
       setForm(initialForm);
     } catch (err) {
       setStatus("error");

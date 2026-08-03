@@ -96,3 +96,30 @@ classes, or other DOM structure. That pattern breaks silently the next time
 the component is redesigned (see `docs/tracking-plan.md` for the incident
 that motivated this rule). Check `docs/tracking-plan.md` first for an
 existing event name before adding a new one.
+
+### GTM container reference (GTM-K29G5GPR / GA4 G-PB15VYT2VL)
+
+Shared with `admin.imheretravels.com/reservation-booking-form` — same
+container, same GA4 property. Current tags/triggers/variables, rebuilt
+2026-08-03 off the `contact_click` / `form_submission` dataLayer contract:
+
+| Tag | Trigger | Condition |
+| --- | --- | --- |
+| Google Analytics Tag *(base config, don't touch)* | Initialization - All Pages | — |
+| GA4 Event - Phone Clicks | Phone Clicks Trigger | Custom Event `contact_click`, `{{DLV - Contact Method}}` equals `phone` |
+| GA4 Event - Mail Clicks | Mail Clicks Trigger | Custom Event `contact_click`, `{{DLV - Contact Method}}` equals `email` |
+| GA4 Event - Messenger Link Clicks | Messenger Link Clicks Trigger | Custom Event `contact_click`, `{{DLV - Contact Method}}` equals `messenger` |
+| GA4 Event - WhatsApp Clicks | WhatsApp Clicks Trigger | Custom Event `contact_click`, `{{DLV - Contact Method}}` equals `whatsapp` |
+| GA4 Event - Form Submissions | Form Submissions Trigger | Custom Event `form_submission`, All Custom Events (no condition — differentiate by the `form_name` event parameter, not the trigger) |
+
+Two Data Layer Variables back the conditions above: `DLV - Contact Method`
+(reads `method`) and `DLV - Form Name` (reads `form_name`), both Version 2.
+
+**When adding a new feature that should be tracked:** check the table above
+first — if it's a contact click or a form submit, the trigger/tag likely
+already exists and you just need the right `method`/`form_name` value (see
+`docs/tracking-plan.md`). If it's a genuinely new interaction type (not a
+contact click or form submit), flag to August that a new GTM trigger + tag
+pair needs to be built by hand in the GTM UI following this same pattern —
+Claude can prep the exact event name and config but cannot publish to the
+live container.
