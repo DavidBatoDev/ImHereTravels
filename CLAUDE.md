@@ -86,3 +86,13 @@ H1/H2 are Cartograph CF Bold; H3–H6 are HK Grotesk Bold (weight 700); B1/B2/B4
 - New tokens go in `globals.css` only — there is no `tailwind.config.js`.
 - Add the CSS var to `:root`, then mirror it inside `@theme inline {}` so Tailwind generates the utility.
 - Verify against the Figma node `32:7450` first, then the PDF.
+
+## Analytics / tracking
+
+Any new interactive element worth knowing about in GA4 (a click, a form
+submit, a conversion) must call `trackEvent()` from `lib/analytics/track.ts` —
+never rely on adding a new GTM trigger that matches on click text, CSS
+classes, or other DOM structure. That pattern breaks silently the next time
+the component is redesigned (see `docs/tracking-plan.md` for the incident
+that motivated this rule). Check `docs/tracking-plan.md` first for an
+existing event name before adding a new one.

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { contactForm } from "@/data/contactUs";
+import { trackEvent } from "@/lib/analytics/track";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -46,6 +47,7 @@ export default function ContactForm() {
         throw new Error(data?.error || "Failed to send message");
       }
       setStatus("success");
+      trackEvent("form_submission", { form_name: "contact_us" });
       setForm({
         firstName: "",
         lastName: "",
