@@ -5,6 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: "/?e=*",
     },
     sitemap: "https://www.imheretravels.com/sitemap.xml",
   };
