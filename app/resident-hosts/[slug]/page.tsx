@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Footer from "@/app/components/global/Footer";
 import Reveal from "@/app/components/global/Reveal";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
+import NewsletterForm from "@/app/components/global/NewsletterForm";
 import type { Host } from "@/data/hosts";
 import { getHostBySlug, getAllHostSlugs } from "@/lib/resident-hosts-firestore";
 import { getActiveTourSlugById } from "@/lib/tours-firestore";
@@ -412,35 +413,10 @@ function NewsletterSection() {
             <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
               Stay up to date on the latest news, deals and tours when you sign up.
             </p>
-            <form
-              className="flex flex-col gap-3"
-              action="#"
-              method="post"
-              aria-label="Newsletter signup"
-            >
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
-              />
-              <p className="font-body text-b4-desktop text-grey">
-                By submitting you agree with our{" "}
-                <Link
-                  href="/privacy-policy"
-                  className="underline hover:text-crimson-red"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
-              >
-                Submit
-              </button>
-            </form>
+            <NewsletterForm
+              formClassName="flex flex-col gap-3"
+              buttonClassName="inline-flex items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
+            />
           </div>
           <div className="relative h-full w-full">
             <ImageWithSkeleton

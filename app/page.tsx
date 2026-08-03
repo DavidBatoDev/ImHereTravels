@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
+import NewsletterForm from "@/app/components/global/NewsletterForm";
 
 const BASE_URL = "https://www.imheretravels.com";
 
@@ -254,35 +255,7 @@ function JoinCommunity() {
               Stay up to date on the latest news, deals and tours when you sign
               up.
             </p>
-            <form
-              className="mt-2 flex flex-col gap-3"
-              action="#"
-              method="post"
-              aria-label="Newsletter signup"
-            >
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
-              />
-              <p className="font-body text-b4-desktop text-grey">
-                By submitting you agree with our{" "}
-                <Link
-                  href="/privacy-policy"
-                  className="underline hover:text-crimson-red"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-              <button
-                type="submit"
-                className="mt-1 inline-flex items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
-              >
-                Submit
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
           <div className="relative h-full w-full">
             <ImageWithSkeleton

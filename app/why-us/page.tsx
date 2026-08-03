@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/app/components/global/Footer";
 import ImageWithSkeleton from "@/app/components/global/ImageWithSkeleton";
+import NewsletterForm from "@/app/components/global/NewsletterForm";
 import { features, destinations } from "@/data/root";
 import DestinationsCarousel from "./_components/DestinationsCarousel";
 import {
@@ -335,24 +336,7 @@ function NewsletterSection() {
             <p className="font-body text-b4-mobile md:text-b4-desktop text-dark-gray">
               {whyUsNewsletter.body}
             </p>
-            <form className="mt-2 flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder={whyUsNewsletter.inputPlaceholder}
-                className="w-full rounded-full border border-grey bg-white px-5 py-3 font-body text-b4-desktop text-midnight placeholder:text-grey focus:border-crimson-red focus:outline-none"
-              />
-              <p className="font-body text-b4-desktop text-grey">
-                {whyUsNewsletter.privacyLabel}{" "}
-                <span className="underline hover:text-crimson-red">{whyUsNewsletter.privacyLink}</span>
-                .
-              </p>
-              <button
-                type="submit"
-                className="mt-1 inline-flex w-fit items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red"
-              >
-                {whyUsNewsletter.button}
-              </button>
-            </form>
+            <NewsletterForm buttonClassName="mt-1 inline-flex w-fit items-center justify-center self-start rounded-full bg-crimson-red px-6 py-3 font-body font-medium text-white hover:bg-light-red" />
           </div>
           {/* Image — flex-1 so it fills exactly the remaining half */}
           <div className="relative flex-1">

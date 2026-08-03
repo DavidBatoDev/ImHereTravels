@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { subscribeToMailchimp } from "@/lib/mailchimp";
 
 export const runtime = "nodejs";
 
@@ -227,6 +228,19 @@ export async function POST(request: Request) {
         { error: "Failed to send inquiry. Please try again later." },
         { status: 502 },
       );
+    }
+
+    if (payload.subscribe) {
+      try {
+        await subscribeToMailchimp({
+          email,
+          firstName,
+          lastName,
+          tag: "Website Personalized Tours Form",
+        });
+      } catch (err) {
+        console.error("Mailchimp subscribe (personalized tours form) failed:", err);
+      }
     }
 
     return NextResponse.json({ ok: true });

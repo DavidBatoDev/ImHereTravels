@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { subscribeToMailchimp } from "@/lib/mailchimp";
 
 export const runtime = "nodejs";
 
@@ -187,6 +188,14 @@ export async function POST(request: Request) {
         { error: "Failed to send message. Please try again later." },
         { status: 502 },
       );
+    }
+
+    if (payload.subscribe) {
+      try {
+        await subscribeToMailchimp({ email, firstName, lastName, tag: "Website Contact Form" });
+      } catch (err) {
+        console.error("Mailchimp subscribe (contact form) failed:", err);
+      }
     }
 
     return NextResponse.json({ ok: true });
