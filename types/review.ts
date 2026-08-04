@@ -89,6 +89,7 @@ export interface ReviewDoc {
   externalId?: string; // dedup key = external review id / content hash
   externalSource?: "google" | "tourradar"; // provider discriminator
   externalTourId?: string; // provider's tour id (TourRadar `/t/{id}`) — drives the outbound link
+  externalUrl?: string; // provider review/place URL (Google: the location's Maps page) — drives the outbound link
   externalUpdatedAt?: number; // epoch ms, Google updateTime — detects edits on re-sync
   externalReply?: string; // owner reply (reviewReply.comment), display-only
   reviewerFullName?: string; // Google displayName as-received (before first-name split)
@@ -126,6 +127,7 @@ export interface PublicReview {
   displayDate?: string;
   source?: ReviewSource; // lets the card badge external reviews (e.g. "via Google")
   externalTourId?: string; // provider tour id, for the "via TourRadar" outbound link
+  externalUrl?: string; // provider review/place URL, for the "via Google" outbound link
   externalReply?: string; // owner reply, shown as "Response from the owner"
 }
 

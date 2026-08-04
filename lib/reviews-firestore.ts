@@ -70,6 +70,7 @@ function toPublicReview(id: string, raw: RawDoc): PublicReview {
     displayDate: raw.displayDate || undefined,
     source: raw.source ?? "user",
     externalTourId: raw.externalTourId || undefined,
+    externalUrl: raw.externalUrl || undefined,
     externalReply: raw.externalReply || undefined,
   };
 }

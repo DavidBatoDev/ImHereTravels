@@ -10,6 +10,10 @@ import { getTourRadarReviewsUrl } from "@/lib/tourradar-links";
 import { isoForLocation, isoFromFlagEmoji } from "@/lib/country-flags";
 import type { PublicReview } from "@/types/review";
 
+const GOOGLE_REVIEWS_URL =
+  process.env.NEXT_PUBLIC_GOOGLE_REVIEWS_URL ||
+  "https://www.google.com/search?q=I%27m%20Here%20Travels%20Google%20reviews";
+
 function formatDate(review: PublicReview): string {
   if (review.displayDate) return review.displayDate;
   if (!review.createdAt) return "";
@@ -52,6 +56,9 @@ export default function ReviewCard({
     review.source === "tourradar"
       ? getTourRadarReviewsUrl(review.tourSlug, review.externalTourId)
       : undefined;
+  // Google's legacy reviews API exposes no per-review permalink, so this links
+  // to the business's Google reviews surface, not this one review.
+  const sourceUrl = review.source === "google" ? GOOGLE_REVIEWS_URL : tourRadarUrl;
   const isModal = variant === "modal";
   // Real SVG flag (emoji flags don't render on Windows). Prefer the source's flag
   // (TourRadar countryEmoji → ISO), else derive from the free-text location.
@@ -67,9 +74,9 @@ export default function ReviewCard({
       <div className="flex items-center justify-between gap-3">
         <Stars count={review.rating} />
         {sourceLabel &&
-          (tourRadarUrl ? (
+          (sourceUrl ? (
             <a
-              href={tourRadarUrl}
+              href={sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={`${sourceBadgeCls} transition-colors hover:bg-light-grey/70 hover:text-crimson-red`}
@@ -239,9 +246,9 @@ export default function ReviewCard({
 
           <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-1">
             {sourceLabel &&
-              (tourRadarUrl ? (
+              (sourceUrl ? (
                 <a
-                  href={tourRadarUrl}
+                  href={sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${sourceBadgeCls} transition-colors hover:bg-light-grey/70 hover:text-crimson-red`}

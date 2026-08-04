@@ -98,23 +98,34 @@ export default async function ReviewsHubPage({
   const { tour, sort, q, source } = await searchParams;
   const all = await getAllPublishedReviews();
 
-  // Unique tours present in the review set, with per-tour counts (for the filter).
-  const tourMap = new Map<string, TourOption>();
-  for (const r of all) {
-    if (!r.tourSlug || !r.tourName) continue;
-    const existing = tourMap.get(r.tourSlug);
-    if (existing) existing.count += 1;
-    else tourMap.set(r.tourSlug, { slug: r.tourSlug, name: r.tourName, count: 1 });
-  }
-  const tours = Array.from(tourMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-
-  const activeTour = tour && tourMap.has(tour) ? tour : undefined;
   const activeSort: SortValue =
     (SORT_OPTIONS.find((s) => s.value === sort)?.value as SortValue) ?? DEFAULT_SORT;
   const activeSource: SourceValue =
     (SOURCE_OPTIONS.find((s) => s.value === source)?.value as SourceValue) ?? DEFAULT_SOURCE;
   const activeQuery = (q ?? "").trim();
   const needle = activeQuery.toLowerCase();
+
+  // Tour dropdown options + "All tours" total are scoped to the active source
+  // (and search) so they reflect exactly what picking a tour would yield —
+  // mirrors how sourceCounts below is scoped to the tour selection.
+  const sourceScoped = all.filter(
+    (r) => matchesSource(r, activeSource) && (!needle || reviewSearchText(r).includes(needle)),
+  );
+  const tourMap = new Map<string, TourOption>();
+  for (const r of sourceScoped) {
+    if (!r.tourSlug || !r.tourName) continue;
+    const existing = tourMap.get(r.tourSlug);
+    if (existing) existing.count += 1;
+    else tourMap.set(r.tourSlug, { slug: r.tourSlug, name: r.tourName, count: 1 });
+  }
+  const tours = Array.from(tourMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+  const totalCount = sourceScoped.length;
+
+  // Validated against ALL tour slugs (not the source-scoped map above) so an
+  // active tour selection survives switching source even to a 0-result combo,
+  // instead of silently resetting because that tour has no reviews under it.
+  const allTourSlugs = new Set(all.map((r) => r.tourSlug).filter(Boolean));
+  const activeTour = tour && allTourSlugs.has(tour) ? tour : undefined;
 
   // Per-source counts for the menu. Counted against the tour + search selection
   // (but not against the source itself) so each option shows what picking it yields.
@@ -201,7 +212,7 @@ export default async function ReviewsHubPage({
           <div className="sticky top-0 z-30 -mx-4 mt-8 bg-light-grey px-4 py-4 md:-mx-8 md:px-8">
             <ReviewsFilterBar
               tours={tours}
-              totalCount={all.length}
+              totalCount={totalCount}
               activeTour={activeTour}
               activeSort={activeSort}
               activeQuery={activeQuery}
