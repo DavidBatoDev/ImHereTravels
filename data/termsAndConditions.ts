@@ -21,7 +21,7 @@ export const termsHero = {
 /* Content                                                                     */
 /* -------------------------------------------------------------------------- */
 
-export const termsLastUpdated = "February 19, 2026";
+export const termsLastUpdated = "August 11, 2026";
 
 export const termsIntro = [
   "GENERAL",
@@ -90,6 +90,12 @@ export const termsSections = [
       "• Full payment must be settled no later than 60 days (2 months) before the tour start date to avoid cancellation",
       "• Some tours may require full payment depending on how close to the start date the booking is made",
       "• Payment plans available: 4 instalments, 3 instalments, 2 instalments, or full payment",
+      "Late Fees:",
+      "• Each scheduled instalment must be paid by the due date shown in your payment schedule",
+      "• If a scheduled instalment remains unpaid three days after its due date, a one-time late fee of 3% of that instalment amount may be applied",
+      "• Any late fee will be added to your remaining balance, and you will receive a notice showing the overdue instalment, late fee, and updated balance",
+      "• If the outstanding payment remains unpaid for three days after the late-fee notice is sent, I'm Here Travels may cancel your booking",
+      "• If you believe a late fee has been applied in error or exceptional circumstances prevented payment, contact I'm Here Travels promptly. Any waiver or adjustment is at I'm Here Travels' discretion",
       "For all bookings made before August 26, 2024, deposits are fully refundable. After this date, deposits are non-refundable.",
     ],
   },
