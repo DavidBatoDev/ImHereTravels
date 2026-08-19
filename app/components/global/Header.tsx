@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 type NavLink = { label: string; href: string };
@@ -15,6 +15,23 @@ type DropdownEntry = NavLink | NavSection;
 type NavItem = { label: string; href?: string; dropdown?: DropdownEntry[] };
 
 const isSection = (entry: DropdownEntry): entry is NavSection => "section" in entry;
+
+// A dropdown flattened into blocks: an optional heading plus the links under it.
+// Entries before the first `section` form one untitled block.
+type NavGroup = { section?: string; links: NavLink[] };
+
+function toGroups(entries: DropdownEntry[]): NavGroup[] {
+  const groups: NavGroup[] = [];
+  for (const entry of entries) {
+    if (isSection(entry)) {
+      groups.push({ section: entry.section, links: [] });
+    } else {
+      if (groups.length === 0) groups.push({ links: [] });
+      groups[groups.length - 1].links.push(entry);
+    }
+  }
+  return groups.filter((g) => g.section || g.links.length > 0);
+}
 
 // Secondary links collected under a single "More" dropdown to keep the top bar
 // compact: About Us and the Travel Info pages.
@@ -80,6 +97,98 @@ function MenuIcon({ open }: { open: boolean }) {
         transition={{ duration: 0.2 }}
       />
     </svg>
+  );
+}
+
+// Desktop mega-menu panel. Long lists (Tours, Destinations) are laid out in
+// CSS columns so the whole list is visible at once instead of running off the
+// bottom of the viewport; the panel is nudged horizontally after it opens so a
+// wide panel under a right-hand nav item never overflows the screen edge.
+function DesktopDropdown({
+  entries,
+  isOpen,
+  isChildActive,
+}: {
+  entries: DropdownEntry[];
+  isOpen: boolean;
+  isChildActive: (href: string) => boolean;
+}) {
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const groups = useMemo(() => toGroups(entries), [entries]);
+  const linkCount = groups.reduce((n, g) => n + g.links.length, 0);
+  const columns = linkCount > 14 ? 3 : linkCount > 7 ? 2 : 1;
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    const measure = () => {
+      const el = panelRef.current;
+      if (!el) return;
+      el.style.transform = "translateX(0px)";
+      const rect = el.getBoundingClientRect();
+      const viewport = document.documentElement.clientWidth;
+      const margin = 16;
+      let dx = 0;
+      if (rect.right > viewport - margin) dx = viewport - margin - rect.right;
+      if (rect.left + dx < margin) dx = margin - rect.left;
+      el.style.transform = `translateX(${dx}px)`;
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [isOpen]);
+
+  const widthCls =
+    columns === 3 ? "w-[46rem]" : columns === 2 ? "w-[32rem]" : "min-w-52";
+  const columnsCls = columns === 3 ? "columns-3" : columns === 2 ? "columns-2" : "";
+
+  return (
+    <div
+      ref={panelRef}
+      className={`absolute left-0 top-full pt-3 transition-opacity duration-150 ${
+        isOpen ? "visible opacity-100" : "invisible opacity-0"
+      }`}
+    >
+      <div
+        className={`max-h-[calc(100vh-8rem)] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-md bg-white py-2 shadow-medium ${widthCls}`}
+      >
+        <div className={`${columnsCls} gap-x-2`}>
+          {groups.map((group, gi) => (
+            <div
+              key={group.section ?? `group-${gi}`}
+              className={group.section ? "mb-2 break-inside-avoid" : ""}
+            >
+              {group.section && (
+                <div
+                  aria-hidden
+                  className={`flex items-center gap-2 px-4 pb-1.5 pt-2.5 ${gi > 0 ? "mt-1" : ""}`}
+                >
+                  <span className="whitespace-nowrap font-body text-xs uppercase tracking-wide text-grey">
+                    {group.section}
+                  </span>
+                  <span className="h-px flex-1 bg-grey" />
+                </div>
+              )}
+              <ul>
+                {group.links.map((child) => (
+                  <li key={child.href} className="break-inside-avoid">
+                    <Link
+                      href={child.href}
+                      className={`block rounded-sm px-4 py-2 font-body text-b4-desktop transition-colors hover:bg-light-grey hover:text-crimson-red ${
+                        isChildActive(child.href)
+                          ? "bg-crimson-red/10 font-medium text-crimson-red"
+                          : "text-midnight"
+                      }`}
+                    >
+                      {child.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -296,35 +405,11 @@ export default function Header({
                   <span className={`cursor-default ${triggerCls}`}>{label}</span>
                 )}
 
-                <div
-                  className={`absolute left-0 top-full pt-3 transition-all duration-150 ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
-                >
-                  <ul className="min-w-48 overflow-hidden rounded-md bg-white py-1 shadow-medium">
-                    {item.dropdown.map((child, i) =>
-                      isSection(child) ? (
-                        <li
-                          key={`section-${child.section}`}
-                          aria-hidden
-                          className={`flex items-center gap-2 px-4 pb-1.5 pt-2.5 ${i > 0 ? "mt-1" : ""}`}
-                        >
-                          <span className="whitespace-nowrap font-body text-xs uppercase tracking-wide text-grey">
-                            {child.section}
-                          </span>
-                          <span className="h-px flex-1 bg-grey" />
-                        </li>
-                      ) : (
-                        <li key={child.label}>
-                          <Link
-                            href={child.href}
-                            className={`block px-4 py-2.5 font-body text-b4-desktop transition-colors hover:bg-light-grey hover:text-crimson-red ${isChildActive(child.href) ? "bg-crimson-red/10 text-crimson-red font-medium" : "text-midnight"}`}
-                          >
-                            {child.label}
-                          </Link>
-                        </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
+                <DesktopDropdown
+                  entries={item.dropdown}
+                  isOpen={isOpen}
+                  isChildActive={isChildActive}
+                />
               </div>
             );
           })}
