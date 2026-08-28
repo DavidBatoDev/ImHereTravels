@@ -191,6 +191,8 @@ export interface Tour {
   comingSoon?: boolean;
   /** When true the tour is a hosted tour (shown under /hosted-tours, excluded from /tours) */
   isHosted?: boolean;
+  /** `metadata.createdAt` in epoch ms — drives the homepage "New Tours" ordering. 0 when unset. */
+  createdAt?: number;
 
   listingCard: {
     duration: string;

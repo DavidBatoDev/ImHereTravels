@@ -14,25 +14,25 @@ export const metadata: Metadata = {
 };
 import Reveal from "@/app/components/global/Reveal";
 import HeroTitle from "@/app/components/global/HeroTitle";
-import { hero, tours, destinations, testimonials, features } from "@/data/root";
+import { hero, destinations, features } from "@/data/root";
 import DestinationsMarquee from "@/app/components/global/DestinationsMarquee";
 import NewToursCarousel from "@/app/components/home/NewToursCarousel";
+import ReviewCard from "@/app/components/reviews/ReviewCard";
+import Stars from "@/app/components/reviews/Stars";
+import { getNewTours } from "@/lib/tours-firestore";
+import {
+  computeReviewAggregate,
+  getAllPublishedReviews,
+  getFeaturedReviews,
+} from "@/lib/reviews-firestore";
+import type { PublicReview } from "@/types/review";
+
+// Homepage tours + reviews come from Firestore; refresh hourly like /tours.
+export const revalidate = 3600;
 
 /* -------------------------------------------------------------------------- */
 /* Shared UI                                                                   */
 /* -------------------------------------------------------------------------- */
-
-function StarRow() {
-  return (
-    <div className="flex gap-0.5 text-crimson-red" aria-label="5 out of 5 stars">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} viewBox="0 0 20 20" className="size-4 fill-current">
-          <path d="M10 1.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L10 14.9l-5.3 2.7 1-5.8L1.5 7.7l5.9-.9z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
 
 function PillButton({
   children,
@@ -141,53 +141,56 @@ function Destinations() {
   );
 }
 
-function Testimonials() {
+/**
+ * Real published reviews from `tourReviews`, rendered with the same card the
+ * /reviews hub uses, plus the overall rating and a link into the hub.
+ *
+ * The whole section is omitted when there are no published reviews — an empty
+ * "What people say about us" heading reads worse than no section at all.
+ */
+function Testimonials({
+  reviews,
+  aggregate,
+}: {
+  reviews: PublicReview[];
+  aggregate: { average: number; count: number };
+}) {
+  if (reviews.length === 0) return null;
+
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-10 md:px-8 md:py-14">
       <Reveal>
-        <h2 className="mb-8 text-center font-sans text-h3-mobile md:text-h3-desktop text-midnight md:mb-12">
+        <h2 className="text-center font-sans text-h3-mobile md:text-h3-desktop text-midnight">
           What people say about us
         </h2>
       </Reveal>
-      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {testimonials.map((t, i) => (
-          <Reveal
-            as="li"
-            delay={i * 80}
-            key={t.author}
-            className="flex flex-col gap-6 rounded-lg bg-white p-8 shadow-small md:p-10"
-          >
-            <div className="flex items-center justify-between">
-              <StarRow />
-              <span className="font-body text-b4-desktop text-grey">
-                {t.date}
-              </span>
-            </div>
-            <p className="font-body text-b2-mobile md:text-b2-desktop text-midnight">
-              {t.quote}
-            </p>
-            <div className="mt-auto flex items-center gap-4 pt-2">
-              <ImageWithSkeleton
-                src={t.avatar}
-                alt={t.author}
-                width={56}
-                height={56}
-                rounded="full"
-                containerClassName="size-14 shrink-0"
-                className="size-14 object-cover"
-              />
-              <div>
-                <p className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
-                  {t.author}
-                </p>
-                <p className="font-body text-b4-desktop text-vivid-orange">
-                  {t.location}
-                </p>
-              </div>
-            </div>
+      {aggregate.count > 0 && (
+        <Reveal delay={60}>
+          <div className="mt-4 mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:mb-12">
+            <Stars count={aggregate.average} />
+            <span className="font-sans text-h6-mobile md:text-h6-desktop font-bold text-midnight">
+              {aggregate.average.toFixed(1)}
+            </span>
+            <span className="font-body text-b4-desktop text-dark-gray">
+              from {aggregate.count} traveller{aggregate.count === 1 ? "" : "s"}
+            </span>
+          </div>
+        </Reveal>
+      )}
+      <ul className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {reviews.map((review, i) => (
+          <Reveal as="li" delay={i * 80} key={review.id}>
+            <ReviewCard review={review} showTour as="div" />
           </Reveal>
         ))}
       </ul>
+      <Reveal className="mt-10 flex justify-center" delay={reviews.length * 80 + 120}>
+        <PillButton href="/reviews">
+          {aggregate.count > 0
+            ? `Read all ${aggregate.count} reviews`
+            : "Read all reviews"}
+        </PillButton>
+      </Reveal>
     </section>
   );
 }
@@ -278,14 +281,33 @@ function JoinCommunity() {
 /* Page                                                                        */
 /* -------------------------------------------------------------------------- */
 
-export default function Home() {
+export default async function Home() {
+  const [newTours, featuredReviews, allReviews] = await Promise.all([
+    getNewTours(8),
+    getFeaturedReviews(3),
+    getAllPublishedReviews(),
+  ]);
+
+  // Display rating spans every source (Google/TourRadar included) — it's a
+  // teaser into /reviews, not the first-party AggregateRating used in JSON-LD.
+  const aggregate = computeReviewAggregate(allReviews);
+
+  const tourCards = newTours.map((tour) => ({
+    title: tour.name,
+    duration: tour.listingCard.duration,
+    description: tour.listingCard.description,
+    price: tour.listingCard.price,
+    image: tour.listingCard.image,
+    href: `/tours/${tour.slug}`,
+  }));
+
   return (
     <>
       <main className="flex-1">
         <Hero />
-        <NewToursCarousel tours={tours} />
+        {tourCards.length > 0 && <NewToursCarousel tours={tourCards} />}
         <Destinations />
-        <Testimonials />
+        <Testimonials reviews={featuredReviews} aggregate={aggregate} />
         <WhyChooseUs />
         <JoinCommunity />
       </main>

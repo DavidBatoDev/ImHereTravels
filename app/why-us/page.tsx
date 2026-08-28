@@ -11,13 +11,25 @@ import {
   whyUsIntro,
   whyUsDestinationsSection,
   whyUsReviewsSection,
-  whyUsReviews,
   whyUsFaqsSection,
   whyUsFaqs,
   whyUsCta,
   whyUsInstagram,
   whyUsNewsletter,
 } from "@/data/whyUs";
+import { getAllTours } from "@/lib/tours-firestore";
+import { getAllDestinations } from "@/lib/destinations-firestore";
+import {
+  computeReviewAggregate,
+  getAllPublishedReviews,
+  getFeaturedReviews,
+} from "@/lib/reviews-firestore";
+import ReviewCard from "@/app/components/reviews/ReviewCard";
+import Stars from "@/app/components/reviews/Stars";
+import type { PublicReview } from "@/types/review";
+
+// Hero stats come from Firestore; refresh hourly like the other data pages.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Why Choose I'm Here Travels for Your Next Group Tour",
@@ -32,46 +44,6 @@ export const metadata: Metadata = {
 };
 
 /* ---------- Icons ---------- */
-
-function ChevronLeft() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M10 12L6 8l4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M6 4l4 4-4 4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function ChevronDown() {
   return (
@@ -113,28 +85,65 @@ function InstagramIcon() {
 
 /* ---------- Sections ---------- */
 
-function Hero() {
+/**
+ * Page hero. Deliberately built on the same bones as every other hero on the
+ * site (`/contact-us`, `/faqs`, `/about-us`, home): full-bleed image, one flat
+ * `bg-black/40` scrim, centered `font-display` H1 over it. What's extra here —
+ * a subtitle, a second CTA and a live stat strip — sits inside that same
+ * centered column so the page reads as a richer member of the family rather
+ * than a different design.
+ *
+ * Height matches the home hero (55/60vh) rather than the 260/360px strip the
+ * utility pages use, because this is a landing page, not a section header.
+ */
+function Hero({ stats }: { stats: { label: string; value: string }[] }) {
   return (
-    <section className="relative h-65 overflow-hidden md:h-90">
+    <section className="relative h-[55vh] min-h-[26rem] overflow-hidden md:h-[60vh]">
       <ImageWithSkeleton
         src={whyUsHero.image}
-        alt=""
+        alt={whyUsHero.imageAlt}
         fill
         priority
+        quality={90}
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-[center_60%]"
       />
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-black/40" />
+
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
-        <h1 className="font-display text-h1-mobile text-white md:text-h1-desktop">
+        <h1 className="max-w-3xl font-display text-h1-mobile text-white md:text-h1-desktop">
           {whyUsHero.title}
         </h1>
-        <Link
-          href={whyUsHero.cta.href}
-          className="inline-flex items-center justify-center rounded-full bg-crimson-red px-8 py-3 font-body font-bold text-b2-mobile text-white transition-colors hover:bg-light-red md:px-10 md:text-b2-desktop"
-        >
-          {whyUsHero.cta.label}
-        </Link>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href={whyUsHero.cta.href}
+            className="inline-flex items-center justify-center rounded-full bg-crimson-red px-8 py-3 font-body font-bold text-b2-mobile text-white transition-colors hover:bg-light-red md:px-10 md:text-b2-desktop"
+          >
+            {whyUsHero.cta.label}
+          </Link>
+          <Link
+            href={whyUsHero.secondaryCta.href}
+            className="inline-flex items-center justify-center rounded-full border border-white/70 px-8 py-3 font-body font-bold text-b2-mobile text-white transition-colors hover:bg-white hover:text-midnight md:px-10 md:text-b2-desktop"
+          >
+            {whyUsHero.secondaryCta.label}
+          </Link>
+        </div>
+
+        {stats.length > 0 && (
+          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            {stats.map((stat) => (
+              <li key={stat.label} className="flex items-baseline gap-2">
+                <span className="font-sans text-h6-mobile font-bold text-white md:text-h6-desktop">
+                  {stat.value}
+                </span>
+                <span className="font-body text-b4-desktop text-white/80">
+                  {stat.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );
@@ -195,69 +204,46 @@ function DestinationsSection() {
   );
 }
 
-function ReviewsSection() {
+/** Real published reviews (same card as /reviews), with a live link to the hub. */
+function ReviewsSection({
+  reviews,
+  aggregate,
+}: {
+  reviews: PublicReview[];
+  aggregate: { average: number; count: number };
+}) {
+  if (reviews.length === 0) return null;
+
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-8 md:py-16">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <h2 className="font-sans text-h4-mobile text-midnight md:text-h4-desktop">
           {whyUsReviewsSection.heading}
         </h2>
-        <div className="hidden items-center gap-4 md:flex">
-          <button
-            className="flex size-10 items-center justify-center rounded-full border-[2.5px] border-grey text-grey"
-            aria-label="Previous review"
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            className="flex size-10 items-center justify-center rounded-full border-[2.5px] border-midnight text-midnight"
-            aria-label="Next review"
-          >
-            <ChevronRight />
-          </button>
-        </div>
+        {aggregate.count > 0 && (
+          <div className="flex items-center gap-2">
+            <Stars count={aggregate.average} />
+            <span className="font-sans text-h6-desktop font-bold text-midnight">
+              {aggregate.average.toFixed(1)}
+            </span>
+            <span className="font-body text-b4-desktop text-dark-gray">
+              from {aggregate.count} traveller{aggregate.count === 1 ? "" : "s"}
+            </span>
+          </div>
+        )}
       </div>
-      <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {whyUsReviews.map((r, i) => (
-          <li key={i} className="flex flex-col gap-3 rounded-lg bg-white p-10">
-            <div className="flex items-start justify-between">
-              <span className="font-body text-b2-mobile text-crimson-red md:text-b2-desktop">
-                {"★".repeat(r.stars)}
-              </span>
-              <span className="font-body text-b4-desktop text-dark-gray">
-                {r.date}
-              </span>
-            </div>
-            <p className="font-body text-b2-mobile text-midnight md:text-b2-desktop">
-              {r.quote}
-            </p>
-            <div className="mt-2 flex items-center gap-4 border-t border-light-grey pt-4">
-              <div className="relative size-14 shrink-0 overflow-hidden rounded-full">
-                <ImageWithSkeleton
-                  src={r.avatar}
-                  alt={r.author}
-                  fill
-                  rounded="full"
-                  sizes="56px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span className="font-body text-b2-mobile text-midnight md:text-b2-desktop">
-                  {r.author}
-                </span>
-                <span className="font-body text-b4-desktop text-dark-gray underline">
-                  {r.tour}
-                </span>
-              </div>
-            </div>
-          </li>
+      <ul className="grid grid-cols-1 items-start gap-6 md:grid-cols-3">
+        {reviews.map((review) => (
+          <ReviewCard key={review.id} review={review} showTour />
         ))}
       </ul>
       <div className="mt-8 flex justify-center">
-        <button className="inline-flex items-center justify-center rounded-full border-2 border-midnight px-8 py-3 font-body font-bold text-b2-mobile text-midnight transition-colors hover:bg-midnight hover:text-white md:px-10 md:text-b2-desktop">
+        <Link
+          href="/reviews"
+          className="inline-flex items-center justify-center rounded-full border-2 border-midnight px-8 py-3 font-body font-bold text-b2-mobile text-midnight transition-colors hover:bg-midnight hover:text-white md:px-10 md:text-b2-desktop"
+        >
           {whyUsReviewsSection.readAll}
-        </button>
+        </Link>
       </div>
     </section>
   );
@@ -356,15 +342,40 @@ function NewsletterSection() {
 
 /* ---------- Page ---------- */
 
-export default function WhyUsPage() {
+export default async function WhyUsPage() {
+  const [allTours, allDestinations, allReviews, featuredReviews] =
+    await Promise.all([
+      getAllTours(),
+      getAllDestinations(),
+      getAllPublishedReviews(),
+      getFeaturedReviews(3),
+    ]);
+  const aggregate = computeReviewAggregate(allReviews);
+
+  // Only stats we can actually back with data make it into the banner.
+  const heroStats = [
+    allTours.length > 0
+      ? { value: `${allTours.length}`, label: "small-group tours" }
+      : null,
+    allDestinations.length > 0
+      ? { value: `${allDestinations.length}`, label: "destinations" }
+      : null,
+    aggregate.count > 0
+      ? {
+          value: `${aggregate.average.toFixed(1)}★`,
+          label: `from ${aggregate.count} reviews`,
+        }
+      : null,
+  ].filter((s): s is { value: string; label: string } => s !== null);
+
   return (
     <>
       <main className="flex-1 bg-light-grey">
-        <Hero />
+        <Hero stats={heroStats} />
         <WhySection />
         <FeaturesSection />
         <DestinationsSection />
-        <ReviewsSection />
+        <ReviewsSection reviews={featuredReviews} aggregate={aggregate} />
         <InstagramSection />
         <FAQSection />
         <NewsletterSection />

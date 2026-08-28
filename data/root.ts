@@ -14,76 +14,8 @@ export const hero = {
 /* Tours                                                                       */
 /* -------------------------------------------------------------------------- */
 
-export const tours = [
-  {
-    title: "Philippines Sunrise",
-    duration: "11 Day Tour",
-    description:
-      "Experience more thrilling canyoneering, mesmerizing marine life, surfing, and stunning sunsets!",
-    price: "GBP £1,199",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341320242_philippinessunrise-header-1-3.webp?alt=media&token=176752d3-cd01-486b-b97b-d397a869db93",
-    href: "/tours/philippine-sunrise",
-  },
-  {
-    title: "Philippines Sunset",
-    duration: "11 Day Tour",
-    description:
-      "Escape to the islands, and immerse in rich culture, with island-hopping and unforgettable stunning sunsets!",
-    price: "GBP £1,199",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341317907_philippinessunset-day-11.webp?alt=media&token=d3c35f6b-4503-438e-9cd4-c6d6848d0e8f",
-    href: "/tours/philippine-sunset",
-  },
-  {
-    title: "India Discovery",
-    duration: "13 Day Tour",
-    description:
-      "The Taj Mahal, Mehrangarh Fort, Lake Pichola cruise, Amer Fort, and a canter safari through Ranthambhore National Park.",
-    price: "GBP £1,199",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341302125_india-header-1.webp?alt=media&token=3f969113-15f2-4d4e-bc0c-0f5e8ac5043e",
-    href: "/tours/india-discovery-tour",
-  },
-  {
-    title: "India Holi + Yoga with Dev",
-    duration: "13 Day Tour",
-    description:
-      "Explore India's vibrant culture, ancient wonders, and the stunning colors of the Holi Festival.",
-    price: "GBP £1,299",
-    image: "/figma/dest-india-holi-festival.jpg",
-    href: "/tours/india-holi-festival-tour",
-  },
-  {
-    title: "China Discovery",
-    duration: "10 Day Tour",
-    description:
-      "Explore ancient history and modern marvels — from the Forbidden City and Great Wall to the Shanghai skyline.",
-    price: "GBP £1,199",
-    image: "/tours/china-discovery/hero-1.webp",
-    href: "/tours/china-discovery",
-  },
-  {
-    title: "Vietnam Expedition",
-    duration: "11 Day Tour",
-    description:
-      "Journey north to south through Vietnam's rich culture — Hanoi, Halong Bay, Hoi An, and Ho Chi Minh City.",
-    price: "GBP £1,099",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341305320_vietnam-header-4.webp?alt=media&token=be502580-7b8c-47ec-98c3-ce9c250af05e",
-    href: "/tours/vietnam-expedition",
-  },
-  {
-    title: "Tanzania Exploration",
-    duration: "10 Day Tour",
-    description:
-      "Trek Kilimanjaro, witness incredible wildlife on safari, and relax on the stunning beaches of Zanzibar.",
-    price: "GBP £1,949",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/imheretravels-a3f81.firebasestorage.app/o/images%2F1759341299042_tanzania-header-1.webp?alt=media&token=889b4689-5d81-4658-9afd-3066ddc16fbb",
-    href: "/tours/tanzania-exploration",
-  },
-];
+// Tour cards now come from Firestore (`getNewTours`) — this hard-coded mirror
+// of the catalog drifted from the database and has been removed.
 
 /* -------------------------------------------------------------------------- */
 /* Destinations                                                                */
@@ -178,32 +110,9 @@ export const featuredDestinations = destinations.slice(0, 8);
 /* Testimonials                                                                */
 /* -------------------------------------------------------------------------- */
 
-export const testimonials = [
-  {
-    date: "May 2023",
-    quote:
-      "Had an amazing time on the trial tour! Action packed with lots of fun things on the itinerary, and a great bunch of people. Would definitely go again!",
-    author: "Flynn Deanne",
-    location: "London, United Kingdom",
-    avatar: "/figma/avatar-flynn.png",
-  },
-  {
-    date: "February 2024",
-    quote:
-      "My experience has been amazing, I'll never forget it. I met extraordinary people and explored beautiful places. I definitely recommend to book a trip!",
-    author: "Manuel Madonna",
-    location: "Milan, Italy",
-    avatar: "/figma/avatar-manuel.png",
-  },
-  {
-    date: "July 2024",
-    quote:
-      "I enjoyed the tour! Seamless coordination of transportation and accommodation made me feel like a VIP throughout the trip. LOVED every bit of it! Highly recommend!",
-    author: "Bella Millers",
-    location: "Cagayan, Philippines",
-    avatar: "/figma/avatar-bella.png",
-  },
-];
+// Homepage testimonials now come from Firestore (`getFeaturedReviews`) — the
+// hard-coded placeholder list was removed so the site never shows invented
+// reviews.
 
 /* -------------------------------------------------------------------------- */
 /* Features (Why Choose Us)                                                    */

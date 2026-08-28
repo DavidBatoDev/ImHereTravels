@@ -64,6 +64,27 @@ function toTitleCase(s: string): string {
   return s.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/**
+ * Clip a blurb to `max` characters on a word boundary, adding an ellipsis.
+ * A hard `slice` left listing cards ending mid-word ("…the vibrant capit").
+ */
+function truncateAtWord(text: string, max: number): string {
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+  const cut = trimmed.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  // No space in range (one very long token) — fall back to the hard cut.
+  const body = lastSpace > 0 ? cut.slice(0, lastSpace) : cut;
+  return `${body.replace(/[\s,;:.–—-]+$/, "")}…`;
+}
+
+/** Firestore `Timestamp` (or raw millis) → epoch ms; 0 when absent/unparseable. */
+function toMillis(v: unknown): number {
+  const ts = v as { toMillis?: () => number } | undefined;
+  if (ts && typeof ts.toMillis === "function") return ts.toMillis();
+  return typeof v === "number" ? v : 0;
+}
+
 
 function priceParts(pricing: RawDoc | undefined): {
   currency: string;
@@ -424,6 +445,7 @@ function toTour(raw: RawDoc): Tour {
     bookingSlug: raw.bookingSlug,
     comingSoon: raw.comingSoon ?? false,
     isHosted: raw.isHosted === true,
+    createdAt: toMillis(raw.metadata?.createdAt),
     meta: { title: seoTitle, description: seoDescription },
     gallery: {
       hero: heroImage,
@@ -452,7 +474,7 @@ function toTour(raw: RawDoc): Tour {
     booking,
     listingCard: {
       duration: raw.duration ? toTitleCase(raw.duration) : "",
-      description: (raw.description ?? "").slice(0, 160),
+      description: truncateAtWord(raw.description ?? "", 160),
       price: priceLabel(raw.pricing),
       image: heroImage,
       imageAlt: raw.name ?? "",
@@ -521,6 +543,24 @@ const fetchAllActiveTours = cache(async (): Promise<Tour[]> => {
 
 export async function getAllTours(): Promise<Tour[]> {
   return fetchAllActiveTours();
+}
+
+/**
+ * The most recently added tours, newest first — backs the homepage "New Tours"
+ * carousel.
+ *
+ * "New" is `metadata.createdAt` on the tourPackages doc (when the tour was
+ * added to the catalog), not a departure date. Hosted tours are excluded so the
+ * rail matches what `/tours` lists, and `comingSoon` tours are excluded because
+ * their pages have no bookable content yet. Docs written before `metadata` was
+ * populated sort to 0 (last), so they only appear once the newer tours run out.
+ */
+export async function getNewTours(limit = 8): Promise<Tour[]> {
+  const tours = await fetchAllActiveTours();
+  return tours
+    .filter((t) => !t.isHosted && !t.comingSoon)
+    .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))
+    .slice(0, limit);
 }
 
 export async function getTourBySlug(slug: string): Promise<Tour | undefined> {

@@ -307,6 +307,11 @@ export default function Header({
     const prev = scrollY.getPrevious() ?? 0;
     setScrolled(y > 8);
     if (menuOpen) return;
+    // Scroll-driven accordions (the tour itinerary) re-anchor the page so the
+    // block being read stays put while a panel above it collapses. That moves
+    // scrollY backwards without the user scrolling up, and reading it as input
+    // made the header flash open on every step of the itinerary.
+    if (document.documentElement.dataset.scrollAnchoring === "true") return;
     if (y > prev && y > 80) setHidden(true);
     else if (y < prev) setHidden(false);
   });

@@ -3,9 +3,16 @@
 /* -------------------------------------------------------------------------- */
 
 export const whyUsHero = {
-  image: "/figma/dest-philippines-sunrise.jpg",
+  // 1920×1080 group shot — the banner runs full-bleed, so anything smaller
+  // (the old 800px destination thumbnail) upscales and looks soft.
+  image: "/figma/hero-siargao.png",
+  imageAlt:
+    "A small I'm Here Travels group walking a coastal trail in Siargao, Philippines",
+  // No hero subtitle by design — the intro paragraph immediately below the
+  // banner carries the positioning copy, so repeating it here is redundant.
   title: "Be here with us",
   cta: { label: "View Tours", href: "/tours" },
+  secondaryCta: { label: "Read reviews", href: "/reviews" },
 };
 
 /* -------------------------------------------------------------------------- */
@@ -34,35 +41,8 @@ export const whyUsReviewsSection = {
   readAll: "Read All Reviews",
 };
 
-export const whyUsReviews = [
-  {
-    stars: 5,
-    date: "June 2023",
-    quote:
-      "It was very well organized, a good busy pace. The guides were very competent and took care of everyone and were well informed and articulate.",
-    author: "Konstantin",
-    tour: "Siargao Island Adventure",
-    avatar: "/figma/avatar-manuel.png",
-  },
-  {
-    stars: 5,
-    date: "February 2024",
-    quote:
-      "An incredible experience from start to finish. The team made everything seamless and the destinations were absolutely breathtaking.",
-    author: "Maria",
-    tour: "Philippines Sunset Tour",
-    avatar: "/figma/avatar-bella.png",
-  },
-  {
-    stars: 5,
-    date: "July 2024",
-    quote:
-      "Best travel experience I've ever had. Small group vibes, amazing guides, and destinations I never would have found on my own.",
-    author: "James",
-    tour: "Maldives Bucketlist",
-    avatar: "/figma/avatar-flynn.png",
-  },
-];
+// Reviews now come from Firestore (`getFeaturedReviews`) — the old hard-coded
+// placeholder list was removed so the page never shows invented testimonials.
 
 /* -------------------------------------------------------------------------- */
 /* FAQs                                                                        */

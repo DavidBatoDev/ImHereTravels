@@ -171,6 +171,60 @@ export const getAllPublishedReviews = cache(
   },
 );
 
+/**
+ * A handful of published reviews good enough to headline the homepage.
+ *
+ * Cards are fixed-height and sit three-across, so we want 5-star reviews whose
+ * body actually fills a card without overflowing it, spread across different
+ * tours rather than three from the same trip. First-party (and verified)
+ * reviews rank above federated ones; ties break newest-first.
+ *
+ * Each filter is a preference, not a hard gate: the selection falls back
+ * through progressively looser pools so a young catalog still fills the rail,
+ * and returns fewer than `limit` (possibly none) only when the data truly
+ * can't cover it. Callers must handle a short/empty result.
+ */
+export const getFeaturedReviews = cache(
+  async (limit = 3): Promise<PublicReview[]> => {
+    const all = await getAllPublishedReviews();
+
+    const score = (r: PublicReview) =>
+      (isExternalSource(r.source) ? 0 : 2) + (r.verified ? 1 : 0);
+    const ranked = [...all].sort((a, b) => score(b) - score(a) || byNewest(a, b));
+
+    // Widest-first pools; each later pool is a superset of the one before it.
+    const pools = [
+      ranked.filter(
+        (r) =>
+          r.rating === 5 &&
+          r.bodyMarkdown.length >= 80 &&
+          r.bodyMarkdown.length <= 500,
+      ),
+      ranked.filter((r) => r.rating >= 4 && r.bodyMarkdown.length >= 40),
+      ranked.filter((r) => r.bodyMarkdown.length > 0),
+    ];
+
+    const picked: PublicReview[] = [];
+    const pickedIds = new Set<string>();
+    // First pass per pool takes one review per tour (variety); a second pass
+    // backfills from the same pool if there aren't enough distinct tours.
+    for (const pool of pools) {
+      for (const oneTourOnly of [true, false]) {
+        const seenTours = new Set(picked.map((r) => r.tourSlug));
+        for (const r of pool) {
+          if (picked.length >= limit) return picked;
+          if (pickedIds.has(r.id)) continue;
+          if (oneTourOnly && r.tourSlug && seenTours.has(r.tourSlug)) continue;
+          picked.push(r);
+          pickedIds.add(r.id);
+          seenTours.add(r.tourSlug);
+        }
+      }
+    }
+    return picked.slice(0, limit);
+  },
+);
+
 // ─── Writes (submission route) ───────────────────────────────────────────────
 
 export interface CreateReviewInput {
